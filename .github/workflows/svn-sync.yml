@@ -7,11 +7,14 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install subversion
         run: sudo apt-get install -y subversion
@@ -27,4 +30,3 @@ jobs:
           git add -A
           git commit -m "SVN sync $(date +%Y-%m-%d)" || echo "Nothing to commit"
           git push origin master
-
