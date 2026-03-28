@@ -26,6 +26,7 @@ jobs:
 
       - name: Sync from SVN
         run: |
+          git rm -r --cached .
           svn export https://svn.code.sf.net/p/chibios/code/trunk . --force
           git add -A
           git commit -m "SVN sync $(date +%Y-%m-%d)" || echo "Nothing to commit"
