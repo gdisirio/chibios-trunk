@@ -1,0 +1,27 @@
+name: SVN Sync
+on:
+  schedule:
+    - cron: '0 2 * * *'  # daily at 2am UTC
+  workflow_dispatch:      # allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install git-svn
+        run: sudo apt-get install -y git-svn
+
+      - name: Configure git
+        run: |
+          git config user.email "gdisirio@gmail.com"
+          git config user.name "Giovanni Di Sirio"
+
+      - name: Sync from SVN
+        run: |
+          git svn fetch
+          git push origin master --force
