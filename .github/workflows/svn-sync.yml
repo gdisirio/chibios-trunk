@@ -26,8 +26,8 @@ jobs:
 
       - name: Sync from SVN
         run: |
-          git rm -r --cached .
-          svn export https://svn.code.sf.net/p/chibios/code/trunk . --force
+          svn export https://svn.code.sf.net/p/chibios/code/trunk /tmp/svn-export --force
+          rsync -av --delete --exclude='.git' --exclude='.github' /tmp/svn-export/ .
           git add -A
           git commit -m "SVN sync $(date +%Y-%m-%d)" || echo "Nothing to commit"
           git push origin master
