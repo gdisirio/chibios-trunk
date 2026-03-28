@@ -13,8 +13,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install git-svn
-        run: sudo apt-get install -y git-svn
+      - name: Install subversion
+        run: sudo apt-get install -y subversion
 
       - name: Configure git
         run: |
@@ -23,5 +23,8 @@ jobs:
 
       - name: Sync from SVN
         run: |
-          git svn fetch
-          git push origin master --force
+          svn export https://svn.code.sf.net/p/chibios/code/trunk . --force
+          git add -A
+          git commit -m "SVN sync $(date +%Y-%m-%d)" || echo "Nothing to commit"
+          git push origin master
+
