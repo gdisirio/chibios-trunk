@@ -24,6 +24,10 @@ jobs:
           git config user.email "gdisirio@gmail.com"
           git config user.name "Giovanni Di Sirio"
 
+      - name: Check SVN revision
+        run: |
+          svn info https://svn.code.sf.net/p/chibios/code/trunk | grep Revision
+
       - name: Sync from SVN
         run: |
           svn export https://svn.code.sf.net/p/chibios/code/trunk /tmp/svn-export --force
@@ -31,3 +35,4 @@ jobs:
           git add -A
           git commit -m "SVN sync $(date +%Y-%m-%d)" || echo "Nothing to commit"
           git push origin master
+
