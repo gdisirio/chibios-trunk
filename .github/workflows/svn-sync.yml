@@ -1,7 +1,7 @@
 name: SVN Sync
 on:
   schedule:
-    - cron: '0 2 * * *'  # daily at 2am UTC
+    - cron: '0 */4 * * *'  # every 4 hours
   workflow_dispatch:      # allows manual trigger
 
 jobs:
