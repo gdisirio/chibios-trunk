@@ -1,59 +1,100 @@
-      - name: Sync from SVN
+name: SVN Sync
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: svn-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y subversion rsync
+
+      - name: Configure git
+        run: |
+          git config user.name "Giovanni Di Sirio"
+          git config user.email "gdisirio@gmail.com"
+
+      - name: Sync from SVN and push
+        shell: bash
         run: |
           set -euo pipefail
 
-          URL="https://svn.code.sf.net/p/chibios/code/trunk"
+          SVN_URL="https://svn.code.sf.net/p/chibios/code/trunk"
+          EXPORT_DIR="/tmp/svn-export"
+          REV_FILE=".svn-sync-rev"
+          COMMIT_MSG_FILE="/tmp/svn-commit-message.txt"
 
-          # Get current revision
-          CURR_REV=$(svn info --show-item revision "$URL")
+          echo "Reading current SVN revision..."
+          CURR_REV="$(svn info --show-item revision "$SVN_URL")"
+          echo "Current SVN revision: $CURR_REV"
 
-          # Read last revision (default to current if missing)
-          if [ -f .svn-sync-rev ]; then
-            LAST_REV=$(cat .svn-sync-rev)
+          if [[ -f "$REV_FILE" ]]; then
+            LAST_REV="$(tr -d '[:space:]' < "$REV_FILE")"
+            if ! [[ "$LAST_REV" =~ ^[0-9]+$ ]]; then
+              echo "Invalid $REV_FILE content: $LAST_REV"
+              exit 1
+            fi
           else
-            LAST_REV=$CURR_REV
+            LAST_REV="$CURR_REV"
           fi
 
-          echo "Last: $LAST_REV  Current: $CURR_REV"
+          echo "Last synced revision: $LAST_REV"
 
-          # Export latest tree
-          rm -rf /tmp/svn-export
-          svn export "$URL" /tmp/svn-export --force
+          echo "Exporting SVN tree..."
+          rm -rf "$EXPORT_DIR"
+          svn export "$SVN_URL" "$EXPORT_DIR" --force
 
+          echo "Synchronizing exported tree into repository..."
           rsync -a --delete --delete-excluded \
             --exclude='.git' \
             --exclude='.github' \
-            /tmp/svn-export/ ./
+            "$EXPORT_DIR"/ ./
+
+          echo "$CURR_REV" > "$REV_FILE"
 
           git add -A
 
           if git diff --cached --quiet; then
-            echo "No changes"
+            echo "No changes to commit."
             exit 0
           fi
 
-          # Build commit message from SVN log
-          if [ "$LAST_REV" -lt "$CURR_REV" ]; then
-            LOG=$(svn log -r $((LAST_REV+1)):$CURR_REV "$URL" --incremental --quiet \
-              | awk '
-                /^r[0-9]+/ {rev=$1; next}
-                NF {print rev " " $0}
-              ')
-          else
-            LOG="No intermediate revisions"
-          fi
-
           {
-            echo "SVN sync r${LAST_REV}-r${CURR_REV}"
-            echo
-            echo "$LOG"
-          } > commit_msg.txt
+            if [[ "$LAST_REV" -lt "$CURR_REV" ]]; then
+              echo "SVN sync r${LAST_REV}-r${CURR_REV}"
+              echo
+              echo "Included SVN revisions:"
+              svn log -r "$((LAST_REV + 1)):$CURR_REV" "$SVN_URL" --incremental --quiet \
+                | awk '
+                    /^r[0-9]+ / { rev=$1; next }
+                    /^[[:space:]]*$/ { next }
+                    { sub(/^[[:space:]]+/, "", $0); print "- " rev " " $0 }
+                  '
+            else
+              echo "SVN sync r${CURR_REV}"
+            fi
+          } > "$COMMIT_MSG_FILE"
 
-          git commit -F commit_msg.txt
-          git push origin master
+          echo "Commit message:"
+          cat "$COMMIT_MSG_FILE"
 
-          # Update revision marker
-          echo "$CURR_REV" > .svn-sync-rev
-          git add .svn-sync-rev
-          git commit -m "Update SVN sync marker r$CURR_REV" || true
-          git push origin master
+          git commit -F "$COMMIT_MSG_FILE"
+          git push origin HEAD:master
