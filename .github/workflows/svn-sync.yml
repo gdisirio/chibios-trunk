@@ -63,7 +63,7 @@ jobs:
           svn export "$SVN_URL" "$EXPORT_DIR" --force
 
           echo "Synchronizing exported tree into repository..."
-          rsync -a --delete --delete-excluded \
+          rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
             "$EXPORT_DIR"/ ./
