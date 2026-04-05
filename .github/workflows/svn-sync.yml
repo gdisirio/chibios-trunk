@@ -42,7 +42,6 @@ jobs:
           REV_FILE=".svn-sync-rev"
           COMMIT_MSG_FILE="/tmp/svn-commit-message.txt"
 
-          echo "Reading current SVN revision..."
           CURR_REV="$(svn info --show-item revision "$SVN_URL")"
           echo "Current SVN revision: $CURR_REV"
 
@@ -58,18 +57,15 @@ jobs:
 
           echo "Last synced revision: $LAST_REV"
 
-          echo "Exporting SVN tree..."
           rm -rf "$EXPORT_DIR"
           svn export "$SVN_URL" "$EXPORT_DIR" --force
 
-          echo "Synchronizing exported tree into repository..."
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
             "$EXPORT_DIR"/ ./
 
           echo "$CURR_REV" > "$REV_FILE"
-
           git add -A
 
           if git diff --cached --quiet; then
@@ -78,13 +74,10 @@ jobs:
           fi
 
           NEXT_REV="$((LAST_REV + 1))"
-          export LAST_REV CURR_REV
 
           if [[ "$LAST_REV" -lt "$CURR_REV" ]]; then
-            export SVN_XML
             SVN_XML="$(svn log -r "${NEXT_REV}:${CURR_REV}" "$SVN_URL" --xml)"
-
-            python3 - <<'PY' > "$COMMIT_MSG_FILE"
+            LAST_REV="$LAST_REV" CURR_REV="$CURR_REV" SVN_XML="$SVN_XML" python3 -c '
 import os
 import xml.etree.ElementTree as ET
 
@@ -93,20 +86,24 @@ curr_rev = int(os.environ["CURR_REV"])
 next_rev = last_rev + 1
 xml_data = os.environ["SVN_XML"]
 
+lines = []
 if next_rev == curr_rev:
-    print(f"SVN sync r{curr_rev}")
+    lines.append(f"SVN sync r{curr_rev}")
 else:
-    print(f"SVN sync r{next_rev}-r{curr_rev}")
-print()
-print("Included SVN revisions:")
+    lines.append(f"SVN sync r{next_rev}-r{curr_rev}")
+
+lines.append("")
+lines.append("Included SVN revisions:")
 
 root = ET.fromstring(xml_data)
 for entry in root.findall("logentry"):
     rev = entry.attrib.get("revision", "?")
     msg = (entry.findtext("msg") or "").strip()
     first_line = msg.splitlines()[0] if msg else "(no message)"
-    print(f"- r{rev} {first_line}")
-PY
+    lines.append(f"- r{rev} {first_line}")
+
+print("\n".join(lines))
+' > "$COMMIT_MSG_FILE"
           else
             echo "SVN sync r${CURR_REV}" > "$COMMIT_MSG_FILE"
           fi
