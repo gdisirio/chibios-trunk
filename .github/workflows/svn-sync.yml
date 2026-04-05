@@ -42,6 +42,7 @@ jobs:
           REV_FILE=".svn-sync-rev"
           COMMIT_MSG_FILE="/tmp/svn-commit-message.txt"
           LOG_FILE="/tmp/svn-log.txt"
+          LATEST_LOG_FILE="/tmp/svn-latest-log.txt"
 
           CURR_REV="$(svn info --show-item revision "$SVN_URL")"
           echo "Current SVN revision: $CURR_REV"
@@ -77,40 +78,89 @@ jobs:
           NEXT_REV="$((LAST_REV + 1))"
 
           if [[ "$LAST_REV" -lt "$CURR_REV" ]]; then
-            if [[ "$NEXT_REV" -eq "$CURR_REV" ]]; then
-              echo "SVN sync r${CURR_REV}" > "$COMMIT_MSG_FILE"
-            else
-              echo "SVN sync r${NEXT_REV}-r${CURR_REV}" > "$COMMIT_MSG_FILE"
+            svn log -r "${NEXT_REV}:${CURR_REV}" "$SVN_URL" --incremental > "$LOG_FILE"
+            svn log -r "${CURR_REV}:${CURR_REV}" "$SVN_URL" --incremental > "$LATEST_LOG_FILE"
+
+            SUBJECT="$(awk '
+              BEGIN { in_msg=0 }
+              /^-+$/ { next }
+              /^r[0-9]+ \| / { in_msg=1; next }
+              in_msg && /^[[:space:]]*$/ { next }
+              in_msg {
+                sub(/^[[:space:]]+/, "", $0)
+                print $0
+                exit
+              }
+            ' "$LATEST_LOG_FILE")"
+
+            if [[ -z "$SUBJECT" ]]; then
+              SUBJECT="(no message)"
             fi
 
+            echo "r${CURR_REV} ${SUBJECT}" > "$COMMIT_MSG_FILE"
             echo >> "$COMMIT_MSG_FILE"
-            echo "Included SVN revisions:" >> "$COMMIT_MSG_FILE"
+            echo "SVN sync details:" >> "$COMMIT_MSG_FILE"
 
-            svn log -r "${NEXT_REV}:${CURR_REV}" "$SVN_URL" --incremental > "$LOG_FILE"
+            if [[ "$NEXT_REV" -eq "$CURR_REV" ]]; then
+              echo "- revision: r${CURR_REV}" >> "$COMMIT_MSG_FILE"
+            else
+              echo "- revisions: r${NEXT_REV}-r${CURR_REV}" >> "$COMMIT_MSG_FILE"
+            fi
 
-            awk '
-              BEGIN {
-                rev = ""
-                capture = 0
-              }
-              /^-+$/ {
-                capture = 0
-                next
-              }
-              /^r[0-9]+ \| / {
-                rev = $1
-                capture = 1
-                next
-              }
-              capture && /^[[:space:]]*$/ {
-                next
-              }
-              capture {
+            REMAINDER="$(awk '
+              BEGIN { in_msg=0; first=1 }
+              /^-+$/ { next }
+              /^r[0-9]+ \| / { in_msg=1; next }
+              in_msg && /^[[:space:]]*$/ { next }
+              in_msg {
                 sub(/^[[:space:]]+/, "", $0)
-                print "- " rev " " $0
-                capture = 0
+                if (first) {
+                  first=0
+                  next
+                }
+                print
               }
-            ' "$LOG_FILE" >> "$COMMIT_MSG_FILE"
+            ' "$LATEST_LOG_FILE")"
+
+            if [[ -n "$REMAINDER" ]]; then
+              echo >> "$COMMIT_MSG_FILE"
+              echo "Latest SVN commit details:" >> "$COMMIT_MSG_FILE"
+              echo "$REMAINDER" >> "$COMMIT_MSG_FILE"
+            fi
+
+            if [[ "$NEXT_REV" -lt "$CURR_REV" ]]; then
+              echo >> "$COMMIT_MSG_FILE"
+              echo "Included SVN revisions:" >> "$COMMIT_MSG_FILE"
+              awk '
+                BEGIN {
+                  rev = ""
+                  in_msg = 0
+                  first = 1
+                }
+                /^-+$/ {
+                  rev = ""
+                  in_msg = 0
+                  first = 1
+                  next
+                }
+                /^r[0-9]+ \| / {
+                  rev = $1
+                  in_msg = 1
+                  first = 1
+                  next
+                }
+                in_msg && /^[[:space:]]*$/ {
+                  next
+                }
+                in_msg {
+                  sub(/^[[:space:]]+/, "", $0)
+                  if (first) {
+                    print "- " rev " " $0
+                    first = 0
+                  }
+                }
+              ' "$LOG_FILE" >> "$COMMIT_MSG_FILE"
+            fi
           else
             echo "SVN sync r${CURR_REV}" > "$COMMIT_MSG_FILE"
           fi
