@@ -25,7 +25,7 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y subversion rsync
+          sudo apt-get install -y subversion rsync python3
 
       - name: Configure git
         run: |
@@ -77,21 +77,39 @@ jobs:
             exit 0
           fi
 
-          {
-            if [[ "$LAST_REV" -lt "$CURR_REV" ]]; then
-              echo "SVN sync r${LAST_REV}-r${CURR_REV}"
-              echo
-              echo "Included SVN revisions:"
-              svn log -r "$((LAST_REV + 1)):$CURR_REV" "$SVN_URL" --incremental --quiet \
-                | awk '
-                    /^r[0-9]+ / { rev=$1; next }
-                    /^[[:space:]]*$/ { next }
-                    { sub(/^[[:space:]]+/, "", $0); print "- " rev " " $0 }
-                  '
-            else
-              echo "SVN sync r${CURR_REV}"
-            fi
-          } > "$COMMIT_MSG_FILE"
+          NEXT_REV="$((LAST_REV + 1))"
+          export LAST_REV CURR_REV
+
+          if [[ "$LAST_REV" -lt "$CURR_REV" ]]; then
+            export SVN_XML
+            SVN_XML="$(svn log -r "${NEXT_REV}:${CURR_REV}" "$SVN_URL" --xml)"
+
+            python3 - <<'PY' > "$COMMIT_MSG_FILE"
+import os
+import xml.etree.ElementTree as ET
+
+last_rev = int(os.environ["LAST_REV"])
+curr_rev = int(os.environ["CURR_REV"])
+next_rev = last_rev + 1
+xml_data = os.environ["SVN_XML"]
+
+if next_rev == curr_rev:
+    print(f"SVN sync r{curr_rev}")
+else:
+    print(f"SVN sync r{next_rev}-r{curr_rev}")
+print()
+print("Included SVN revisions:")
+
+root = ET.fromstring(xml_data)
+for entry in root.findall("logentry"):
+    rev = entry.attrib.get("revision", "?")
+    msg = (entry.findtext("msg") or "").strip()
+    first_line = msg.splitlines()[0] if msg else "(no message)"
+    print(f"- r{rev} {first_line}")
+PY
+          else
+            echo "SVN sync r${CURR_REV}" > "$COMMIT_MSG_FILE"
+          fi
 
           echo "Commit message:"
           cat "$COMMIT_MSG_FILE"
