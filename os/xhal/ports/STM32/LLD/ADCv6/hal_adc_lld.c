@@ -284,9 +284,21 @@ static void adc_lld_serve_dma_interrupt(void *p, uint32_t csr) {
  * @brief   ADC IRQ service routine.
  *
  * @param[in] adcp      pointer to the @p hal_adc_driver_c object
- * @param[in] isr       content of the ISR register
  */
-static void adc_lld_serve_interrupt(hal_adc_driver_c *adcp, uint32_t isr) {
+void adc_lld_serve_interrupt(hal_adc_driver_c *adcp) {
+  uint32_t isr;
+
+  isr = adcp->adcm->ISR;
+  adcp->adcm->ISR = isr;
+#if STM32_ADC_DUAL_MODE
+  if (adcp->adcs != NULL) {
+    uint32_t sisr;
+
+    sisr = adcp->adcs->ISR;
+    adcp->adcs->ISR = sisr;
+    isr |= sisr;
+  }
+#endif
 
   /* It could be a spurious interrupt caused by overflows after DMA disabling,
      just ignore it in this case.*/
@@ -317,140 +329,6 @@ static void adc_lld_serve_interrupt(hal_adc_driver_c *adcp, uint32_t isr) {
     }
   }
 }
-
-/*===========================================================================*/
-/* Driver interrupt handlers.                                                */
-/*===========================================================================*/
-
-#if STM32_ADC_USE_ADC1 || defined(__DOXYGEN__)
-/**
- * @brief   ADC1 interrupt handler.
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(STM32_ADC1_HANDLER) {
-  uint32_t isr;
-
-  OSAL_IRQ_PROLOGUE();
-
-  isr  = ADC1->ISR;
-  ADC1->ISR = isr;
-#if defined(STM32_ADC_ADC1_IRQ_HOOK)
-  STM32_ADC_ADC1_IRQ_HOOK
-#endif
-  adc_lld_serve_interrupt(&ADCD1, isr);
-
-  OSAL_IRQ_EPILOGUE();
-}
-
-#if STM32_ADC_DUAL_MODE
-/**
- * @brief   ADC2 interrupt handler (as ADC1 slave).
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(STM32_ADC2_HANDLER) {
-  uint32_t isr;
-
-  OSAL_IRQ_PROLOGUE();
-
-  isr  = ADC2->ISR;
-  ADC2->ISR = isr;
-
-  adc_lld_serve_interrupt(&ADCD1, isr);
-
-  OSAL_IRQ_EPILOGUE();
-}
-#endif /* STM32_ADC_DUAL_MODE */
-#endif /* STM32_ADC_USE_ADC1 */
-
-#if STM32_ADC_USE_ADC2 || defined(__DOXYGEN__)
-/**
- * @brief   ADC2 interrupt handler.
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(STM32_ADC2_HANDLER) {
-  uint32_t isr;
-
-  OSAL_IRQ_PROLOGUE();
-
-  isr  = ADC2->ISR;
-  ADC2->ISR = isr;
-
-  adc_lld_serve_interrupt(&ADCD2, isr);
-
-  OSAL_IRQ_EPILOGUE();
-}
-#endif /* STM32_ADC_USE_ADC2 */
-
-#if STM32_ADC_USE_ADC3 || defined(__DOXYGEN__)
-/**
- * @brief   ADC3 interrupt handler.
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(STM32_ADC3_HANDLER) {
-  uint32_t isr;
-
-  OSAL_IRQ_PROLOGUE();
-
-  isr  = ADC3->ISR;
-  ADC3->ISR = isr;
-#if defined(STM32_ADC_ADC3_IRQ_HOOK)
-  STM32_ADC_ADC3_IRQ_HOOK
-#endif
-  adc_lld_serve_interrupt(&ADCD3, isr);
-
-  OSAL_IRQ_EPILOGUE();
-}
-
-#if STM32_ADC_DUAL_MODE
-/**
- * @brief   ADC4 interrupt handler (as ADC3 slave).
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(STM32_ADC4_HANDLER) {
-  uint32_t isr;
-
-  OSAL_IRQ_PROLOGUE();
-
-  isr  = ADC4->ISR;
-  ADC4->ISR = isr;
-#if defined(STM32_ADC_ADC4_IRQ_HOOK)
-  STM32_ADC_ADC4_IRQ_HOOK
-#endif
-
-  adc_lld_serve_interrupt(&ADCD3, isr);
-
-  OSAL_IRQ_EPILOGUE();
-}
-#endif /* STM32_ADC_DUAL_MODE */
-#endif /* STM32_ADC_USE_ADC3 */
-
-#if STM32_ADC_USE_ADC4 || defined(__DOXYGEN__)
-/**
- * @brief   ADC4 interrupt handler.
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(STM32_ADC4_HANDLER) {
-  uint32_t isr;
-
-  OSAL_IRQ_PROLOGUE();
-
-  isr  = ADC4->ISR;
-  ADC4->ISR = isr;
-#if defined(STM32_ADC_ADC4_IRQ_HOOK)
-  STM32_ADC_ADC4_IRQ_HOOK
-#endif
-
-  adc_lld_serve_interrupt(&ADCD4, isr);
-
-  OSAL_IRQ_EPILOGUE();
-}
-#endif /* STM32_ADC_USE_ADC4 */
 
 /*===========================================================================*/
 /* Driver exported functions.                                                */
@@ -515,29 +393,6 @@ void adc_lld_init(void) {
   ADCD4.dbuf    = &__dma3_adc4;
 #endif /* STM32_ADC_USE_ADC4 */
 
-  /* IRQs setup.*/
-#if STM32_ADC_USE_ADC1
-  nvicEnableVector(STM32_ADC1_NUMBER, STM32_ADC_ADC1_IRQ_PRIORITY);
-#if STM32_ADC_DUAL_MODE
-  nvicEnableVector(STM32_ADC2_NUMBER, STM32_ADC_ADC1_IRQ_PRIORITY);
-#endif
-#endif /* STM32_ADC_USE_ADC1 */
-
-#if STM32_ADC_USE_ADC2
-  nvicEnableVector(STM32_ADC2_NUMBER, STM32_ADC_ADC2_IRQ_PRIORITY);
-#endif /* STM32_ADC_USE_ADC2 */
-
-#if STM32_ADC_USE_ADC3
-  nvicEnableVector(STM32_ADC3_NUMBER, STM32_ADC_ADC3_IRQ_PRIORITY);
-#if STM32_ADC_DUAL_MODE
-  nvicEnableVector(STM32_ADC4_NUMBER, STM32_ADC_ADC3_IRQ_PRIORITY);
-#endif
-#endif /* STM32_ADC_USE_ADC3 */
-
-#if STM32_ADC_USE_ADC4
-  nvicEnableVector(STM32_ADC4_NUMBER, STM32_ADC_ADC4_IRQ_PRIORITY);
-#endif /* STM32_ADC_USE_ADC4 */
-
   /* ADC units pre-initializations.*/
 #if defined(STM32H5XX)
 #if STM32_ADC_USE_ADC1 || STM32_ADC_USE_ADC2
@@ -582,7 +437,7 @@ msg_t adc_lld_start(hal_adc_driver_c *adcp) {
                     "invalid clock frequency");
 
       adcp->dmachp = dma3ChannelAllocI(STM32_ADC_ADC1_DMA3_CHANNEL,
-                                        STM32_ADC_ADC1_DMA_IRQ_PRIORITY,
+                                        STM32_ADCV6_ADC1_IRQ_PRIORITY,
                                         adc_lld_serve_dma_interrupt,
                                         (void *)adcp);
       osalDbgAssert(adcp->dmachp != NULL, "unable to allocate stream");
@@ -601,7 +456,7 @@ msg_t adc_lld_start(hal_adc_driver_c *adcp) {
                     "invalid clock frequency");
 
       adcp->dmachp = dma3ChannelAllocI(STM32_ADC_ADC2_DMA3_CHANNEL,
-                                        STM32_ADC_ADC2_DMA_IRQ_PRIORITY,
+                                        STM32_ADCV6_ADC2_IRQ_PRIORITY,
                                         adc_lld_serve_dma_interrupt,
                                         (void *)adcp);
       osalDbgAssert(adcp->dmachp != NULL, "unable to allocate stream");
@@ -620,7 +475,7 @@ msg_t adc_lld_start(hal_adc_driver_c *adcp) {
                     "invalid clock frequency");
 
       adcp->dmachp = dma3ChannelAllocI(STM32_ADC_ADC3_DMA3_CHANNEL,
-                                        STM32_ADC_ADC3_DMA_IRQ_PRIORITY,
+                                        STM32_ADCV6_ADC3_IRQ_PRIORITY,
                                         adc_lld_serve_dma_interrupt,
                                         (void *)adcp);
       osalDbgAssert(adcp->dmachp != NULL, "unable to allocate stream");
@@ -639,7 +494,7 @@ msg_t adc_lld_start(hal_adc_driver_c *adcp) {
                     "invalid clock frequency");
 
       adcp->dmachp = dma3ChannelAllocI(STM32_ADC_ADC4_DMA3_CHANNEL,
-                                        STM32_ADC_ADC4_DMA_IRQ_PRIORITY,
+                                        STM32_ADCV6_ADC4_IRQ_PRIORITY,
                                         adc_lld_serve_dma_interrupt,
                                         (void *)adcp);
       osalDbgAssert(adcp->dmachp != NULL, "unable to allocate stream");
