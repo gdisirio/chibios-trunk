@@ -15,60 +15,72 @@
 */
 
 /**
- * @file    portab.h
- * @brief   Application portability macros and structures.
+ * @file    STM32U5xx/hal_lld.c
+ * @brief   STM32U5xx HAL subsystem low level driver source.
  *
- * @addtogroup application_portability
+ * @addtogroup HAL
  * @{
  */
 
-#ifndef PORTAB_H
-#define PORTAB_H
+#include "hal.h"
 
 /*===========================================================================*/
-/* Module constants.                                                         */
-/*===========================================================================*/
-
-#define PORTAB_LINE_LED1            LINE_LED_GREEN
-//#define PORTAB_LINE_LED2            LINE_LED2
-
-#define PORTAB_LINE_BUTTON          LINE_BUTTON
-#define PORTAB_BUTTON_PRESSED       PAL_HIGH
-
-#define PORTAB_SD1                  LPSD1
-
-/*===========================================================================*/
-/* Module pre-compile time settings.                                         */
+/* Driver local definitions.                                                 */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* Derived constants and error checks.                                       */
+/* Driver exported variables.                                                */
+/*===========================================================================*/
+
+/**
+ * @brief   CMSIS system core clock variable.
+ * @note    It is declared in system_stm32u5xx.h.
+ */
+uint32_t SystemCoreClock = 0U;
+
+/*===========================================================================*/
+/* Driver local variables and types.                                         */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* Module data structures and types.                                         */
+/* Driver local functions.                                                   */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* Module macros.                                                            */
+/* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* External declarations.                                                    */
+/* Driver exported functions.                                                */
 /*===========================================================================*/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-  void portab_setup(void);
-#ifdef __cplusplus
+/**
+ * @brief   Low level HAL driver initialization.
+ *
+ * @notapi
+ */
+void hal_lld_init(void) {
+
+  /* NVIC initialization.*/
+  nvicInit();
+
+  /* IRQ subsystem initialization.*/
+  irqInit();
 }
-#endif
 
-/*===========================================================================*/
-/* Module inline functions.                                                  */
-/*===========================================================================*/
+/**
+ * @brief   STM32U5xx clocks and PLL initialization.
+ * @note    This initial porting step only provides the structural entry
+ *          point. Real clock initialization will be added in the next step.
+ *
+ * @special
+ */
+void stm32_clock_init(void) {
 
-#endif /* PORTAB_H */
+#if !STM32_NO_INIT
+  /* First usable step: keep the device on the reset clock tree. */
+  SystemCoreClock = STM32_SYSCLK;
+#endif /* STM32_NO_INIT */
+}
 
 /** @} */

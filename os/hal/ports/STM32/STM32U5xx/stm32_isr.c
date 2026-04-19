@@ -15,60 +15,53 @@
 */
 
 /**
- * @file    portab.h
- * @brief   Application portability macros and structures.
+ * @file    STM32U5xx/stm32_isr.c
+ * @brief   STM32U5xx ISR handler code.
  *
- * @addtogroup application_portability
+ * @addtogroup STM32U5xx_ISR
  * @{
  */
 
-#ifndef PORTAB_H
-#define PORTAB_H
+#include "hal.h"
 
 /*===========================================================================*/
-/* Module constants.                                                         */
-/*===========================================================================*/
-
-#define PORTAB_LINE_LED1            LINE_LED_GREEN
-//#define PORTAB_LINE_LED2            LINE_LED2
-
-#define PORTAB_LINE_BUTTON          LINE_BUTTON
-#define PORTAB_BUTTON_PRESSED       PAL_HIGH
-
-#define PORTAB_SD1                  LPSD1
-
-/*===========================================================================*/
-/* Module pre-compile time settings.                                         */
+/* Driver local definitions.                                                 */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* Derived constants and error checks.                                       */
+/* Driver exported variables.                                                */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* Module data structures and types.                                         */
+/* Driver local variables.                                                   */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* Module macros.                                                            */
+/* Driver local functions.                                                   */
 /*===========================================================================*/
 
 /*===========================================================================*/
-/* External declarations.                                                    */
+/* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-  void portab_setup(void);
-#ifdef __cplusplus
+/*===========================================================================*/
+/* Driver exported functions.                                                */
+/*===========================================================================*/
+
+/**
+ * @brief   Enables IRQ sources.
+ *
+ * @notapi
+ */
+void irqInit(void) {
 }
-#endif
 
-/*===========================================================================*/
-/* Module inline functions.                                                  */
-/*===========================================================================*/
-
-#endif /* PORTAB_H */
+/**
+ * @brief   Disables IRQ sources.
+ *
+ * @notapi
+ */
+void irqDeinit(void) {
+}
 
 /** @} */
