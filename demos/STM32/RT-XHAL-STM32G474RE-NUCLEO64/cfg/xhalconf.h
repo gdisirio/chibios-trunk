@@ -41,9 +41,11 @@
 #define HAL_USE_ADC                         FALSE
 #define HAL_USE_ETH                         FALSE
 #define HAL_USE_GPT                         FALSE
+#define HAL_USE_ICU                         FALSE
 #define HAL_USE_MMC_SPI                     FALSE
+#define HAL_USE_PWM                         FALSE
 #define HAL_USE_RTC                         FALSE
-#define HAL_USE_SIO                         FALSE
+#define HAL_USE_SIO                         TRUE
 #define HAL_USE_SPI                         FALSE
 #define HAL_USE_WSPI                        FALSE
 
@@ -58,6 +60,23 @@
 /*===========================================================================*/
 
 #define GPT_DEFAULT_FREQUENCY               1000000U
+
+/*===========================================================================*/
+/* ICU driver settings.                                                      */
+/*===========================================================================*/
+
+#define ICU_USE_OVERFLOW_SCALING            FALSE
+#define ICU_USE_CONFIGURATIONS              FALSE
+#define ICU_DEFAULT_FREQUENCY               1000000U
+#define ICU_DEFAULT_ARR                     0xFFFFFFFFU
+
+/*===========================================================================*/
+/* PWM driver settings.                                                      */
+/*===========================================================================*/
+
+#define PWM_USE_CONFIGURATIONS              FALSE
+#define PWM_DEFAULT_FREQUENCY               1000000U
+#define PWM_DEFAULT_PERIOD                  1000U
 
 /*===========================================================================*/
 /* PAL driver settings.                                                      */
@@ -81,7 +100,7 @@
 #define SIO_DEFAULT_BITRATE                 38400
 #define SIO_USE_SYNCHRONIZATION             TRUE
 #define SIO_USE_STREAMS_INTERFACE           SIO_USE_SYNCHRONIZATION
-#define SIO_USE_BUFFERING                   FALSE
+#define SIO_USE_BUFFERING                   TRUE
 #define SIO_USE_CONFIGURATIONS              FALSE
 
 /*===========================================================================*/
