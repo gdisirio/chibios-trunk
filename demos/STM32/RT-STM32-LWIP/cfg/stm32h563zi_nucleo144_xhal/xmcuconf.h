@@ -182,6 +182,9 @@
 #define STM32_IRQ_EXTI14_PRIORITY           6
 #define STM32_IRQ_EXTI15_PRIORITY           6
 
+#define STM32_IRQ_FDCAN1_PRIORITY           10
+#define STM32_IRQ_FDCAN2_PRIORITY           10
+
 #define STM32_IRQ_I2C1_PRIORITY             5
 #define STM32_IRQ_I2C2_PRIORITY             5
 #define STM32_IRQ_I2C3_PRIORITY             5
@@ -251,6 +254,13 @@
 #define STM32_ADC_ADC12_PRESC               ADC_CCR_PRESC_DIV2
 
 /*
+ * CAN driver system settings.
+ */
+#define STM32_CAN_USE_FDCAN1                FALSE
+#define STM32_CAN_USE_FDCAN2                FALSE
+#define STM32_CAN_FDCAN_PRESC               FDCAN_CONFIG_CKDIV_PDIV_1
+
+/*
  * GPT driver system settings.
  */
 #define STM32_GPT_USE_TIM1                  FALSE
@@ -267,6 +277,24 @@
 #define STM32_GPT_USE_TIM15                 FALSE
 #define STM32_GPT_USE_TIM16                 FALSE
 #define STM32_GPT_USE_TIM17                 FALSE
+
+/*
+ * I2C driver system settings.
+ */
+#define STM32_I2C_USE_I2C1                  FALSE
+#define STM32_I2C_USE_I2C2                  FALSE
+#define STM32_I2C_USE_I2C3                  FALSE
+#define STM32_I2C_USE_I2C4                  FALSE
+#define STM32_I2C_USE_DMA                   TRUE
+#define STM32_I2C_I2C1_DMA_PRIORITY         1
+#define STM32_I2C_I2C2_DMA_PRIORITY         1
+#define STM32_I2C_I2C3_DMA_PRIORITY         1
+#define STM32_I2C_I2C4_DMA_PRIORITY         1
+#define STM32_I2C_I2C1_DMA3_CHANNEL         STM32_DMA3_MASK_FIFO2
+#define STM32_I2C_I2C2_DMA3_CHANNEL         STM32_DMA3_MASK_FIFO2
+#define STM32_I2C_I2C3_DMA3_CHANNEL         STM32_DMA3_MASK_FIFO2
+#define STM32_I2C_I2C4_DMA3_CHANNEL         STM32_DMA3_MASK_FIFO2
+#define STM32_I2C_DMA_ERROR_HOOK(i2cp)      osalSysHalt("DMA failure")
 
 /*
  * ICU driver system settings.
