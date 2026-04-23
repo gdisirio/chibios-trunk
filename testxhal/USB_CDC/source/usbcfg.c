@@ -150,7 +150,7 @@ static const uint8_t vcom_string1[] = {
 };
 
 static const uint8_t vcom_string2[] = {
-  USB_DESC_BYTE(56),
+  USB_DESC_BYTE(60),
   USB_DESC_BYTE(USB_DESCRIPTOR_STRING),
   'C', 0, 'h', 0, 'i', 0, 'b', 0, 'i', 0, 'O', 0, 'S', 0, '/', 0,
   'X', 0, 'H', 0, 'A', 0, 'L', 0, ' ', 0, 'V', 0, 'i', 0, 'r', 0,
@@ -246,19 +246,27 @@ static void usbcdc_sof_impl(void *ip) {
 
 static void usbcdc_in_impl(void *ip, usbep_t ep) {
   (void)ip;
-  (void)ep;
+
+  if (ep == USB1_DATA_REQUEST_EP) {
+    sduDataTransmitted(&PORTAB_USB1, ep);
+  }
+  else if (ep == USB1_INTERRUPT_REQUEST_EP) {
+    sduInterruptTransmitted(&PORTAB_USB1, ep);
+  }
 }
 
 static void usbcdc_out_impl(void *ip, usbep_t ep) {
   (void)ip;
-  (void)ep;
+
+  if (ep == USB1_DATA_AVAILABLE_EP) {
+    sduDataReceived(&PORTAB_USB1, ep);
+  }
 }
 
 static msg_t usbcdc_setup_impl(void *ip, bool *handledp) {
   (void)ip;
 
-  *handledp = false;
-  return HAL_RET_SUCCESS;
+  return sduRequestsHook(&PORTAB_SDU1, handledp);
 }
 
 static const struct hal_usb_binder_vmt usbcdc_binder_vmt = {
@@ -289,5 +297,6 @@ const SerialUSBConfig serusbcfg = {
 };
 
 void usbcdcObjectInit(void) {
-  __usbbnd_objinit_impl(&usbcdc_binder, &usbcdc_binder_vmt);
+  usbBinderObjectInit(&usbcdc_binder);
+  usbcdc_binder.vmt = &usbcdc_binder_vmt;
 }
