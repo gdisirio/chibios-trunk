@@ -315,9 +315,10 @@ static inline bool halClockSwitchMode(const halclkcfg_t *ccp) {
 #include "hal_cb_driver.h"
 #include "hal_channels.h"
 #include "hal_block_io.h"
+#include "hal_flash_interface.h"
+#include "hal_flash_base.h"
 //#include "hal_mmcsd.h"
 //#include "hal_persistent.h"
-//#include "hal_flash.h"
 
 /* Shared headers.*/
 #include "hal_safety.h"
@@ -335,7 +336,7 @@ static inline bool halClockSwitchMode(const halclkcfg_t *ccp) {
 #include "hal_eth.h"
 #include "hal_gpt.h"
 #include "hal_i2c.h"
-//#include "hal_i2s.h"
+#include "hal_i2s.h"
 #include "hal_icu.h"
 #include "hal_pwm.h"
 #include "hal_rtc.h"
@@ -347,8 +348,6 @@ static inline bool halClockSwitchMode(const halclkcfg_t *ccp) {
 //#include "hal_uart.h"
 #if (HAL_USE_USB == TRUE) || defined(__DOXYGEN__)
 #include "hal_usb.h"
-#include "hal_usb_service.h"
-#include "hal_usb_binder.h"
 #endif
 //#include "hal_wdg.h"
 #include "hal_wspi.h"

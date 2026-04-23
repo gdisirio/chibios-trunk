@@ -21,6 +21,7 @@ XHALSRC := $(CHIBIOS)/os/xhal/src/hal.c \
            $(CHIBIOS)/os/xhal/src/hal_safety.c \
            $(CHIBIOS)/os/xhal/src/hal_base_driver.c \
            $(CHIBIOS)/os/xhal/src/hal_cb_driver.c \
+           $(CHIBIOS)/os/xhal/src/hal_flash_base.c \
            $(CHIBIOS)/os/xhal/src/hal_st.c \
            $(CHIBIOS)/os/xhal/src/hal_buffered_serial.c \
            $(CHIBIOS)/os/xhal/src/hal_queues.c
@@ -32,6 +33,9 @@ XHALSRC += $(CHIBIOS)/os/xhal/src/hal_gpt.c
 endif
 ifneq ($(findstring HAL_USE_I2C TRUE,$(XHALCONF)),)
 XHALSRC += $(CHIBIOS)/os/xhal/src/hal_i2c.c
+endif
+ifneq ($(findstring HAL_USE_I2S TRUE,$(XHALCONF)),)
+XHALSRC += $(CHIBIOS)/os/xhal/src/hal_i2s.c
 endif
 ifneq ($(findstring HAL_USE_ICU TRUE,$(XHALCONF)),)
 XHALSRC += $(CHIBIOS)/os/xhal/src/hal_icu.c
@@ -64,9 +68,7 @@ ifneq ($(findstring HAL_USE_SPI TRUE,$(XHALCONF)),)
 XHALSRC += $(CHIBIOS)/os/xhal/src/hal_spi.c
 endif
 ifneq ($(findstring HAL_USE_USB TRUE,$(XHALCONF)),)
-XHALSRC += $(CHIBIOS)/os/xhal/src/hal_usb.c \
-           $(CHIBIOS)/os/xhal/src/hal_usb_service.c \
-           $(CHIBIOS)/os/xhal/src/hal_usb_binder.c
+XHALSRC += $(CHIBIOS)/os/xhal/src/hal_usb.c
 endif
 ifneq ($(findstring HAL_USE_WSPI TRUE,$(XHALCONF)),)
 XHALSRC += $(CHIBIOS)/os/xhal/src/hal_wspi.c
@@ -76,6 +78,7 @@ XHALSRC = $(CHIBIOS)/os/xhal/src/hal.c \
           $(CHIBIOS)/os/xhal/src/hal_safety.c \
           $(CHIBIOS)/os/xhal/src/hal_base_driver.c \
           $(CHIBIOS)/os/xhal/src/hal_cb_driver.c \
+          $(CHIBIOS)/os/xhal/src/hal_flash_base.c \
           $(CHIBIOS)/os/xhal/src/hal_st.c \
           $(CHIBIOS)/os/xhal/src/hal_buffered_serial.c \
           $(CHIBIOS)/os/xhal/src/hal_queues.c \
@@ -85,6 +88,7 @@ XHALSRC = $(CHIBIOS)/os/xhal/src/hal.c \
           $(CHIBIOS)/os/xhal/src/hal_eth.c \
           $(CHIBIOS)/os/xhal/src/hal_gpt.c \
           $(CHIBIOS)/os/xhal/src/hal_i2c.c \
+          $(CHIBIOS)/os/xhal/src/hal_i2s.c \
           $(CHIBIOS)/os/xhal/src/hal_icu.c \
           $(CHIBIOS)/os/xhal/src/hal_pal.c \
           $(CHIBIOS)/os/xhal/src/hal_pwm.c \
@@ -93,8 +97,6 @@ XHALSRC = $(CHIBIOS)/os/xhal/src/hal.c \
           $(CHIBIOS)/os/xhal/src/hal_sio.c \
           $(CHIBIOS)/os/xhal/src/hal_spi.c \
           $(CHIBIOS)/os/xhal/src/hal_usb.c \
-          $(CHIBIOS)/os/xhal/src/hal_usb_service.c \
-          $(CHIBIOS)/os/xhal/src/hal_usb_binder.c \
           $(CHIBIOS)/os/xhal/src/hal_wspi.c
 endif
 
