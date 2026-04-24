@@ -47,6 +47,13 @@
 /* HAL general settings.                                                     */
 /*===========================================================================*/
 
+#define HAL_USE_MUTUAL_EXCLUSION            ${doc.HAL_USE_MUTUAL_EXCLUSION!"TRUE"}
+#define HAL_USE_REGISTRY                    ${doc.HAL_USE_REGISTRY!"TRUE"}
+
+/*===========================================================================*/
+/* HAL enabled drivers.                                                      */
+/*===========================================================================*/
+
 #define HAL_USE_PAL                         ${doc.HAL_USE_PAL!"TRUE"}
 #define HAL_USE_ADC                         ${doc.HAL_USE_ADC!"FALSE"}
 #define HAL_USE_DAC                         ${doc.HAL_USE_DAC!"FALSE"}
@@ -98,25 +105,19 @@
 /*===========================================================================*/
 
 #define I2C_USE_SYNCHRONIZATION             ${doc.I2C_USE_SYNCHRONIZATION!"TRUE"}
-#define I2C_USE_MUTUAL_EXCLUSION            ${doc.I2C_USE_MUTUAL_EXCLUSION!"TRUE"}
 #define I2C_USE_CONFIGURATIONS              ${doc.I2C_USE_CONFIGURATIONS!"FALSE"}
 
 /*===========================================================================*/
 /* ICU driver settings.                                                      */
 /*===========================================================================*/
 
-#define ICU_USE_OVERFLOW_SCALING            ${doc.ICU_USE_OVERFLOW_SCALING!"FALSE"}
 #define ICU_USE_CONFIGURATIONS              ${doc.ICU_USE_CONFIGURATIONS!"FALSE"}
-#define ICU_DEFAULT_FREQUENCY               ${doc.ICU_DEFAULT_FREQUENCY!"1000000U"}
-#define ICU_DEFAULT_ARR                     ${doc.ICU_DEFAULT_ARR!"0xFFFFFFFFU"}
 
 /*===========================================================================*/
 /* PWM driver settings.                                                      */
 /*===========================================================================*/
 
 #define PWM_USE_CONFIGURATIONS              ${doc.PWM_USE_CONFIGURATIONS!"FALSE"}
-#define PWM_DEFAULT_FREQUENCY               ${doc.PWM_DEFAULT_FREQUENCY!"1000000U"}
-#define PWM_DEFAULT_PERIOD                  ${doc.PWM_DEFAULT_PERIOD!"1000U"}
 
 /*===========================================================================*/
 /* PAL driver settings.                                                      */
@@ -138,7 +139,6 @@
 /*===========================================================================*/
 
 #define SDC_USE_SYNCHRONIZATION             ${doc.SDC_USE_SYNCHRONIZATION!"TRUE"}
-#define SDC_USE_MUTUAL_EXCLUSION            ${doc.SDC_USE_MUTUAL_EXCLUSION!"TRUE"}
 #define SDC_USE_CONFIGURATIONS              ${doc.SDC_USE_CONFIGURATIONS!"FALSE"}
 #define SDC_INIT_RETRY                      ${doc.SDC_INIT_RETRY!"100"}
 #define SDC_MMC_SUPPORT                     ${doc.SDC_MMC_SUPPORT!"FALSE"}
@@ -186,7 +186,6 @@
 /*===========================================================================*/
 
 #define WSPI_USE_SYNCHRONIZATION            ${doc.WSPI_USE_SYNCHRONIZATION!"TRUE"}
-#define WSPI_USE_MUTUAL_EXCLUSION           ${doc.WSPI_USE_MUTUAL_EXCLUSION!"TRUE"}
 
 #endif /* XHALCONF_H */
 

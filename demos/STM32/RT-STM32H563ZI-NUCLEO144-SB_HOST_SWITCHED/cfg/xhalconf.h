@@ -37,10 +37,18 @@
 /* HAL general settings.                                                     */
 /*===========================================================================*/
 
+#define HAL_USE_MUTUAL_EXCLUSION            TRUE
+#define HAL_USE_REGISTRY                    TRUE
+
+/*===========================================================================*/
+/* HAL enabled drivers.                                                      */
+/*===========================================================================*/
+
 #define HAL_USE_PAL                         TRUE
 #define HAL_USE_ADC                         FALSE
 #define HAL_USE_DAC                         FALSE
 #define HAL_USE_CAN                         FALSE
+#define HAL_USE_EFL                         FALSE
 #define HAL_USE_ETH                         TRUE
 #define HAL_USE_GPT                         FALSE
 #define HAL_USE_I2C                         FALSE
@@ -55,6 +63,7 @@
 #define HAL_USE_USB                         FALSE
 #define HAL_USE_WDG                         FALSE
 #define HAL_USE_WSPI                        FALSE
+
 /*===========================================================================*/
 /* ADC driver settings.                                                      */
 /*===========================================================================*/
@@ -86,25 +95,19 @@
 /*===========================================================================*/
 
 #define I2C_USE_SYNCHRONIZATION             TRUE
-#define I2C_USE_MUTUAL_EXCLUSION            TRUE
 #define I2C_USE_CONFIGURATIONS              FALSE
 
 /*===========================================================================*/
 /* ICU driver settings.                                                      */
 /*===========================================================================*/
 
-#define ICU_USE_OVERFLOW_SCALING            FALSE
 #define ICU_USE_CONFIGURATIONS              FALSE
-#define ICU_DEFAULT_FREQUENCY               1000000U
-#define ICU_DEFAULT_ARR                     0xFFFFFFFFU
 
 /*===========================================================================*/
 /* PWM driver settings.                                                      */
 /*===========================================================================*/
 
 #define PWM_USE_CONFIGURATIONS              FALSE
-#define PWM_DEFAULT_FREQUENCY               1000000U
-#define PWM_DEFAULT_PERIOD                  1000U
 
 /*===========================================================================*/
 /* PAL driver settings.                                                      */
@@ -126,7 +129,6 @@
 /*===========================================================================*/
 
 #define SDC_USE_SYNCHRONIZATION             TRUE
-#define SDC_USE_MUTUAL_EXCLUSION            TRUE
 #define SDC_USE_CONFIGURATIONS              FALSE
 #define SDC_INIT_RETRY                      100
 #define SDC_MMC_SUPPORT                     FALSE
@@ -153,11 +155,27 @@
 #define SPI_USE_CONFIGURATIONS              FALSE
 
 /*===========================================================================*/
+/* USB driver settings.                                                      */
+/*===========================================================================*/
+
+#define USB_USE_WAIT                        TRUE
+#define USB_USE_CONFIGURATIONS              FALSE
+
+/*===========================================================================*/
+/* Serial USB settings.                                                      */
+/*===========================================================================*/
+
+#define SERIAL_USB_USE_MODULE               FALSE
+#define SERIAL_USB_BUFFERS_SIZE             256U
+#define SERIAL_USB_BUFFERS_NUMBER           2U
+#define SERIAL_USB_SEND_ZLP                 TRUE
+#define SERIAL_USB_RX_PACKET_MODE           FALSE
+
+/*===========================================================================*/
 /* WSPI driver settings.                                                     */
 /*===========================================================================*/
 
 #define WSPI_USE_SYNCHRONIZATION            TRUE
-#define WSPI_USE_MUTUAL_EXCLUSION           TRUE
 
 #endif /* XHALCONF_H */
 
