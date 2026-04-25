@@ -172,7 +172,7 @@ hal_base_driver_c *drvStartByName(const char *name, msg_t *msgp) {
   while (drvp != NULL) {
     if (strcmp(drvGetNameX(drvp), name) ==0) {
 
-      msg = drvStart(drvp);
+      msg = drvStart(drvp, NULL);
       if (msg != HAL_RET_SUCCESS) {
         drvp = NULL;
       }
@@ -246,6 +246,25 @@ void __drv_dispose_impl(void *ip) {
   /* Finalization of the ancestors-defined parts.*/
   __bo_dispose_impl(self);
 }
+
+/**
+ * @brief       Implementation of method @p __drv_synchronize().
+ * @note        This function is meant to be used by derived classes.
+ *
+ * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
+ * @param[in]     timeout       Synchronization timeout.
+ * @return                      The synchronization result.
+ */
+msg_t __drv_synchronize_impl(void *ip, sysinterval_t timeout) {
+  hal_base_driver_c *self = (hal_base_driver_c *)ip;
+  (void)timeout;
+
+  if (self->state == HAL_DRV_STATE_READY) {
+    return MSG_OK;
+  }
+
+  return HAL_RET_INV_STATE;
+}
 /** @} */
 
 /**
@@ -254,9 +273,12 @@ void __drv_dispose_impl(void *ip) {
  */
 /**
  * @brief       Driver start.
- * @details     Starts driver operations, on the 1st call the peripheral is
- *              physically initialized using a default configuration,
- *              subsequent calls are ignored.
+ * @details     Starts driver operations. When called from @p
+ *              HAL_DRV_STATE_STOP the peripheral is physically initialized
+ *              using the specified configuration. If @p config is @p NULL then
+ *              configuration zero is used. Calls while the driver is already
+ *              @p HAL_DRV_STATE_READY with @p config equal to @p NULL are
+ *              ignored.
  * @note        The function can fail with error @p HAL_RET_INV_STATE if called
  *              while the driver is already being started or stopped. In case
  *              you need multiple threads to perform start and stop operation
@@ -264,6 +286,7 @@ void __drv_dispose_impl(void *ip) {
  *              during such operations.
  *
  * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  * @retval HAL_RET_SUCCESS      Operation successful.
  * @retval HAL_RET_INV_STATE    If the driver was in one of @p
@@ -275,7 +298,7 @@ void __drv_dispose_impl(void *ip) {
  *
  * @api
  */
-msg_t drvStart(void *ip) {
+msg_t drvStart(void *ip, const void *config) {
   hal_base_driver_c *self = (hal_base_driver_c *)ip;
   msg_t msg;
 
@@ -283,7 +306,7 @@ msg_t drvStart(void *ip) {
 
   osalSysLock();
 
-  msg = drvStartS(self);
+  msg = drvStartS(self, config);
 
   osalSysUnlock();
 
@@ -292,9 +315,12 @@ msg_t drvStart(void *ip) {
 
 /**
  * @brief       Driver start.
- * @details     Starts driver operations, on the 1st call the peripheral is
- *              physically initialized using a default configuration,
- *              subsequent calls are ignored.
+ * @details     Starts driver operations. When called from @p
+ *              HAL_DRV_STATE_STOP the peripheral is physically initialized
+ *              using the specified configuration. If @p config is @p NULL then
+ *              configuration zero is used. Calls while the driver is already
+ *              @p HAL_DRV_STATE_READY with @p config equal to @p NULL are
+ *              ignored.
  * @note        The function can fail with error @p HAL_RET_INV_STATE if called
  *              while the driver is already being started or stopped. In case
  *              you need multiple threads to perform start and stop operation
@@ -302,6 +328,7 @@ msg_t drvStart(void *ip) {
  *              during such operations.
  *
  * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  * @retval HAL_RET_SUCCESS      Operation successful.
  * @retval HAL_RET_INV_STATE    If the driver was in one of @p
@@ -313,7 +340,7 @@ msg_t drvStart(void *ip) {
  *
  * @sclass
  */
-msg_t drvStartS(void *ip) {
+msg_t drvStartS(void *ip, const void *config) {
   hal_base_driver_c *self = (hal_base_driver_c *)ip;
   msg_t msg = HAL_RET_SUCCESS;
 
@@ -330,11 +357,11 @@ msg_t drvStartS(void *ip) {
     break;
   case HAL_DRV_STATE_STOP:
     /* Physically starting the peripheral.*/
-    msg = __drv_start(self);
+    msg = __drv_start(self, config);
     if (msg == HAL_RET_SUCCESS) {
       self->state = HAL_DRV_STATE_READY;
 
-      /* LLD is supposed to set a default configuration.*/
+      /* LLD is supposed to set a configuration.*/
       osalDbgAssert(self->config != NULL, "no configuration");
     }
     else {
@@ -343,8 +370,11 @@ msg_t drvStartS(void *ip) {
       /* LLD is supposed to not have a configuration.*/
       osalDbgAssert(self->config == NULL, "configuration");
     }
+    break;
   default:
-    /* Any other state ignored, driver already started.*/
+    if ((config != NULL) || (self->state != HAL_DRV_STATE_READY)) {
+      msg = HAL_RET_INV_STATE;
+    }
     break;
   }
 
@@ -396,17 +426,18 @@ void drvStopS(void *ip) {
 }
 
 /**
- * @brief       Driver configure.
- * @details     Applies a new configuration to the driver. The configuration
- *              structure is architecture-dependent.
- * @note        Applying a configuration should be done while the peripheral is
- *              not actively operating, this function can fail depending on the
- *              driver implementation and current state.
+ * @brief       Driver live reconfiguration.
+ * @details     Applies a new configuration to a started and idle driver. The
+ *              configuration structure is architecture-dependent.
+ * @note        This function is only valid in @p HAL_DRV_STATE_READY. Initial
+ *              configuration is passed to @p drvStart() or @p drvStartS().
  *
  * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
  * @param[in]     config        New driver configuration.
  * @return                      The operation status.
  * @retval HAL_RET_SUCCESS      Operation successful.
+ * @retval HAL_RET_INV_STATE    If the driver is not in @p HAL_DRV_STATE_READY
+ *                              state.
  * @retval HAL_RET_CONFIG_ERROR If the configuration is invalid and has been
  *                              rejected.
  *
@@ -415,17 +446,22 @@ void drvStopS(void *ip) {
 msg_t drvSetCfgX(void *ip, const void *config) {
   hal_base_driver_c *self = (hal_base_driver_c *)ip;
   msg_t msg;
+  const void *newcfg;
 
   osalSysLock();
 
-  osalDbgAssert(self->state != HAL_DRV_STATE_UNINIT, "invalid state");
-
-  self->config = __drv_set_cfg(self, config);
-  if (self->config == NULL) {
-    msg = HAL_RET_CONFIG_ERROR;
+  if (self->state != HAL_DRV_STATE_READY) {
+    msg = HAL_RET_INV_STATE;
   }
   else {
-    msg = HAL_RET_SUCCESS;
+    newcfg = __drv_set_cfg(self, config);
+    if (newcfg == NULL) {
+      msg = HAL_RET_CONFIG_ERROR;
+    }
+    else {
+      self->config = newcfg;
+      msg = HAL_RET_SUCCESS;
+    }
   }
 
   osalSysUnlock();
@@ -434,12 +470,12 @@ msg_t drvSetCfgX(void *ip, const void *config) {
 }
 
 /**
- * @brief       Selects one of the pre-defined driver configurations.
- * @note        Only configuration zero is guaranteed to exists, it is the
+ * @brief       Live reconfiguration using one of the pre-defined driver
+ *              configurations.
+ * @note        Only configuration zero is guaranteed to exist, it is the
  *              driver default configuration.
- * @note        Applying a configuration should be done while the peripheral is
- *              not actively operating, this function can fail depending on the
- *              driver implementation and current state.
+ * @note        This function is only valid in @p HAL_DRV_STATE_READY. Initial
+ *              configuration is passed to @p drvStart() or @p drvStartS().
  *
  * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
  * @param[in]     cfgnum        Driver configuration index to be applied.
@@ -451,16 +487,85 @@ msg_t drvSetCfgX(void *ip, const void *config) {
  */
 const void *drvSelectCfgX(void *ip, unsigned cfgnum) {
   hal_base_driver_c *self = (hal_base_driver_c *)ip;
+  const void *config = NULL;
 
   osalSysLock();
 
-  osalDbgAssert(self->state != HAL_DRV_STATE_UNINIT, "invalid state");
-
-  self->config = __drv_sel_cfg(self, cfgnum);
+  if (self->state == HAL_DRV_STATE_READY) {
+    config = __drv_sel_cfg(self, cfgnum);
+    if (config != NULL) {
+      self->config = config;
+    }
+  }
 
   osalSysUnlock();
 
-  return self->config;
+  return config;
+}
+
+/**
+ * @brief       Driver default synchronization.
+ * @details     Waits for the driver's default asynchronous operation or
+ *              synchronization point. The exact synchronization point is
+ *              driver-defined. Drivers without a meaningful default
+ *              synchronization point inherit a weak implementation which
+ *              succeeds only when the driver is already ready.
+ *
+ * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
+ * @param[in]     timeout       Synchronization timeout.
+ * @return                      The synchronization result.
+ * @retval MSG_OK               If the synchronization completed.
+ * @retval MSG_TIMEOUT          If synchronization timed out.
+ * @retval MSG_RESET            If the driver has been stopped while waiting.
+ * @retval HAL_RET_INV_STATE    If the driver is in an invalid state for its
+ *                              default synchronization point.
+ *
+ * @api
+ */
+msg_t drvSynchronize(void *ip, sysinterval_t timeout) {
+  hal_base_driver_c *self = (hal_base_driver_c *)ip;
+  msg_t msg;
+
+  osalDbgCheck(self != NULL);
+
+  osalSysLock();
+
+  msg = drvSynchronizeS(self, timeout);
+
+  osalSysUnlock();
+
+  return msg;
+}
+
+/**
+ * @brief       Driver default synchronization.
+ * @details     Waits for the driver's default asynchronous operation or
+ *              synchronization point. The exact synchronization point is
+ *              driver-defined. Drivers without a meaningful default
+ *              synchronization point inherit a weak implementation which
+ *              succeeds only when the driver is already ready.
+ *
+ * @param[in,out] ip            Pointer to a @p hal_base_driver_c instance.
+ * @param[in]     timeout       Synchronization timeout.
+ * @return                      The synchronization result.
+ * @retval MSG_OK               If the synchronization completed.
+ * @retval MSG_TIMEOUT          If synchronization timed out.
+ * @retval MSG_RESET            If the driver has been stopped while waiting.
+ * @retval HAL_RET_INV_STATE    If the driver is in an invalid state for its
+ *                              default synchronization point.
+ *
+ * @sclass
+ */
+msg_t drvSynchronizeS(void *ip, sysinterval_t timeout) {
+  hal_base_driver_c *self = (hal_base_driver_c *)ip;
+
+  osalDbgCheck(self != NULL);
+  osalDbgCheckClassS();
+  osalDbgAssert((self->state != HAL_DRV_STATE_UNINIT) &&
+                (self->state != HAL_DRV_STATE_STOP),
+                "invalid state");
+
+  return __drv_synchronize(self, timeout);
 }
 /** @} */
 

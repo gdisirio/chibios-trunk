@@ -170,10 +170,6 @@ typedef struct hal_wspi_config hal_wspi_config_t;
  */
 typedef struct wspi_command wspi_command_t;
 
-#if !defined(WSPI_USE_WAIT) || defined(__DOXYGEN__)
-#define WSPI_USE_WAIT WSPI_USE_SYNCHRONIZATION
-#endif
-
 /**
  * @brief       WSPI driver specific states.
  */
@@ -254,10 +250,11 @@ struct hal_wspi_driver_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_cb_driver_c.*/
   void (*setcb)(void *ip, drv_cb_t cb);
   /* From hal_wspi_driver_c.*/
@@ -332,12 +329,10 @@ extern "C" {
   /* Methods of hal_wspi_driver_c.*/
   void *__wspi_objinit_impl(void *ip, const void *vmt);
   void __wspi_dispose_impl(void *ip);
-  msg_t __wspi_start_impl(void *ip);
+  msg_t __wspi_start_impl(void *ip, const void *config);
   void __wspi_stop_impl(void *ip);
   const void *__wspi_setcfg_impl(void *ip, const void *config);
   const void *__wspi_selcfg_impl(void *ip, unsigned cfgnum);
-  msg_t wspiStart(void *ip, const hal_wspi_config_t *config);
-  void wspiStop(void *ip);
   void wspiStartCommandI(void *ip, const wspi_command_t *cmdp);
   void wspiStartCommand(void *ip, const wspi_command_t *cmdp);
   void wspiStartSendI(void *ip, const wspi_command_t *cmdp, size_t n,

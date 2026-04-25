@@ -254,10 +254,11 @@ struct hal_spi_driver_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_cb_driver_c.*/
   void (*setcb)(void *ip, drv_cb_t cb);
   /* From hal_spi_driver_c.*/
@@ -332,10 +333,11 @@ extern "C" {
   /* Methods of hal_spi_driver_c.*/
   void *__spi_objinit_impl(void *ip, const void *vmt);
   void __spi_dispose_impl(void *ip);
-  msg_t __spi_start_impl(void *ip);
+  msg_t __spi_start_impl(void *ip, const void *config);
   void __spi_stop_impl(void *ip);
   const void *__spi_setcfg_impl(void *ip, const void *config);
   const void *__spi_selcfg_impl(void *ip, unsigned cfgnum);
+  msg_t __spi_synchronize_impl(void *ip, sysinterval_t timeout);
   msg_t spiStartIgnoreI(void *ip, size_t n);
   msg_t spiStartIgnore(void *ip, size_t n);
   msg_t spiStartExchangeI(void *ip, size_t n, const void *txbuf, void *rxbuf);

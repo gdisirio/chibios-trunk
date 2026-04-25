@@ -194,10 +194,10 @@
  * @{
  */
 /**
- * @brief       Support for blocking endpoint APIs.
+ * @brief       Support for thread synchronization API.
  */
-#if !defined(USB_USE_WAIT) || defined(__DOXYGEN__)
-#define USB_USE_WAIT                        TRUE
+#if !defined(USB_USE_SYNCHRONIZATION) || defined(__DOXYGEN__)
+#define USB_USE_SYNCHRONIZATION             TRUE
 #endif
 
 /**
@@ -214,9 +214,9 @@
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
-/* Checks on USB_USE_WAIT configuration.*/
-#if (USB_USE_WAIT != FALSE) && (USB_USE_WAIT != TRUE)
-#error "invalid USB_USE_WAIT value"
+/* Checks on USB_USE_SYNCHRONIZATION configuration.*/
+#if (USB_USE_SYNCHRONIZATION != FALSE) && (USB_USE_SYNCHRONIZATION != TRUE)
+#error "invalid USB_USE_SYNCHRONIZATION value"
 #endif
 
 /* Checks on USB_USE_CONFIGURATIONS configuration.*/
@@ -276,7 +276,7 @@
     }                                                                       \
   } while (false)
 
-#if (USB_USE_WAIT == TRUE) || defined (__DOXYGEN__)
+#if (USB_USE_SYNCHRONIZATION == TRUE) || defined (__DOXYGEN__)
 /**
  * @brief       Common ISR code, IN endpoint callback.
  *
@@ -331,7 +331,7 @@
       (usbp)->epc[ep]->out_cb(usbp, ep);                                    \
     }                                                                       \
   } while (false)
-#endif /* USB_USE_WAIT == TRUE */
+#endif /* USB_USE_SYNCHRONIZATION == TRUE */
 /** @} */
 
 /*===========================================================================*/
@@ -391,7 +391,7 @@ typedef struct {
   size_t                    txcnt;
   size_t                    txlast;
   const uint8_t            *txbuf;
-#if (USB_USE_WAIT == TRUE) || defined(__DOXYGEN__)
+#if (USB_USE_SYNCHRONIZATION == TRUE) || defined(__DOXYGEN__)
   thread_reference_t        thread;
 #endif
 } USBInEndpointState;
@@ -401,7 +401,7 @@ typedef struct {
   size_t                    rxcnt;
   size_t                    rxpkts;
   uint8_t                  *rxbuf;
-#if (USB_USE_WAIT == TRUE) || defined(__DOXYGEN__)
+#if (USB_USE_SYNCHRONIZATION == TRUE) || defined(__DOXYGEN__)
   thread_reference_t        thread;
 #endif
 } USBOutEndpointState;
@@ -640,10 +640,11 @@ struct hal_usb_driver_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_usb_driver_c.*/
 };
 
@@ -760,12 +761,10 @@ extern "C" {
   /* Methods of hal_usb_driver_c.*/
   void *__usb_objinit_impl(void *ip, const void *vmt);
   void __usb_dispose_impl(void *ip);
-  msg_t __usb_start_impl(void *ip);
+  msg_t __usb_start_impl(void *ip, const void *config);
   void __usb_stop_impl(void *ip);
   const void *__usb_setcfg_impl(void *ip, const void *config);
   const void *__usb_selcfg_impl(void *ip, unsigned cfgnum);
-  msg_t usbStart(void *ip, const hal_usb_config_t *config);
-  void usbStop(void *ip);
   msg_t usbBind(void *ip, hal_usb_binder_c *binderp);
   msg_t usbUnbind(void *ip);
   void usbConnectBus(void *ip);
@@ -775,10 +774,10 @@ extern "C" {
   void usbReadSetupI(void *ip, usbep_t ep, uint8_t *buf);
   void usbStartReceiveI(void *ip, usbep_t ep, uint8_t *buf, size_t n);
   void usbStartTransmitI(void *ip, usbep_t ep, const uint8_t *buf, size_t n);
-#if (USB_USE_WAIT == TRUE) || defined (__DOXYGEN__)
+#if (USB_USE_SYNCHRONIZATION == TRUE) || defined (__DOXYGEN__)
   msg_t usbReceive(void *ip, usbep_t ep, uint8_t *buf, size_t n);
   msg_t usbTransmit(void *ip, usbep_t ep, const uint8_t *buf, size_t n);
-#endif /* USB_USE_WAIT == TRUE */
+#endif /* USB_USE_SYNCHRONIZATION == TRUE */
   msg_t usbEp0WaitSetup(void *ip);
   msg_t usbEp0Reply(void *ip, const uint8_t *buf, size_t n);
   msg_t usbEp0Receive(void *ip, uint8_t *buf, size_t n);

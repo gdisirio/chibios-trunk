@@ -240,10 +240,11 @@ struct hal_icu_driver_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_cb_driver_c.*/
   void (*setcb)(void *ip, drv_cb_t cb);
   /* From hal_icu_driver_c.*/
@@ -328,13 +329,11 @@ extern "C" {
   /* Methods of hal_icu_driver_c.*/
   void *__icu_objinit_impl(void *ip, const void *vmt);
   void __icu_dispose_impl(void *ip);
-  msg_t __icu_start_impl(void *ip);
+  msg_t __icu_start_impl(void *ip, const void *config);
   void __icu_stop_impl(void *ip);
   const void *__icu_setcfg_impl(void *ip, const void *config);
   const void *__icu_selcfg_impl(void *ip, unsigned cfgnum);
   void __icu_setcb_impl(void *ip, drv_cb_t cb);
-  msg_t icuStart(void *ip, const hal_icu_config_t *config);
-  void icuStop(void *ip);
   void icuStartCaptureI(void *ip);
   void icuStartCapture(void *ip);
   bool icuWaitCapture(void *ip);

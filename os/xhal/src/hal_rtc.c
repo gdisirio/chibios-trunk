@@ -317,11 +317,26 @@ void __rtc_dispose_impl(void *ip) {
  * @brief       Override of method @p __drv_start().
  *
  * @param[in,out] ip            Pointer to a @p hal_rtc_driver_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  */
-msg_t __rtc_start_impl(void *ip) {
+msg_t __rtc_start_impl(void *ip, const void *config) {
   hal_rtc_driver_c *self = (hal_rtc_driver_c *)ip;
-  return rtc_lld_start(self);
+  msg_t msg;
+
+  if (config != NULL) {
+    self->config = __rtc_setcfg_impl(self, config);
+    if (self->config == NULL) {
+      return HAL_RET_CONFIG_ERROR;
+    }
+  }
+
+  msg = rtc_lld_start(self);
+  if (msg != HAL_RET_SUCCESS) {
+    self->config = NULL;
+  }
+
+  return msg;
 }
 
 /**
@@ -382,6 +397,7 @@ const struct hal_rtc_driver_vmt __hal_rtc_driver_vmt = {
   .stop                     = __rtc_stop_impl,
   .setcfg                   = __rtc_setcfg_impl,
   .selcfg                   = __rtc_selcfg_impl,
+  .synchronize              = __drv_synchronize_impl,
   .setcb                    = __rtc_setcb_impl
 };
 

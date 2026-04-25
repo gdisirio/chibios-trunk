@@ -506,11 +506,16 @@ void __sio_dispose_impl(void *ip) {
  * @brief       Override of method @p __drv_start().
  *
  * @param[in,out] ip            Pointer to a @p hal_sio_driver_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  */
-msg_t __sio_start_impl(void *ip) {
+msg_t __sio_start_impl(void *ip, const void *config) {
   hal_sio_driver_c *self = (hal_sio_driver_c *)ip;
   msg_t msg;
+
+  if (config != NULL) {
+    self->config = config;
+  }
 
   msg = sio_lld_start(self);
   if (msg == HAL_RET_SUCCESS) {
@@ -521,6 +526,9 @@ msg_t __sio_start_impl(void *ip) {
     /* If synchronization is disabled then no events by default.*/
     sioWriteEnableFlagsX(self, SIO_EV_NONE);
 #endif
+  }
+  else {
+    self->config = NULL;
   }
 
   return msg;
@@ -585,6 +593,7 @@ const struct hal_sio_driver_vmt __hal_sio_driver_vmt = {
   .stop                     = __sio_stop_impl,
   .setcfg                   = __sio_setcfg_impl,
   .selcfg                   = __sio_selcfg_impl,
+  .synchronize              = __drv_synchronize_impl,
   .setcb                    = __cbdrv_setcb_impl
 };
 
@@ -1195,14 +1204,15 @@ void __bsio_dispose_impl(void *ip) {
  * @brief       Override of method @p __drv_start().
  *
  * @param[in,out] ip            Pointer to a @p hal_buffered_sio_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  */
-msg_t __bsio_start_impl(void *ip) {
+msg_t __bsio_start_impl(void *ip, const void *config) {
   hal_buffered_sio_c *self = (hal_buffered_sio_c *)ip;
   msg_t msg;
 
   /* Starting the undelying SIO driver.*/
-  msg = drvStartS(self->siop);
+  msg = drvStartS(self->siop, config);
   if (msg == HAL_RET_SUCCESS) {
     self->config = self->siop->config;
     drvSetArgumentX(self->siop, self);
@@ -1250,7 +1260,8 @@ const struct hal_buffered_sio_vmt __hal_buffered_sio_vmt = {
   .start                    = __bsio_start_impl,
   .stop                     = __bsio_stop_impl,
   .setcfg                   = __bsio_setcfg_impl,
-  .selcfg                   = NULL /* Method not found.*/
+  .selcfg                   = NULL /* Method not found.*/,
+  .synchronize              = __drv_synchronize_impl
 };
 
 /**

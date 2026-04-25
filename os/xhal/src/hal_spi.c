@@ -124,12 +124,23 @@ void __spi_dispose_impl(void *ip) {
  * @brief       Override of method @p __drv_start().
  *
  * @param[in,out] ip            Pointer to a @p hal_spi_driver_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  */
-msg_t __spi_start_impl(void *ip) {
+msg_t __spi_start_impl(void *ip, const void *config) {
   hal_spi_driver_c *self = (hal_spi_driver_c *)ip;
+  msg_t msg;
 
-  return spi_lld_start(self);
+  if (config != NULL) {
+    self->config = config;
+  }
+
+  msg = spi_lld_start(self);
+  if (msg != HAL_RET_SUCCESS) {
+    self->config = NULL;
+  }
+
+  return msg;
 }
 
 /**
@@ -168,6 +179,22 @@ const void *__spi_selcfg_impl(void *ip, unsigned cfgnum) {
 
   return (const void *)spi_lld_selcfg(self, cfgnum);
 }
+
+/**
+ * @brief       Override of method @p __drv_synchronize().
+ *
+ * @param[in,out] ip            Pointer to a @p hal_spi_driver_c instance.
+ * @param[in]     timeout       Synchronization timeout.
+ * @return                      The synchronization result.
+ */
+msg_t __spi_synchronize_impl(void *ip, sysinterval_t timeout) {
+  hal_spi_driver_c *self = (hal_spi_driver_c *)ip;
+#if SPI_USE_SYNCHRONIZATION == TRUE
+  return spiSynchronizeS(self, timeout);
+#else
+  return __drv_synchronize_impl(self, timeout);
+#endif
+}
 /** @} */
 
 /**
@@ -180,6 +207,7 @@ const struct hal_spi_driver_vmt __hal_spi_driver_vmt = {
   .stop                     = __spi_stop_impl,
   .setcfg                   = __spi_setcfg_impl,
   .selcfg                   = __spi_selcfg_impl,
+  .synchronize              = __spi_synchronize_impl,
   .setcb                    = __cbdrv_setcb_impl
 };
 

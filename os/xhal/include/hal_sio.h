@@ -569,10 +569,11 @@ struct hal_sio_driver_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_cb_driver_c.*/
   void (*setcb)(void *ip, drv_cb_t cb);
   /* From hal_sio_driver_c.*/
@@ -683,10 +684,11 @@ struct hal_buffered_sio_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_buffered_sio_c.*/
 };
 
@@ -763,7 +765,7 @@ extern "C" {
   /* Methods of hal_sio_driver_c.*/
   void *__sio_objinit_impl(void *ip, const void *vmt);
   void __sio_dispose_impl(void *ip);
-  msg_t __sio_start_impl(void *ip);
+  msg_t __sio_start_impl(void *ip, const void *config);
   void __sio_stop_impl(void *ip);
   const void *__sio_setcfg_impl(void *ip, const void *config);
   const void *__sio_selcfg_impl(void *ip, unsigned cfgnum);
@@ -784,7 +786,7 @@ extern "C" {
                             uint8_t *ib, size_t ibsize, uint8_t *ob,
                             size_t obsize);
   void __bsio_dispose_impl(void *ip);
-  msg_t __bsio_start_impl(void *ip);
+  msg_t __bsio_start_impl(void *ip, const void *config);
   void __bsio_stop_impl(void *ip);
   const void *__bsio_setcfg_impl(void *ip, const void *config);
   void bsIncomingDataI(void *ip, uint8_t b);

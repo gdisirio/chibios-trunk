@@ -92,10 +92,11 @@ struct hal_flash_base_vmt {
   /* From base_object_c.*/
   void (*dispose)(void *ip);
   /* From hal_base_driver_c.*/
-  msg_t (*start)(void *ip);
+  msg_t (*start)(void *ip, const void *config);
   void (*stop)(void *ip);
   const void * (*setcfg)(void *ip, const void *config);
   const void * (*selcfg)(void *ip, unsigned cfgnum);
+  msg_t (*synchronize)(void *ip, sysinterval_t timeout);
   /* From hal_flash_base_c.*/
   flash_error_t (*read)(void *ip, flash_offset_t offset, size_t n, uint8_t *rp);
   flash_error_t (*program)(void *ip, flash_offset_t offset, size_t n, const uint8_t *pp);

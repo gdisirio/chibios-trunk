@@ -750,7 +750,7 @@ void _usb_reset(hal_usb_driver_c *usbp) {
   usbp->transmitting  = 0U;
   usbp->receiving     = 0U;
   for (i = 0U; i <= (unsigned)USB_MAX_ENDPOINTS; i++) {
-#if USB_USE_WAIT == TRUE
+#if USB_USE_SYNCHRONIZATION == TRUE
     if (usbp->epc[i] != NULL) {
       osalSysLockFromISR();
       if (usbp->epc[i]->in_state != NULL) {
@@ -794,7 +794,7 @@ void _usb_suspend(hal_usb_driver_c *usbp) {
     _usb_isr_invoke_event_cb(usbp, USB_FLAGS_SUSPEND);
     usbp->transmitting = 0U;
     usbp->receiving = 0U;
-#if USB_USE_WAIT == TRUE
+#if USB_USE_SYNCHRONIZATION == TRUE
     for (i = 0U; i <= (unsigned)USB_MAX_ENDPOINTS; i++) {
       if (usbp->epc[i] != NULL) {
         osalSysLockFromISR();
@@ -1469,12 +1469,20 @@ void __usb_dispose_impl(void *ip) {
  * @brief       Override of method @p __drv_start().
  *
  * @param[in,out] ip            Pointer to a @p hal_usb_driver_c instance.
+ * @param[in]     config        Driver configuration or @p NULL.
  * @return                      The operation status.
  */
-msg_t __usb_start_impl(void *ip) {
+msg_t __usb_start_impl(void *ip, const void *config) {
   hal_usb_driver_c *self = (hal_usb_driver_c *)ip;
   msg_t msg;
   unsigned i;
+
+  if (config != NULL) {
+    self->config = __usb_setcfg_impl(self, config);
+    if (self->config == NULL) {
+      return HAL_RET_CONFIG_ERROR;
+    }
+  }
 
   self->events        = (usbeventflags_t)0U;
   self->transmitting  = 0U;
@@ -1535,7 +1543,7 @@ void __usb_stop_impl(void *ip) {
   self->configuration = 0U;
   self->saved_state   = HAL_DRV_STATE_STOP;
   for (i = 0U; i <= (unsigned)USB_MAX_ENDPOINTS; i++) {
-#if USB_USE_WAIT == TRUE
+#if USB_USE_SYNCHRONIZATION == TRUE
     if (self->epc[i] != NULL) {
       if (self->epc[i]->in_state != NULL) {
         osalThreadResumeI(&self->epc[i]->in_state->thread, MSG_RESET);
@@ -1596,52 +1604,14 @@ const struct hal_usb_driver_vmt __hal_usb_driver_vmt = {
   .start                    = __usb_start_impl,
   .stop                     = __usb_stop_impl,
   .setcfg                   = __usb_setcfg_impl,
-  .selcfg                   = __usb_selcfg_impl
+  .selcfg                   = __usb_selcfg_impl,
+  .synchronize              = __drv_synchronize_impl
 };
 
 /**
  * @name        Regular methods of hal_usb_driver_c
  * @{
  */
-/**
- * @brief       Configures and activates the USB peripheral.
- *
- * @param[in,out] ip            Pointer to a @p hal_usb_driver_c instance.
- * @param[in]     config        Hardware configuration or @p NULL.
- * @return                      The operation status.
- *
- * @api
- */
-msg_t usbStart(void *ip, const hal_usb_config_t *config) {
-  hal_usb_driver_c *self = (hal_usb_driver_c *)ip;
-  msg_t msg;
-
-  osalDbgCheck(self != NULL);
-
-  if (config != NULL) {
-    msg = drvSetCfgX(self, config);
-    if (msg != HAL_RET_SUCCESS) {
-      return msg;
-    }
-  }
-
-  return drvStart(self);
-}
-
-/**
- * @brief       Deactivates the USB peripheral.
- *
- * @param[in,out] ip            Pointer to a @p hal_usb_driver_c instance.
- *
- * @api
- */
-void usbStop(void *ip) {
-  hal_usb_driver_c *self = (hal_usb_driver_c *)ip;
-  osalDbgCheck(self != NULL);
-
-  drvStop(self);
-}
-
 /**
  * @brief       Attaches a USB binder to the USB driver.
  *
@@ -1778,7 +1748,7 @@ void usbDisableEndpointsI(void *ip) {
   self->transmitting &= 1U;
   self->receiving    &= 1U;
   for (i = 1U; i <= (unsigned)USB_MAX_ENDPOINTS; i++) {
-#if USB_USE_WAIT == TRUE
+#if USB_USE_SYNCHRONIZATION == TRUE
     if (self->epc[i] != NULL) {
       if (self->epc[i]->in_state != NULL) {
         osalThreadResumeI(&self->epc[i]->in_state->thread, MSG_RESET);
@@ -1840,7 +1810,7 @@ void usbStartReceiveI(void *ip, usbep_t ep, uint8_t *buf, size_t n) {
   osp->rxsize = n;
   osp->rxcnt  = 0U;
   osp->rxpkts = 0U;
-#if USB_USE_WAIT == TRUE
+#if USB_USE_SYNCHRONIZATION == TRUE
   osp->thread = NULL;
 #endif
 
@@ -1875,14 +1845,14 @@ void usbStartTransmitI(void *ip, usbep_t ep, const uint8_t *buf, size_t n) {
   isp->txsize = n;
   isp->txcnt  = 0U;
   isp->txlast = 0U;
-#if USB_USE_WAIT == TRUE
+#if USB_USE_SYNCHRONIZATION == TRUE
   isp->thread = NULL;
 #endif
 
   usb_lld_start_in(self, ep);
 }
 
-#if (USB_USE_WAIT == TRUE) || defined (__DOXYGEN__)
+#if (USB_USE_SYNCHRONIZATION == TRUE) || defined (__DOXYGEN__)
 /**
  * @brief       Performs a blocking receive transaction.
  *
@@ -1938,7 +1908,7 @@ msg_t usbTransmit(void *ip, usbep_t ep, const uint8_t *buf, size_t n) {
 
   return msg;
 }
-#endif /* USB_USE_WAIT == TRUE */
+#endif /* USB_USE_SYNCHRONIZATION == TRUE */
 
 /**
  * @brief       Waits for a new endpoint-zero setup packet.
