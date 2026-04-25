@@ -54,263 +54,31 @@
 /* Module exported functions.                                                */
 /*===========================================================================*/
 
+/**
+ * @brief       Checks if an identifier is in a supported identifiers table.
+ *
+ * @param[in]     set           Pointer to the identifiers table.
+ * @param[in]     size          Number of elements in the identifiers table.
+ * @param[in]     element       Identifier to be searched.
+ * @return                      The search result.
+ * @retval true                 If the identifier is present.
+ * @retval false                If the identifier is not present.
+ */
+bool __xsnor_find_id(const uint8_t *set, size_t size, uint8_t element) {
+  size_t i;
+
+  for (i = 0U; i < size; i++) {
+    if (set[i] == element) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 /*===========================================================================*/
 /* Module class "hal_xsnor_base_c" methods.                                  */
 /*===========================================================================*/
-
-/**
- * @name        Interfaces implementation of hal_xsnor_base_c
- * @{
- */
-/**
- * @brief       Implementation of interface method @p flsGetDescriptor().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @return                      A flash device descriptor.
- */
-static const flash_descriptor_t *__xsnor_fls_get_descriptor_impl(void *ip) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-
-  return &self->descriptor;
-}
-
-/**
- * @brief       Implementation of interface method @p flsRead().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @param[in]     offset        Flash offset.
- * @param[in]     n             Number of bytes to be read.
- * @param[out]    rp            Pointer to the data buffer.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_read_impl(void *ip, flash_offset_t offset,
-                                           size_t n, uint8_t *rp) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-  flash_error_t err;
-
-  osalDbgCheck((self != NULL) && (rp != NULL) && (n > 0U));
-  osalDbgAssert((self->state == HAL_DRV_STATE_READY) ||
-                (self->state == FLASH_ERASE), "invalid state");
-
-  if (self->state == FLASH_ERASE) {
-    return FLASH_BUSY_ERASING;
-  }
-
-  __xsnor_bus_acquire(self);
-
-  self->state = FLASH_READ;
-  err = self->vmt->read(self, offset, n, rp);
-  self->state = HAL_DRV_STATE_READY;
-
-  __xsnor_bus_release(self);
-
-  return err;
-}
-
-/**
- * @brief       Implementation of interface method @p flsProgram().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @param[in]     offset        Flash offset.
- * @param[in]     n             Number of bytes to be programmed.
- * @param[in]     pp            Pointer to the data buffer.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_program_impl(void *ip, flash_offset_t offset,
-                                              size_t n, const uint8_t *pp) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-  flash_error_t err;
-
-  osalDbgCheck((self != NULL) && (pp != NULL) && (n > 0U));
-  osalDbgAssert((self->state == HAL_DRV_STATE_READY) ||
-                (self->state == FLASH_ERASE), "invalid state");
-
-  if (self->state == FLASH_ERASE) {
-    return FLASH_BUSY_ERASING;
-  }
-
-  __xsnor_bus_acquire(self);
-
-  self->state = FLASH_PGM;
-  err = self->vmt->program(self, offset, n, pp);
-  self->state = HAL_DRV_STATE_READY;
-
-  __xsnor_bus_release(self);
-
-  return err;
-}
-
-/**
- * @brief       Implementation of interface method @p flsStartEraseAll().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_start_erase_all_impl(void *ip) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-  flash_error_t err;
-
-  osalDbgCheck(self != NULL);
-  osalDbgAssert((self->state == HAL_DRV_STATE_READY) ||
-                (self->state == FLASH_ERASE), "invalid state");
-
-  if (self->state == FLASH_ERASE) {
-    return FLASH_BUSY_ERASING;
-  }
-
-  __xsnor_bus_acquire(self);
-
-  self->state = FLASH_ERASE;
-  err = self->vmt->start_erase_all(self);
-  if (err != FLASH_NO_ERROR) {
-    self->state = HAL_DRV_STATE_READY;
-  }
-
-  __xsnor_bus_release(self);
-
-  return err;
-}
-
-/**
- * @brief       Implementation of interface method @p flsStartEraseSector().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @param[in]     sector        Sector to be erased.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_start_erase_sector_impl(void *ip,
-                                                         flash_sector_t sector) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-  flash_error_t err;
-
-  osalDbgCheck(self != NULL);
-  osalDbgAssert((self->state == HAL_DRV_STATE_READY) ||
-                (self->state == FLASH_ERASE), "invalid state");
-
-  if (self->state == FLASH_ERASE) {
-    return FLASH_BUSY_ERASING;
-  }
-
-  __xsnor_bus_acquire(self);
-
-  self->state = FLASH_ERASE;
-  err = self->vmt->start_erase_sector(self, sector);
-  if (err != FLASH_NO_ERROR) {
-    self->state = HAL_DRV_STATE_READY;
-  }
-
-  __xsnor_bus_release(self);
-
-  return err;
-}
-
-/**
- * @brief       Implementation of interface method @p flsQueryErase().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @param[out]    msec          Recommended time, in milliseconds, before
- *                              retrying, can be @p NULL.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_query_erase_impl(void *ip, unsigned *msec) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-  flash_error_t err;
-
-  osalDbgCheck(self != NULL);
-  osalDbgAssert((self->state == HAL_DRV_STATE_READY) ||
-                (self->state == FLASH_ERASE), "invalid state");
-
-  if (self->state == FLASH_ERASE) {
-    __xsnor_bus_acquire(self);
-
-    err = self->vmt->query_erase(self, msec);
-    if (err == FLASH_NO_ERROR) {
-      self->state = HAL_DRV_STATE_READY;
-    }
-
-    __xsnor_bus_release(self);
-  }
-  else {
-    err = FLASH_NO_ERROR;
-  }
-
-  return err;
-}
-
-/**
- * @brief       Implementation of interface method @p flsVerifyErase().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @param[in]     sector        Sector to be verified.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_verify_erase_impl(void *ip,
-                                                   flash_sector_t sector) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-  flash_error_t err;
-
-  osalDbgCheck(self != NULL);
-  osalDbgAssert((self->state == HAL_DRV_STATE_READY) ||
-                (self->state == FLASH_ERASE), "invalid state");
-
-  if (self->state == FLASH_ERASE) {
-    return FLASH_BUSY_ERASING;
-  }
-
-  __xsnor_bus_acquire(self);
-
-  self->state = FLASH_READ;
-  err = self->vmt->verify_erase(self, sector);
-  self->state = HAL_DRV_STATE_READY;
-
-  __xsnor_bus_release(self);
-
-  return err;
-}
-
-/**
- * @brief       Implementation of interface method @p flsAcquireExclusive().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_acquire_exclusive_impl(void *ip) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-
-  osalDbgCheck(self != NULL);
-#if HAL_USE_MUTUAL_EXCLUSION == TRUE
-  drvLock(self);
-#endif
-
-  return FLASH_NO_ERROR;
-}
-
-/**
- * @brief       Implementation of interface method @p flsReleaseExclusive().
- *
- * @param[in,out] ip            Pointer to the @p flash_interface_i class
- *                              interface.
- * @return                      An error code.
- */
-static flash_error_t __xsnor_fls_release_exclusive_impl(void *ip) {
-  hal_xsnor_base_c *self = oopIfGetOwner(hal_xsnor_base_c, ip);
-
-  osalDbgCheck(self != NULL);
-#if HAL_USE_MUTUAL_EXCLUSION == TRUE
-  drvUnlock(self);
-#endif
-
-  return FLASH_NO_ERROR;
-}
-/** @} */
 
 /**
  * @name        Methods implementations of hal_xsnor_base_c
@@ -330,23 +98,6 @@ void *__xsnor_objinit_impl(void *ip, const void *vmt) {
 
   /* Initialization of the ancestors-defined parts.*/
   __flash_objinit_impl(self, vmt);
-
-  /* Initialization of interface flash_interface_i.*/
-  {
-    static const struct flash_interface_vmt xsnor_fls_vmt = {
-      .instance_offset      = offsetof(hal_xsnor_base_c, fls),
-      .get_descriptor       = __xsnor_fls_get_descriptor_impl,
-      .read                 = __xsnor_fls_read_impl,
-      .program              = __xsnor_fls_program_impl,
-      .start_erase_all      = __xsnor_fls_start_erase_all_impl,
-      .start_erase_sector   = __xsnor_fls_start_erase_sector_impl,
-      .query_erase          = __xsnor_fls_query_erase_impl,
-      .verify_erase         = __xsnor_fls_verify_erase_impl,
-      .acquire_exclusive    = __xsnor_fls_acquire_exclusive_impl,
-      .release_exclusive    = __xsnor_fls_release_exclusive_impl
-    };
-    oopIfObjectInit(&self->fls, &xsnor_fls_vmt);
-  }
 
   /* Initialization code.*/
 #if XSNOR_USE_WSPI == TRUE
@@ -386,7 +137,7 @@ msg_t __xsnor_start_impl(void *ip, const void *config) {
   const xsnor_config_t *xcfg;
 
   if (config != NULL) {
-    self->config = __xsnor_setcfg_impl(self, config);
+    self->config = __drv_set_cfg(self, config);
     if (self->config == NULL) {
       return HAL_RET_CONFIG_ERROR;
     }
@@ -397,22 +148,39 @@ msg_t __xsnor_start_impl(void *ip, const void *config) {
     return HAL_RET_CONFIG_ERROR;
   }
 
-  /* Bus acquisition.*/
+  /* Bus acquisition and selection.*/
   __xsnor_bus_acquire(self);
+  if (__xsnor_bus_select(self) != HAL_RET_SUCCESS) {
+    __xsnor_bus_release(self);
+    self->config = NULL;
+    return HAL_RET_HW_FAILURE;
+  }
 
 #if XSNOR_SHARED_BUS != TRUE
 #if XSNOR_USE_BOTH == TRUE
   if (xcfg->bus_type != XSNOR_BUS_MODE_SPI) {
 #endif
 #if XSNOR_USE_WSPI == TRUE
-    (void)drvStart(xcfg->bus.wspi.drv, xcfg->bus.wspi.cfg);
+    msg_t msg;
+
+    msg = drvStart(xcfg->bus.wspi.drv, xcfg->bus.wspi.cfg);
+    if (msg != HAL_RET_SUCCESS) {
+      self->config = NULL;
+      return msg;
+    }
 #endif
 #if XSNOR_USE_BOTH == TRUE
   }
   else {
 #endif
 #if XSNOR_USE_SPI == TRUE
-    (void)drvStart(xcfg->bus.spi.drv, xcfg->bus.spi.cfg);
+    msg_t msg;
+
+    msg = drvStart(xcfg->bus.spi.drv, xcfg->bus.spi.cfg);
+    if (msg != HAL_RET_SUCCESS) {
+      self->config = NULL;
+      return msg;
+    }
 #endif
 #if XSNOR_USE_BOTH == TRUE
   }
@@ -464,9 +232,14 @@ void __xsnor_stop_impl(void *ip) {
     return;
   }
 
-  /* Bus acquisition.*/
+  /* Bus acquisition and selection.*/
   __xsnor_bus_acquire(self);
+  if (__xsnor_bus_select(self) != HAL_RET_SUCCESS) {
+    __xsnor_bus_release(self);
+    return;
+  }
 
+#if XSNOR_SHARED_BUS != TRUE
   /* Stopping bus device.*/
 #if XSNOR_USE_BOTH == TRUE
   if (config->bus_type != XSNOR_BUS_MODE_SPI) {
@@ -484,6 +257,7 @@ void __xsnor_stop_impl(void *ip) {
 #if XSNOR_USE_BOTH == TRUE
   }
 #endif
+#endif
 
   /* Bus release.*/
   __xsnor_bus_release(self);
@@ -498,9 +272,56 @@ void __xsnor_stop_impl(void *ip) {
  */
 const void *__xsnor_setcfg_impl(void *ip, const void *config) {
   hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
+  const xsnor_config_t *xcfg = (const xsnor_config_t *)config;
+
   (void)self;
 
-  return config;
+  if ((xcfg == NULL) || (xcfg->buffers == NULL)) {
+    return NULL;
+  }
+
+#if XSNOR_USE_BOTH == TRUE
+  switch (xcfg->bus_type) {
+  case XSNOR_BUS_MODE_SPI:
+    if (xcfg->bus.spi.drv == NULL) {
+      return NULL;
+    }
+    break;
+  case XSNOR_BUS_MODE_WSPI_1LINE:
+  case XSNOR_BUS_MODE_WSPI_2LINES:
+  case XSNOR_BUS_MODE_WSPI_4LINES:
+  case XSNOR_BUS_MODE_WSPI_8LINES:
+    if (xcfg->bus.wspi.drv == NULL) {
+      return NULL;
+    }
+    break;
+  default:
+    return NULL;
+  }
+#else
+#if XSNOR_USE_SPI == TRUE
+  if ((xcfg->bus_type != XSNOR_BUS_MODE_SPI) ||
+      (xcfg->bus.spi.drv == NULL)) {
+    return NULL;
+  }
+#endif
+#if XSNOR_USE_WSPI == TRUE
+  switch (xcfg->bus_type) {
+  case XSNOR_BUS_MODE_WSPI_1LINE:
+  case XSNOR_BUS_MODE_WSPI_2LINES:
+  case XSNOR_BUS_MODE_WSPI_4LINES:
+  case XSNOR_BUS_MODE_WSPI_8LINES:
+    if (xcfg->bus.wspi.drv == NULL) {
+      return NULL;
+    }
+    break;
+  default:
+    return NULL;
+  }
+#endif
+#endif
+
+  return xcfg;
 }
 
 /**
@@ -516,18 +337,6 @@ const void *__xsnor_selcfg_impl(void *ip, unsigned cfgnum) {
   (void)cfgnum;
 
   return NULL;
-}
-
-/**
- * @brief       Override of method @p __drv_synchronize().
- *
- * @param[in,out] ip            Pointer to a @p hal_xsnor_base_c instance.
- * @param[in]     timeout       Synchronization timeout.
- * @return                      The synchronization result.
- */
-msg_t __xsnor_synchronize_impl(void *ip, sysinterval_t timeout) {
-  hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
-  return __drv_synchronize_impl(self, timeout);
 }
 /** @} */
 
@@ -574,6 +383,11 @@ void __xsnor_bus_acquire(void *ip) {
   hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
   const xsnor_config_t *config = self->config;
 
+#if HAL_USE_MUTUAL_EXCLUSION != TRUE
+  (void)self;
+  (void)config;
+#endif
+
 #if XSNOR_USE_BOTH == TRUE
   if (config->bus_type != XSNOR_BUS_MODE_SPI) {
 #endif
@@ -581,12 +395,6 @@ void __xsnor_bus_acquire(void *ip) {
 #if HAL_USE_MUTUAL_EXCLUSION == TRUE
     drvLock(config->bus.wspi.drv);
 #endif
-    if (config->bus.wspi.cfg != config->bus.wspi.drv->config) {
-      if (drvStart(config->bus.wspi.drv, config->bus.wspi.cfg) !=
-          HAL_RET_SUCCESS) {
-        (void)drvSetCfgX(config->bus.wspi.drv, config->bus.wspi.cfg);
-      }
-    }
 #endif
 #if XSNOR_USE_BOTH == TRUE
   }
@@ -596,17 +404,39 @@ void __xsnor_bus_acquire(void *ip) {
 #if HAL_USE_MUTUAL_EXCLUSION == TRUE
     drvLock(config->bus.spi.drv);
 #endif
-    if (config->bus.spi.cfg !=
-        (const hal_spi_config_t *)config->bus.spi.drv->config) {
-      if (drvStart(config->bus.spi.drv, config->bus.spi.cfg) !=
-          HAL_RET_SUCCESS) {
-        (void)drvSetCfgX(config->bus.spi.drv, config->bus.spi.cfg);
-      }
-    }
 #endif
 #if XSNOR_USE_BOTH == TRUE
   }
 #endif
+}
+
+/**
+ * @brief       Bus selection and configuration.
+ *
+ * @param[in,out] ip            Pointer to a @p hal_xsnor_base_c instance.
+ */
+msg_t __xsnor_bus_select(void *ip) {
+  hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
+  const xsnor_config_t *config = self->config;
+
+#if XSNOR_USE_BOTH == TRUE
+  if (config->bus_type != XSNOR_BUS_MODE_SPI) {
+#endif
+#if XSNOR_USE_WSPI == TRUE
+    return drvStart(config->bus.wspi.drv, config->bus.wspi.cfg);
+#endif
+#if XSNOR_USE_BOTH == TRUE
+  }
+  else {
+#endif
+#if XSNOR_USE_SPI == TRUE
+    return drvStart(config->bus.spi.drv, config->bus.spi.cfg);
+#endif
+#if XSNOR_USE_BOTH == TRUE
+  }
+#endif
+
+  return HAL_RET_SUCCESS;
 }
 
 /**
@@ -1010,8 +840,23 @@ flash_error_t xsnorMemoryMap(void *ip, uint8_t **addrp) {
   hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
   flash_error_t err;
 
+  osalDbgCheck((self != NULL) && (addrp != NULL));
+  osalDbgAssert(self->state == HAL_DRV_STATE_READY, "invalid state");
+
+  __xsnor_bus_acquire(self);
+  if (__xsnor_bus_select(self) != HAL_RET_SUCCESS) {
+    __xsnor_bus_release(self);
+    return FLASH_ERROR_HW_FAILURE;
+  }
+
+  self->state = FLASH_MMAP;
+
   /* Activating XIP mode in the device.*/
   err = xsnor_device_mmap_on(self, addrp);
+  if (err != FLASH_NO_ERROR) {
+    self->state = HAL_DRV_STATE_READY;
+    __xsnor_bus_release(self);
+  }
 
   return err;
 }
@@ -1025,8 +870,13 @@ flash_error_t xsnorMemoryMap(void *ip, uint8_t **addrp) {
  */
 void xsnorMemoryUnmap(void *ip) {
   hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
+  osalDbgCheck(self != NULL);
+  osalDbgAssert(self->state == FLASH_MMAP, "invalid state");
 
   xsnor_device_mmap_off(self);
+
+  self->state = HAL_DRV_STATE_READY;
+  __xsnor_bus_release(self);
 }
 #endif /* (XSNOR_USE_WSPI == TRUE) && defined(WSPI_SUPPORTS_MEMMAP) && (WSPI_SUPPORTS_MEMMAP == TRUE) */
 /** @} */

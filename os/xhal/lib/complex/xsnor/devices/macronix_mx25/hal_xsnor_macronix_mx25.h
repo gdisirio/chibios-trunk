@@ -55,7 +55,7 @@
 /**
  * @brief       Number of dummy cycles.
  *
- * @param         n             Number of dummy cycles (2..15)
+ * @param         n             Number of dummy cycles (6..15)
  */
 #define MX25_OPT_DUMMY_CYCLES(n)            ((n) << 0)
 
@@ -83,6 +83,7 @@
 
 /**
  * @brief       Enables DTR in 8 lines mode.
+ * @note        This option is only valid in WSPI 8-lines bus mode.
  */
 #define MX25_OPT_USE_DTR                    (1U << 7)
 /** @} */
@@ -183,10 +184,6 @@ struct hal_xsnor_macronix_mx25 {
    * @brief       Flash descriptor.
    */
   flash_descriptor_t        descriptor;
-  /**
-   * @brief       Implemented interface @p flash_interface_i.
-   */
-  flash_interface_i         fls;
 #if (XSNOR_USE_WSPI == TRUE) || defined (__DOXYGEN__)
   /**
    * @brief       Current commands configuration.
@@ -208,6 +205,7 @@ extern "C" {
   /* Methods of hal_xsnor_macronix_mx25_c.*/
   void *__mx25_objinit_impl(void *ip, const void *vmt);
   void __mx25_dispose_impl(void *ip);
+  const void *__mx25_setcfg_impl(void *ip, const void *config);
   flash_error_t __mx25_init_impl(void *ip);
   flash_error_t __mx25_read_impl(void *ip, flash_offset_t offset, size_t n,
                                  uint8_t *rp);

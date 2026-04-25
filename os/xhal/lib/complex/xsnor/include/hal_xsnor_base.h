@@ -45,12 +45,6 @@
 #define XSNOR_BUS_MODE_WSPI_8LINES          4U
 /** @} */
 
-/**
- * @brief       Hint to use 4 bytes addresses in SPI protocol.
- * @note        TODO: To be moved into the flash interface module.
- */
-#define FLASH_ATTR_SPI_4BYTES_ADDR_HINT     0x00008000U
-
 /*===========================================================================*/
 /* Module pre-compile time settings.                                         */
 /*===========================================================================*/
@@ -142,6 +136,8 @@
  * @{
  */
 #define __xsnor_bus_acquire(self)
+#define __xsnor_bus_select(self)                                            \
+  ((void)(self), HAL_RET_SUCCESS)
 #define __xsnor_bus_release(self)
 /** @} */
 #endif /* XSNOR_SHARED_BUS == FALSE */
@@ -278,7 +274,6 @@ struct xsnor_config {
 /**
  * @class       hal_xsnor_base_c
  * @extends     hal_flash_base_c
- * @implements  flash_interface_i
  *
  * @brief       Base class of all SNOR drivers.
  *
@@ -364,10 +359,6 @@ struct hal_xsnor_base {
    * @brief       Flash descriptor.
    */
   flash_descriptor_t        descriptor;
-  /**
-   * @brief       Implemented interface @p flash_interface_i.
-   */
-  flash_interface_i         fls;
 #if (XSNOR_USE_WSPI == TRUE) || defined (__DOXYGEN__)
   /**
    * @brief       Current commands configuration.
@@ -393,12 +384,12 @@ extern "C" {
   void __xsnor_stop_impl(void *ip);
   const void *__xsnor_setcfg_impl(void *ip, const void *config);
   const void *__xsnor_selcfg_impl(void *ip, unsigned cfgnum);
-  msg_t __xsnor_synchronize_impl(void *ip, sysinterval_t timeout);
 #if (XSNOR_USE_SPI == TRUE) || defined (__DOXYGEN__)
   void __xsnor_spi_cmd_addr(void *ip, uint32_t cmd, flash_offset_t offset);
 #endif /* XSNOR_USE_SPI == TRUE */
 #if (XSNOR_SHARED_BUS == TRUE) || defined (__DOXYGEN__)
   void __xsnor_bus_acquire(void *ip);
+  msg_t __xsnor_bus_select(void *ip);
   void __xsnor_bus_release(void *ip);
 #endif /* XSNOR_SHARED_BUS == TRUE */
   void __xsnor_bus_cmd(void *ip, uint32_t cmd);
@@ -420,6 +411,7 @@ extern "C" {
   void xsnorMemoryUnmap(void *ip);
 #endif /* (XSNOR_USE_WSPI == TRUE) && defined(WSPI_SUPPORTS_MEMMAP) && (WSPI_SUPPORTS_MEMMAP == TRUE) */
   /* Regular functions.*/
+  bool __xsnor_find_id(const uint8_t *set, size_t size, uint8_t element);
 #ifdef __cplusplus
 }
 #endif
