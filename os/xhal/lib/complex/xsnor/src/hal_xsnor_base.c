@@ -517,6 +517,18 @@ const void *__xsnor_selcfg_impl(void *ip, unsigned cfgnum) {
 
   return NULL;
 }
+
+/**
+ * @brief       Override of method @p __drv_synchronize().
+ *
+ * @param[in,out] ip            Pointer to a @p hal_xsnor_base_c instance.
+ * @param[in]     timeout       Synchronization timeout.
+ * @return                      The synchronization result.
+ */
+msg_t __xsnor_synchronize_impl(void *ip, sysinterval_t timeout) {
+  hal_xsnor_base_c *self = (hal_xsnor_base_c *)ip;
+  return __drv_synchronize_impl(self, timeout);
+}
 /** @} */
 
 /**
@@ -570,10 +582,8 @@ void __xsnor_bus_acquire(void *ip) {
     drvLock(config->bus.wspi.drv);
 #endif
     if (config->bus.wspi.cfg != config->bus.wspi.drv->config) {
-      if (drvGetStateX(config->bus.wspi.drv) == HAL_DRV_STATE_STOP) {
-        (void)drvStart(config->bus.wspi.drv, config->bus.wspi.cfg);
-      }
-      else {
+      if (drvStart(config->bus.wspi.drv, config->bus.wspi.cfg) !=
+          HAL_RET_SUCCESS) {
         (void)drvSetCfgX(config->bus.wspi.drv, config->bus.wspi.cfg);
       }
     }
@@ -588,10 +598,8 @@ void __xsnor_bus_acquire(void *ip) {
 #endif
     if (config->bus.spi.cfg !=
         (const hal_spi_config_t *)config->bus.spi.drv->config) {
-      if (drvGetStateX(config->bus.spi.drv) == HAL_DRV_STATE_STOP) {
-        (void)drvStart(config->bus.spi.drv, config->bus.spi.cfg);
-      }
-      else {
+      if (drvStart(config->bus.spi.drv, config->bus.spi.cfg) !=
+          HAL_RET_SUCCESS) {
         (void)drvSetCfgX(config->bus.spi.drv, config->bus.spi.cfg);
       }
     }
