@@ -31,10 +31,31 @@
 #define __CHIBIOS_VIO_CONF_VER_1_0__
 
 /**
+ * @brief   Enables the Virtual ADC support.
+ */
+#if !defined(VIO_CFG_ENABLE_ADC) || defined(__DOXYGEN__)
+#define VIO_CFG_ENABLE_ADC                  FALSE
+#endif
+
+/**
  * @brief   Enables the Virtual ETH support.
  */
 #if !defined(VIO_CFG_ENABLE_ETH) || defined(__DOXYGEN__)
 #define VIO_CFG_ENABLE_ETH                  TRUE
+#endif
+
+/**
+ * @brief   Enables the Virtual GPT support.
+ */
+#if !defined(VIO_CFG_ENABLE_GPT) || defined(__DOXYGEN__)
+#define VIO_CFG_ENABLE_GPT                  FALSE
+#endif
+
+/**
+ * @brief   Enables the Virtual I2C support.
+ */
+#if !defined(VIO_CFG_ENABLE_I2C) || defined(__DOXYGEN__)
+#define VIO_CFG_ENABLE_I2C                  FALSE
 #endif
 
 /**

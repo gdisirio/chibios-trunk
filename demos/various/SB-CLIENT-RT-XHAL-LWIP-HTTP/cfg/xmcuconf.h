@@ -33,12 +33,30 @@
 #define VIO_VUART2_IRQ                      9
 #define VIO_VSPI1_IRQ                       6
 #define VIO_VSPI2_IRQ                       7
+#define VIO_VADC1_IRQ                       12
+#define VIO_VGPT1_IRQ                       13
+#define VIO_VI2C1_IRQ                       14
 
 /*
  * ETH driver system settings.
  */
 #define VIO_ETH_USE_VETH1                   TRUE
 #define VIO_ETH_USE_VETH2                   FALSE
+
+/*
+ * ADC driver system settings.
+ */
+#define VIO_ADC_USE_VADC1                   FALSE
+
+/*
+ * GPT driver system settings.
+ */
+#define VIO_GPT_USE_VGPT1                   FALSE
+
+/*
+ * I2C driver system settings.
+ */
+#define VIO_I2C_USE_VI2C1                   FALSE
 
 /*
  * SIO driver system settings.
