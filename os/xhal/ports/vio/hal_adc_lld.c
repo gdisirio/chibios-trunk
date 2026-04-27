@@ -28,6 +28,10 @@
 
 hal_adc_driver_c ADCD1;
 
+static const hal_adc_config_t default_config = {
+  .grps = NULL
+};
+
 void adc_lld_init(void) {
 
   adcObjectInit(&ADCD1);
@@ -61,9 +65,12 @@ const hal_adc_config_t *adc_lld_selcfg(hal_adc_driver_c *adcp,
                                        unsigned cfgnum) {
 
   (void)adcp;
-  (void)cfgnum;
 
-  return NULL;
+  if (cfgnum != 0U) {
+    return NULL;
+  }
+
+  return &default_config;
 }
 
 void adc_lld_set_callback(hal_adc_driver_c *adcp, drv_cb_t cb) {
@@ -72,13 +79,12 @@ void adc_lld_set_callback(hal_adc_driver_c *adcp, drv_cb_t cb) {
   (void)cb;
 }
 
-msg_t adc_lld_start_conversion(hal_adc_driver_c *adcp,
-                               const adc_conversion_group_t *grpp,
+msg_t adc_lld_start_conversion(hal_adc_driver_c *adcp, unsigned grpnum,
                                adcsample_t *samples,
                                size_t depth) {
 
   (void)adcp;
-  (void)grpp;
+  (void)grpnum;
   (void)samples;
   (void)depth;
 
