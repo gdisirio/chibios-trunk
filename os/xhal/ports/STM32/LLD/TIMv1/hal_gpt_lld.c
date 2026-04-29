@@ -746,16 +746,33 @@ const hal_gpt_config_t *gpt_lld_selcfg(hal_gpt_driver_c *gptp,
                                        unsigned cfgnum) {
   (void)gptp;
 
+#if GPT_USE_CONFIGURATIONS == TRUE
+  extern const gpt_configurations_t gpt_configurations;
+
+  if (cfgnum < gpt_configurations.cfgsnum) {
+    return &gpt_configurations.cfgs[cfgnum];
+  }
+#else
   if (cfgnum != 0U) {
     return NULL;
   }
 
   return &gpt_default_config;
+#endif
+
+  return NULL;
 }
 
 void gpt_lld_set_callback(hal_gpt_driver_c *gptp, drv_cb_t cb) {
-  (void)gptp;
-  (void)cb;
+
+  if (gptp->state == GPT_CONTINUOUS) {
+    if (cb != NULL) {
+      gptp->tim->DIER |= STM32_TIM_DIER_UIE;
+    }
+    else {
+      gptp->tim->DIER &= ~STM32_TIM_DIER_UIE;
+    }
+  }
 }
 
 /**

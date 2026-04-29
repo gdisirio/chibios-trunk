@@ -26,6 +26,8 @@
 
 #include "sb.h"
 
+#include <string.h>
+
 #if (VIO_CFG_ENABLE_GPT == TRUE) || defined(__DOXYGEN__)
 
 /*===========================================================================*/
@@ -75,13 +77,34 @@ void sb_sysc_vio_gpt(sb_class_t *sbp, struct port_extctx *ectxp) {
     switch (sub) {
     case SB_VGPT_INIT:
       {
+        size_t n = ectxp->r1;
+        void *p = (void *)ectxp->r2;
+        const void *confp;
         msg_t msg;
+
+        if ((sbp->vioconf->gptconfs == NULL) ||
+            (sbp->vioconf->gptconfs->cfgsnum == 0U)) {
+          ectxp->r0 = (uint32_t)HAL_RET_NO_RESOURCE;
+          break;
+        }
+
+        if (n > sizeof (hal_gpt_config_t)) {
+          ectxp->r0 = (uint32_t)HAL_RET_CONFIG_ERROR;
+          break;
+        }
+
+        if (!sb_is_valid_write_range(sbp, p, n)) {
+          ectxp->r0 = (uint32_t)CH_RET_EFAULT;
+          break;
+        }
+
+        confp = &sbp->vioconf->gptconfs->cfgs[0];
 
         drvSetArgumentX(unitp->gptp, (void *)unitp);
 
-        msg = drvStart(unitp->gptp, unitp->config);
+        msg = drvStart(unitp->gptp, confp);
         if (msg == HAL_RET_SUCCESS) {
-          drvSetCallbackX(unitp->gptp, vgpt_cb);
+          memcpy(p, confp, n);
         }
 
         ectxp->r0 = (uint32_t)msg;
@@ -94,6 +117,61 @@ void sb_sysc_vio_gpt(sb_class_t *sbp, struct port_extctx *ectxp) {
         drvSetArgumentX(unitp->gptp, NULL);
 
         ectxp->r0 = (uint32_t)HAL_RET_SUCCESS;
+        break;
+      }
+    case SB_VGPT_SETCB:
+      {
+        uint32_t enable = ectxp->r1;
+
+        if (drvGetStateX(unitp->gptp) == HAL_DRV_STATE_STOP) {
+          ectxp->r0 = (uint32_t)HAL_RET_INV_STATE;
+          break;
+        }
+
+        drvSetCallbackX(unitp->gptp, enable != 0U ? vgpt_cb : NULL);
+
+        ectxp->r0 = (uint32_t)HAL_RET_SUCCESS;
+        break;
+      }
+    case SB_VGPT_SELCFG:
+      {
+        uint32_t cfgnum = ectxp->r1;
+        size_t n = ectxp->r2;
+        void *p = (void *)ectxp->r3;
+        const void *confp;
+        msg_t msg;
+
+        if (drvGetStateX(unitp->gptp) != HAL_DRV_STATE_READY) {
+          ectxp->r0 = (uint32_t)HAL_RET_INV_STATE;
+          break;
+        }
+
+        if ((sbp->vioconf->gptconfs == NULL) ||
+            (cfgnum >= sbp->vioconf->gptconfs->cfgsnum)) {
+          ectxp->r0 = (uint32_t)HAL_RET_NO_RESOURCE;
+          break;
+        }
+
+        if (n > sizeof (hal_gpt_config_t)) {
+          ectxp->r0 = (uint32_t)HAL_RET_CONFIG_ERROR;
+          break;
+        }
+
+        if (!sb_is_valid_write_range(sbp, p, n)) {
+          ectxp->r0 = (uint32_t)CH_RET_EFAULT;
+          break;
+        }
+
+        confp = &sbp->vioconf->gptconfs->cfgs[cfgnum];
+        msg = drvSetCfgX(unitp->gptp, confp);
+        if (msg == HAL_RET_SUCCESS) {
+          memcpy(p, confp, n);
+          ectxp->r0 = (uint32_t)HAL_RET_SUCCESS;
+        }
+        else {
+          ectxp->r0 = (uint32_t)HAL_RET_CONFIG_ERROR;
+        }
+
         break;
       }
     case SB_VGPT_PDELAY:
@@ -218,7 +296,10 @@ void sb_fastc_vio_gpt(sb_class_t *sbp, struct port_extctx *ectxp) {
       }
     case SB_VGPT_GETFREQ:
       {
-        ectxp->r0 = (uint32_t)gptGetFrequencyX(unitp->gptp);
+        const hal_gpt_config_t *config;
+
+        config = (const hal_gpt_config_t *)unitp->gptp->config;
+        ectxp->r0 = config != NULL ? (uint32_t)config->frequency : 0U;
         break;
       }
     default:

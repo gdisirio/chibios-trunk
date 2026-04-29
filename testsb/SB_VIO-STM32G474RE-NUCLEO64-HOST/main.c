@@ -23,8 +23,6 @@
 
 #include "startup_defs.h"
 
-#define ADC_GPT_TRIGGER_PERIOD              100000U
-
 /* Sandbox objects.*/
 sb_class_t sbx1, sbx2;
 
@@ -32,7 +30,7 @@ sb_class_t sbx1, sbx2;
 /* VIO-related.                                                              */
 /*===========================================================================*/
 
-static vio_gpio_units_t gpio_units1 = {
+static vio_gpio_units_t sb1_gpio_units = {
   .n        = 1U,
   .units = {
     [0] = {
@@ -44,7 +42,14 @@ static vio_gpio_units_t gpio_units1 = {
   }
 };
 
-static vio_uart_units_t uart_units1 = {
+static sio_configurations_t sb1_uart_configurations = {
+  .cfgsnum      = 1U,
+  .cfgs = {
+    [0]         = SIO_DEFAULT_CONFIGURATION
+  }
+};
+
+static vio_uart_units_t sb1_uart_units = {
   .n        = 1U,
   .units = {
     [0] = {
@@ -55,20 +60,29 @@ static vio_uart_units_t uart_units1 = {
   }
 };
 
-static sio_configurations_t uart_configs1 = {
-  .cfgsnum      = 1U,
+static const gpt_configurations_t sb1_gpt_configurations = {
+  .cfgsnum                     = 1U,
   .cfgs = {
-    [0]         = SIO_DEFAULT_CONFIGURATION
+    [0] = {
+      .frequency               = 1000000U,
+      .cr2                     = TIM_CR2_MMS_1,
+      .dier                    = 0U
+    }
   }
 };
 
-static const hal_gpt_config_t gpt_config1 = {
-  .frequency                   = 1000000U,
-  .cr2                         = TIM_CR2_MMS_1,
-  .dier                        = 0U
+static vio_gpt_units_t sb1_gpt_units = {
+  .n                           = 1U,
+  .units = {
+    [0] = {
+      .gptp                    = &GPTD4,
+      .vrqsb                   = &sbx1,
+      .vrqn                    = 13
+    }
+  }
 };
 
-static const adc_conversion_groups_t adc_groups_linear = {
+static const adc_conversion_groups_t sb1_adc_groups_linear = {
   .grpsnum                     = 1U,
   .grps                        = {
     [0] = {
@@ -96,7 +110,7 @@ static const adc_conversion_groups_t adc_groups_linear = {
   }
 };
 
-static const adc_conversion_groups_t adc_groups_gpt = {
+static const adc_conversion_groups_t sb1_adc_groups_gpt = {
   .grpsnum                     = 1U,
   .grps                        = {
     [0] = {
@@ -125,26 +139,26 @@ static const adc_conversion_groups_t adc_groups_gpt = {
   }
 };
 
-const adc_configurations_t adc_configurations = {
+const adc_configurations_t sb1_adc_configurations = {
   .cfgsnum                     = 2U,
   .cfgs = {
     [0] = {
-      .grps                    = &adc_groups_linear,
+      .grps                    = &sb1_adc_groups_linear,
       .difsel                  = 0U
     },
     [1] = {
-      .grps                    = &adc_groups_gpt,
+      .grps                    = &sb1_adc_groups_gpt,
       .difsel                  = 0U
     }
   }
 };
 
-static vio_adc_units_t adc_units1 = {
+static vio_adc_units_t sb1_adc_units = {
   .n                           = 1U,
   .units = {
     [0] = {
       .adcp                    = &ADCD1,
-      .config                  = &adc_configurations.cfgs[0],
+      .config                  = &sb1_adc_configurations.cfgs[0],
       .vrqsb                   = &sbx1,
       .vrqn                    = 12
     }
@@ -152,11 +166,13 @@ static vio_adc_units_t adc_units1 = {
 };
 
 static vio_conf_t vio_config1 = {
-  .gpios        = &gpio_units1,
-  .adcs         = &adc_units1,
-  .adcconfs     = &adc_configurations,
-  .uarts        = &uart_units1,
-  .uartconfs    = &uart_configs1
+  .gpios        = &sb1_gpio_units,
+  .adcs         = &sb1_adc_units,
+  .adcconfs     = &sb1_adc_configurations,
+  .gpts         = &sb1_gpt_units,
+  .gptconfs     = &sb1_gpt_configurations,
+  .uarts        = &sb1_uart_units,
+  .uartconfs    = &sb1_uart_configurations
 };
 
 /*===========================================================================*/
@@ -215,13 +231,10 @@ int main(void) {
   if (drvStart(&SIOD1, NULL) != MSG_OK) {
     chSysHalt("SIOD1 failed");
   }
-  if (drvStart(&GPTD4, &gpt_config1) != MSG_OK) {
-    chSysHalt("GPTD4 failed");
-  }
 
+  /* Pins used by the ADC test code in the sandbox.*/
   palSetPadMode(GPIOA, 0U, PAL_MODE_INPUT_ANALOG);
   palSetPadMode(GPIOA, 1U, PAL_MODE_INPUT_ANALOG);
-  gptStartContinuous(&GPTD4, ADC_GPT_TRIGGER_PERIOD);
 
   /*
    * Sandbox objects initialization, regions are assigned explicitly.
