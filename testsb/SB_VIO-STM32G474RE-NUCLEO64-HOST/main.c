@@ -23,6 +23,8 @@
 
 #include "startup_defs.h"
 
+#define ADC_GPT_TRIGGER_PERIOD              100000U
+
 /* Sandbox objects.*/
 sb_class_t sbx1, sbx2;
 
@@ -60,8 +62,99 @@ static sio_configurations_t uart_configs1 = {
   }
 };
 
+static const hal_gpt_config_t gpt_config1 = {
+  .frequency                   = 1000000U,
+  .cr2                         = TIM_CR2_MMS_1,
+  .dier                        = 0U
+};
+
+static const adc_conversion_groups_t adc_groups_linear = {
+  .grpsnum                     = 1U,
+  .grps                        = {
+    [0] = {
+      .num_channels            = 2U,
+      .cfgr                    = 0U,
+      .cfgr2                   = 0U,
+      .tr1                     = ADC_TR_DISABLED,
+      .tr2                     = ADC_TR_DISABLED,
+      .tr3                     = ADC_TR_DISABLED,
+      .awd2cr                  = 0U,
+      .awd3cr                  = 0U,
+      .smpr                    = {
+        ADC_SMPR1_SMP_AN1(ADC_SMPR_SMP_247P5) |
+        ADC_SMPR1_SMP_AN2(ADC_SMPR_SMP_247P5),
+        0U
+      },
+      .sqr                     = {
+        ADC_SQR1_SQ1_N(ADC_CHANNEL_IN1) |
+        ADC_SQR1_SQ2_N(ADC_CHANNEL_IN2),
+        0U,
+        0U,
+        0U
+      }
+    }
+  }
+};
+
+static const adc_conversion_groups_t adc_groups_gpt = {
+  .grpsnum                     = 1U,
+  .grps                        = {
+    [0] = {
+      .num_channels            = 2U,
+      .cfgr                    = ADC_CFGR_EXTEN_RISING |
+                                 ADC_CFGR_EXTSEL_SRC(12),
+      .cfgr2                   = 0U,
+      .tr1                     = ADC_TR_DISABLED,
+      .tr2                     = ADC_TR_DISABLED,
+      .tr3                     = ADC_TR_DISABLED,
+      .awd2cr                  = 0U,
+      .awd3cr                  = 0U,
+      .smpr                    = {
+        ADC_SMPR1_SMP_AN1(ADC_SMPR_SMP_247P5) |
+        ADC_SMPR1_SMP_AN2(ADC_SMPR_SMP_247P5),
+        0U
+      },
+      .sqr                     = {
+        ADC_SQR1_SQ1_N(ADC_CHANNEL_IN1) |
+        ADC_SQR1_SQ2_N(ADC_CHANNEL_IN2),
+        0U,
+        0U,
+        0U
+      }
+    }
+  }
+};
+
+const adc_configurations_t adc_configurations = {
+  .cfgsnum                     = 2U,
+  .cfgs = {
+    [0] = {
+      .grps                    = &adc_groups_linear,
+      .difsel                  = 0U
+    },
+    [1] = {
+      .grps                    = &adc_groups_gpt,
+      .difsel                  = 0U
+    }
+  }
+};
+
+static vio_adc_units_t adc_units1 = {
+  .n                           = 1U,
+  .units = {
+    [0] = {
+      .adcp                    = &ADCD1,
+      .config                  = &adc_configurations.cfgs[0],
+      .vrqsb                   = &sbx1,
+      .vrqn                    = 12
+    }
+  }
+};
+
 static vio_conf_t vio_config1 = {
   .gpios        = &gpio_units1,
+  .adcs         = &adc_units1,
+  .adcconfs     = &adc_configurations,
   .uarts        = &uart_units1,
   .uartconfs    = &uart_configs1
 };
@@ -122,7 +215,13 @@ int main(void) {
   if (drvStart(&SIOD1, NULL) != MSG_OK) {
     chSysHalt("SIOD1 failed");
   }
+  if (drvStart(&GPTD4, &gpt_config1) != MSG_OK) {
+    chSysHalt("GPTD4 failed");
+  }
 
+  palSetPadMode(GPIOA, 0U, PAL_MODE_INPUT_ANALOG);
+  palSetPadMode(GPIOA, 1U, PAL_MODE_INPUT_ANALOG);
+  gptStartContinuous(&GPTD4, ADC_GPT_TRIGGER_PERIOD);
 
   /*
    * Sandbox objects initialization, regions are assigned explicitly.

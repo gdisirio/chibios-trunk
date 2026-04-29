@@ -92,12 +92,20 @@ typedef struct vio_conf {
    * @brief   Virtual ADC units.
    */
   const vio_adc_units_t         *adcs;
+  /**
+   * @brief   Virtual ADC configurations.
+   */
+  const adc_configurations_t    *adcconfs;
 #endif
 #if (VIO_CFG_ENABLE_ETH == TRUE) || defined(__DOXYGEN__)
   /**
    * @brief   Virtual ETH units.
    */
   const vio_eth_units_t         *eths;
+  /**
+   * @brief   Virtual ETH configurations.
+   */
+  const eth_configurations_t    *ethconfs;
 #endif
 #if (VIO_CFG_ENABLE_GPT == TRUE) || defined(__DOXYGEN__)
   /**
