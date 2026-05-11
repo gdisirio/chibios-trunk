@@ -45,10 +45,10 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-        <xs:attribute name="optional">
+      <xs:attribute name="switchable">
         <xs:annotation>
           <xs:documentation>
-            An optional source expects a setting to enable/disable it.
+            A switchable source expects a setting to enable/disable it.
           </xs:documentation>
         </xs:annotation>
         <xs:simpleType>
@@ -103,6 +103,13 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
+      <xs:attribute name="input" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="multiplierType">
@@ -112,6 +119,13 @@
         <xs:element name="choices" type="choicesType" maxOccurs="1" minOccurs="1"></xs:element>
       </xs:choice>
       <xs:attribute name="name" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="input" use="required">
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:minLength value="1"></xs:minLength>
@@ -132,6 +146,14 @@
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="default" use="optional">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="yes"></xs:enumeration>
+            <xs:enumeration value="no"></xs:enumeration>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -256,7 +278,7 @@
             <xs:minLength value="1"></xs:minLength>
             <xs:whiteSpace value="collapse"></xs:whiteSpace>
             <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
-            <xs:maxLength value="8"></xs:maxLength>
+            <xs:maxLength value="12"></xs:maxLength>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -266,7 +288,17 @@
             <xs:minLength value="1"></xs:minLength>
             <xs:whiteSpace value="collapse"></xs:whiteSpace>
             <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
-            <xs:maxLength value="8"></xs:maxLength>
+            <xs:maxLength value="12"></xs:maxLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="cfgs" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:maxLength value="12"></xs:maxLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -284,6 +316,16 @@
         </xs:simpleType>
       </xs:attribute>
       <xs:attribute name="bits" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:maxLength value="8"></xs:maxLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="selector" use="required">
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:minLength value="1"></xs:minLength>

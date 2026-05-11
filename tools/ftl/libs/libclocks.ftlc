@@ -1,0 +1,173 @@
+/*
+    ChibiOS - Copyright (C) 2006-2026 Giovanni Di Sirio.
+
+    This file is part of ChibiOS.
+
+    ChibiOS is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation version 3 of the License.
+
+    ChibiOS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+prename = doc1.clocktree.settings.prefixes.@clock_points[0]?string
+premacro = doc1.clocktree.settings.prefixes.@macros[0]?string
+precfg = doc1.clocktree.settings.prefixes.@cfgs[0]?string
+postclocks = "_FREQ"
+postvalues = doc1.clocktree.settings.suffixes.@values[0]?string
+postbits = doc1.clocktree.settings.suffixes.@bits[0]?string
+postchoices = doc1.clocktree.settings.suffixes.@selector[0]?string
+
+/* Static data parsed at startup.*/
+assign clocknames = []
+assign points = []
+assign muxes = []
+assign dividers = []
+assign multipliers = []
+
+/* Parses divider/multiplier value selection subtrees.*/
+function ParseScaler(scaler)
+  kind = ""
+  data = {}
+  if scaler.value[0]??
+    kind = "value"
+    value = scaler.value[0]
+    data = {"min":(value.@min[0]!"")?string, "max":(value.@max[0]!"")?string, "bits":value.@bits[0]?string}
+  elseif scaler.set[0]??
+    kind = "set"
+    set = scaler.set[0]
+    data = {"values":(set.@values[0]!"")?string, "bits":(set.@bits[0]!"")?string}
+  elseif scaler.choices[0]??
+    kind = "choices"
+    choices = []
+    list scaler.choices.choice as choice
+      choices = choices + [{"item":choice.@item[0]?string, "value":choice.@value[0]?string, "bits":choice.@bits[0]?string}]
+    endlist
+    data = {"choices":choices}
+  endif
+
+  return {"kind":kind, "data":data}
+endfunction
+
+/* Scanning clock points, gathering data.*/
+list doc1.clocktree.clocks.clock as clock
+
+  /* Clock information.*/
+  clockname = clock.@point[0]
+  clocknames = clocknames + [clockname]
+  clockswitchable = (clock.@switchable[0]!"no")?string
+  if clock.description[0]??
+    clockdescr = clock.description[0]?string?word_list?join(" ")
+  else
+    clockdescr = "no description"
+  endif
+
+  /* Determining the type of the clock point by looking at the child element.*/
+  if clock.source[0]??
+    /* It is a fixed clock.*/
+    clockfreq = clock.source[0].@frequency[0]?string
+    if clock.source[0].complex[0]??
+      clockcomplex = clock.source[0].complex[0]?string?trim
+    else
+      clockcomplex = ""
+    endif
+    points = (points + [{"description":clockdescr, "name":clockname, "switchable":clockswitchable, "frequency":clockfreq, "complex":clockcomplex}])
+
+  elseif clock.mux[0]??
+    /* It is a muxed clock.*/
+    muxname = clock.mux[0].@name[0]
+    muxinputs = []
+    muxdefault = ""
+    list clock.mux.input as input
+      inputpoint = input.@point[0]
+      inputbits = input.@bits[0]!"0"
+      inputdefault = (input.@default[0]!"no")?string
+      if inputdefault == "yes"
+        muxdefault = inputbits
+      endif
+      muxinputs = muxinputs + [{"point":inputpoint, "bits":inputbits, "default":inputdefault}]
+    endlist
+    muxes = (muxes + [{"name":clockname,
+                       "muxname":muxname,
+                       "inputs":muxinputs,
+                       "default":muxdefault,
+                       "description":clockdescr,
+                       "switchable":clockswitchable}])
+
+  elseif clock.divider[0]??
+    /* It is a divided clock.*/
+    divname = clock.divider[0].@name[0]
+    divinput = clock.divider[0].@input[0]?string
+    divparsed = ParseScaler(clock.divider[0])
+    dividers = dividers + [{"description":clockdescr, "name":clockname, "switchable":clockswitchable, "divname":divname, "input":divinput, "kind":divparsed["kind"], "data":divparsed["data"]}]
+
+  elseif clock.multiplier[0]??
+    /* It is a multiplied clock.*/
+    mulname = clock.multiplier[0].@name[0]
+    mulinput = clock.multiplier[0].@input[0]?string
+    mulparsed = ParseScaler(clock.multiplier[0])
+    multipliers = multipliers + [{"description":clockdescr, "name":clockname, "switchable":clockswitchable, "mulname":mulname, "input":mulinput, "kind":mulparsed["kind"], "data":mulparsed["data"]}]
+  endif
+endlist
+
+/* Validating references.*/
+list muxes as mux
+  list mux["inputs"] as input
+    inputpoint = input["point"]
+    if clocknames?seq_contains(inputpoint) == false
+      stop ">>>> Unknown clock point '" + inputpoint + "' referenced by mux '" + mux["name"] + "'"
+    endif
+  endlist
+endlist
+list dividers as div
+  inputpoint = div["input"]
+  if clocknames?seq_contains(inputpoint) == false
+    stop ">>>> Unknown clock point '" + inputpoint + "' referenced by divider '" + div["name"] + "'"
+  endif
+endlist
+list multipliers as mul
+  inputpoint = mul["input"]
+  if clocknames?seq_contains(inputpoint) == false
+    stop ">>>> Unknown clock point '" + inputpoint + "' referenced by multiplier '" + mul["name"] + "'"
+  endif
+endlist
+
+/* Emits definitions of all clock sources.*/
+macro EmitSourcePoints()
+  list points as point
+    emit """
+/**
+ * @brief   ${point["description"]?cap_first} clock point.
+ */
+${("#define " + prename + point["name"] + postclocks)?tab_to(44) + point["frequency"]}
+"""
+    sep
+      emit "\e"
+    endsep
+  endlist
+endmacro
+
+/* Emits definitions of all clock mux selectors.*/
+macro EmitMuxConfigurations()
+  list muxes as mux
+    muxsel = precfg + mux["name"] + postchoices
+    muxdefault = mux["default"]
+    if muxdefault == ""
+      stop ">>>> Missing default input for clock mux '" + mux["name"] + "'"
+    endif
+    emit """
+#if !defined(${muxsel}) || defined(__DOXYGEN__)
+${("#define " + muxsel)?tab_to(44) + muxdefault}
+#endif
+"""
+    sep
+      emit "\e"
+    endsep
+  endlist
+endmacro
