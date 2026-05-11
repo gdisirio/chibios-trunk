@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="clocktree" type="clocktreeType"></xs:element>
+    
+    <xs:complexType name="clocktreeType">
+      <xs:sequence>
+            <xs:element name="settings" type="settingsType" maxOccurs="1" minOccurs="1"></xs:element>
+            <xs:element name="clocks" type="clocksType" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="clocksType">
+      <xs:sequence>
+        <xs:element name="clock" type="clockType" maxOccurs="unbounded" minOccurs="1"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:complexType name="clockType">
+      <xs:sequence>
+        <xs:element name="description" type="xs:string" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+        <xs:choice maxOccurs="1" minOccurs="1">
+          <xs:element name="source" type="sourceType" maxOccurs="1"
+            minOccurs="1">
+          </xs:element>
+          <xs:element name="mux" type="muxType" maxOccurs="1" minOccurs="1"></xs:element>
+          <xs:element name="divider" type="dividerType" maxOccurs="1"
+            minOccurs="1">
+          </xs:element>
+          <xs:element name="multiplier" type="multiplierType" maxOccurs="1"
+            minOccurs="1">
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="point" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+        <xs:attribute name="optional">
+        <xs:annotation>
+          <xs:documentation>
+            An optional source expects a setting to enable/disable it.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="yes"></xs:enumeration>
+            <xs:enumeration value="no"></xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="sourceType">
+      <xs:sequence>
+        <xs:element name="complex" type="xs:string" maxOccurs="1"
+          minOccurs="0">
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="frequency" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="muxType">
+      <xs:sequence>
+        <xs:element name="input" type="inputType" maxOccurs="unbounded"
+          minOccurs="1">
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="dividerType">
+      <xs:choice maxOccurs="1" minOccurs="1">
+        <xs:element name="value" type="valueType" maxOccurs="1" minOccurs="1"></xs:element>
+        <xs:element name="set" type="setType" maxOccurs="1" minOccurs="1"></xs:element>
+        <xs:element name="choices" type="choicesType" maxOccurs="1" minOccurs="1"></xs:element>
+      </xs:choice>
+      <xs:attribute name="name" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="multiplierType">
+      <xs:choice maxOccurs="1" minOccurs="1">
+        <xs:element name="value" type="valueType" maxOccurs="1" minOccurs="1"></xs:element>
+        <xs:element name="set" type="setType" maxOccurs="1" minOccurs="1"></xs:element>
+        <xs:element name="choices" type="choicesType" maxOccurs="1" minOccurs="1"></xs:element>
+      </xs:choice>
+      <xs:attribute name="name" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="inputType">
+      <xs:attribute name="point" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="bits" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="namesType"></xs:complexType>
+
+    <xs:complexType name="NewType">
+      <xs:attribute name="true" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="false" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="valueType">
+      <xs:attribute name="min">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="(0|[1-9][0-9]*|[A-Za-z_][A-Za-z0-9_]*)"></xs:pattern>
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="max">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="(0|[1-9][0-9]*|[A-Za-z_][A-Za-z0-9_]*)"></xs:pattern>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+        <xs:attribute name="bits" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="setType">
+      <xs:attribute name="values">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="(0|[1-9][0-9]*)([ ,](0|[1-9][0-9]*))*"/>
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="bits">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="choicesType">
+      <xs:sequence>
+        <xs:element name="choice" type="choiceType" maxOccurs="unbounded" minOccurs="1"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="choiceType">
+      <xs:attribute name="item" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="value" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="0|[1-9][0-9]*"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="bits" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="settingsType">
+      <xs:sequence>
+        <xs:element name="prefixes" type="prefixesType" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+        <xs:element name="suffixes" type="suffixesType" maxOccurs="1" minOccurs="1"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="prefixesType">
+      <xs:attribute name="clock_points" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
+            <xs:maxLength value="8"></xs:maxLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="macros" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
+            <xs:maxLength value="8"></xs:maxLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="suffixesType">
+      <xs:attribute name="values" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
+            <xs:maxLength value="8"></xs:maxLength>
+            <xs:minLength value="1"></xs:minLength>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="bits" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:maxLength value="8"></xs:maxLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+            <xs:pattern value="[A-Za-z_][A-Za-z0-9_]*"></xs:pattern>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+</xs:schema>
