@@ -59,6 +59,7 @@
             <xs:enumeration value="never"></xs:enumeration>
             <xs:enumeration value="manual"></xs:enumeration>
             <xs:enumeration value="auto"></xs:enumeration>
+            <xs:enumeration value="always"></xs:enumeration>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
@@ -139,14 +140,12 @@
     </xs:complexType>
 
     <xs:complexType name="inputType">
+      <xs:sequence>
+        <xs:element name="bits" type="valueBitsType" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+      </xs:sequence>
       <xs:attribute name="point" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:minLength value="1"></xs:minLength>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="bits" use="required">
         <xs:simpleType>
           <xs:restriction base="xs:string">
             <xs:minLength value="1"></xs:minLength>
@@ -164,6 +163,17 @@
     </xs:complexType>
 
     <xs:complexType name="namesType"></xs:complexType>
+
+    <xs:complexType name="valueBitsType">
+      <xs:attribute name="value" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
 
     <xs:complexType name="boolBitsType">
       <xs:attribute name="enabled" use="required">
@@ -183,6 +193,11 @@
     </xs:complexType>
 
     <xs:complexType name="valueType">
+      <xs:sequence>
+        <xs:element name="bits" type="valueBitsType" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+      </xs:sequence>
       <xs:attribute name="min">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -201,17 +216,23 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-        <xs:attribute name="bits" use="required">
+      <xs:attribute name="default">
         <xs:simpleType>
           <xs:restriction base="xs:string">
+            <xs:pattern value="(0|[1-9][0-9]*|[A-Za-z_][A-Za-z0-9_]*)"></xs:pattern>
             <xs:minLength value="1"></xs:minLength>
             <xs:whiteSpace value="collapse"></xs:whiteSpace>
           </xs:restriction>
         </xs:simpleType>
-        </xs:attribute>
+      </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="setType">
+      <xs:sequence>
+        <xs:element name="bits" type="valueBitsType" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+      </xs:sequence>
       <xs:attribute name="values">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -221,9 +242,10 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
-      <xs:attribute name="bits">
+      <xs:attribute name="default">
         <xs:simpleType>
           <xs:restriction base="xs:string">
+            <xs:pattern value="(0|[1-9][0-9]*)"></xs:pattern>
             <xs:minLength value="1"></xs:minLength>
             <xs:whiteSpace value="collapse"></xs:whiteSpace>
           </xs:restriction>
@@ -235,9 +257,23 @@
       <xs:sequence>
         <xs:element name="choice" type="choiceType" maxOccurs="unbounded" minOccurs="1"></xs:element>
       </xs:sequence>
+      <xs:attribute name="default">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="(0|[1-9][0-9]*|[A-Za-z_][A-Za-z0-9_]*)"></xs:pattern>
+            <xs:minLength value="1"></xs:minLength>
+            <xs:whiteSpace value="collapse"></xs:whiteSpace>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="choiceType">
+      <xs:sequence>
+        <xs:element name="bits" type="valueBitsType" maxOccurs="1"
+          minOccurs="1">
+        </xs:element>
+      </xs:sequence>
       <xs:attribute name="item" use="required">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -253,14 +289,6 @@
             <xs:minLength value="1"></xs:minLength>
             <xs:whiteSpace value="collapse"></xs:whiteSpace>
             <xs:pattern value="0|[1-9][0-9]*"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
-      <xs:attribute name="bits" use="required">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:minLength value="1"></xs:minLength>
-            <xs:whiteSpace value="collapse"></xs:whiteSpace>
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
