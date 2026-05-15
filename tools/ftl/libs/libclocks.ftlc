@@ -196,10 +196,18 @@ function ParseLimitModel()
       endif
       local valuenames = valuenames + [name]
       local variants = []
-      if limit.value[0]??
-        list limit.value as value
-          local variants = variants + [{"when":(value.@when[0]!"")?string, "min":(value.@min[0]!"")?string, "max":(value.@max[0]!"")?string}]
+      if limit["case"][0]?? || limit["default"][0]??
+        if limit.@min[0]?? || limit.@max[0]??
+          stop ">>>> Direct and conditional values cannot be mixed for clock limit '" + name + "' in state '" + statename + "'"
+        endif
+        if !limit["default"][0]??
+          stop ">>>> Missing default value for clock limit '" + name + "' in state '" + statename + "'"
+        endif
+        list limit["case"] as casevalue
+          local variants = variants + [{"when":casevalue.@when[0]?string, "min":(casevalue.@min[0]!"")?string, "max":(casevalue.@max[0]!"")?string}]
         endlist
+        local defaultvalue = limit["default"][0]
+        local variants = variants + [{"when":"", "min":(defaultvalue.@min[0]!"")?string, "max":(defaultvalue.@max[0]!"")?string}]
       else
         local variants = variants + [{"when":"", "min":(limit.@min[0]!"")?string, "max":(limit.@max[0]!"")?string}]
       endif
@@ -311,6 +319,38 @@ function ParseConfigurations()
   endlist
 
   return configs
+endfunction
+
+/* Parses terminal clock consumers.*/
+function ParseConsumers(clocknames)
+  local names = []
+  local consumers = []
+
+  if doc1.clocktree.consumers[0]??
+    list doc1.clocktree.consumers.consumer as consumer
+      local name = consumer.@name[0]?string
+      local input = consumer.@input[0]?string
+      local condition = (consumer.@condition[0]!"TRUE")?string
+      if consumer.description[0]??
+        local description = consumer.description[0]?string?word_list?join(" ")
+      else
+        local description = "no description"
+      endif
+
+      if names?seq_contains(name)
+        stop ">>>> Duplicate clock consumer '" + name + "'"
+      endif
+      local names = names + [name]
+
+      if clocknames?seq_contains(input) == false
+        stop ">>>> Unknown clock point '" + input + "' referenced by consumer '" + name + "'"
+      endif
+
+      local consumers = consumers + [{"name":name, "input":input, "condition":condition, "description":description}]
+    endlist
+  endif
+
+  return consumers
 endfunction
 
 /* Initializes the parsed clock tree data model.*/
@@ -437,7 +477,9 @@ function Initialize()
     endif
   endlist
 
-  return {"configs":configs, "limits":limitmodel, "clocknames":clocknames, "clocks":clocks, "points":points, "muxes":muxes, "dividers":dividers, "multipliers":multipliers}
+  local consumers = ParseConsumers(clocknames)
+
+  return {"configs":configs, "limits":limitmodel, "clocknames":clocknames, "clocks":clocks, "points":points, "muxes":muxes, "dividers":dividers, "multipliers":multipliers, "consumers":consumers}
 endfunction
 
 /* Static data parsed at startup.*/
@@ -542,6 +584,11 @@ endmacro
 /* Returns the downstream use conditions for a clock point.*/
 function GetConsumerConditions(point)
   local conditions = []
+  list model["consumers"] as consumer
+    if consumer["input"] == point["name"]
+      local conditions = conditions + [{"consumer":consumer["name"], "terms":[consumer["condition"]]}]
+    endif
+  endlist
   list model["clocks"] as consumer
     if consumer["type"] == "source"
       if consumer["input"] == point["name"]
@@ -565,6 +612,17 @@ function GetConsumerConditions(point)
   endlist
 
   return conditions
+endfunction
+
+/* Returns the mux bits corresponding to a disabled source, if declared.*/
+function GetMuxDisabledBits(point)
+  list point["inputs"] as input
+    if input["point"] == "NONE"
+      return input["bits"]
+    endif
+  endlist
+
+  return ""
 endfunction
 
 /* Emits generic configuration settings.*/
@@ -1055,7 +1113,7 @@ macro EmitEnableDefinitions()
           local expression = ""
         endif
       else
-        local expression = "FALSE"
+        local expression = "TRUE"
       endif
     elseif point["enable"] == "always"
       local expression = "TRUE"
@@ -1270,6 +1328,8 @@ macro EmitClockBits(point)
     endif
   elseif point["type"] == "mux"
     local selmacro = precfg + point["name"] + postchoices
+    local enmacro = GetEnableMacro(point)
+    local disabledbits = GetMuxDisabledBits(point)
     emit """
 /**
  * @brief   ${point["name"]} clock register bits.
@@ -1277,9 +1337,17 @@ macro EmitClockBits(point)
 """
     list point["inputs"] as input
       if input?is_first
-        emit """
+        if disabledbits != ""
+          emit """
+#if (${enmacro} == FALSE)
+${("#define " + bitsmacro)?right_pad(44) + disabledbits}
+#elif (${selmacro} == ${input["bits"]}) || defined(__DOXYGEN__)
+"""
+        else
+          emit """
 #if (${selmacro} == ${input["bits"]}) || defined(__DOXYGEN__)
 """
+        endif
       else
         emit """
 #elif (${selmacro} == ${input["bits"]})

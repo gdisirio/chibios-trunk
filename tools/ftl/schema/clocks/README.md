@@ -42,10 +42,19 @@ jar.
   and `never`.
 - Clock `dynamic` is required and marks membership in the dynamic clock point
   set, independently from enable mode.
+- Terminal peripheral users are modeled in the optional top-level `consumers`
+  list. A consumer names an input clock point and may specify a preprocessor
+  `condition`; active consumers create downstream demand for `auto` clock
+  points without becoming clock points themselves. An `auto` clock point with
+  no downstream clock point or explicit consumer is treated as unconditionally
+  demanded; add consumers only when demand has a condition.
 - `settings/states`, `settings/limit-set`, and `settings/limit-values` define
   the selectable frequency limit states, the final limit macro set, and the
   state-specific values. The generator validates that each state provides all
   required final limits.
+- Conditional state-specific limits use ordered `<case when="..."/>` elements
+  followed by exactly one `<default/>` fallback. Simple unconditional limits can
+  still use direct `min` and `max` attributes on the `<limit>` element.
 - Clock points can specify optional `<limits ref="..."/>` references to final
   limit names. The generator emits the selected `<limit>_MIN` and `<limit>_MAX`
   definitions and uses them for frequency range checks. Disabled clock points
