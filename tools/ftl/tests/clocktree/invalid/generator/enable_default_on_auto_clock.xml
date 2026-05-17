@@ -11,15 +11,9 @@
     </configs>
   </settings>
   <clocks>
-    <clock point="USB" enable="always" dynamic="no">
-      <description>USB peripheral clock</description>
-      <source frequency="48000000U" />
+    <clock point="OSC" enable="always" default="TRUE" dynamic="no">
+      <description>clock point with invalid enable default</description>
+      <derived frequency="16000000U" />
     </clock>
   </clocks>
-  <consumers>
-    <consumer name="USB_DRIVER" input="USB" condition="HAL_USE_USB == TRUE">
-      <description>consumer references a missing limit declaration</description>
-      <limits ref="MISSING_LIMIT" />
-    </consumer>
-  </consumers>
 </clocktree>

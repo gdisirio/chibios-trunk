@@ -11,9 +11,9 @@
     </configs>
   </settings>
   <clocks>
-    <clock point="OSC" enable="always" dynamic="no">
-      <description>source without a frequency definition</description>
-      <source />
+    <clock point="DERIVED" enable="always" dynamic="no">
+      <description>derived source references missing input point</description>
+      <derived input="MISSING" frequency="(%I% / 2U)" />
     </clock>
   </clocks>
 </clocktree>

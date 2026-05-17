@@ -42,12 +42,22 @@ jar.
   and `never`.
 - Clock `dynamic` is required and marks membership in the dynamic clock point
   set, independently from enable mode.
-- Terminal peripheral users are modeled in the optional top-level `consumers`
-  list. A consumer names an input clock point and may specify a preprocessor
-  `condition`; active consumers create downstream demand for `auto` clock
+- Root clock points can be modeled in the optional top-level `sources` list.
+  A source emits one clock point but has no upstream input; it can still use
+  a fixed `frequency` attribute or conditional `<frequencies>` table, enable
+  modes, bits, and limits. Source points cannot use an input clock.
+- Formula or pass-through clock points under `clocks` use `<derived>`. A
+  derived point can specify an optional `input` plus a fixed `frequency`
+  expression or conditional `<frequencies>` table.
+- Fixed hardware dividers with no selectable register field should also be
+  modeled as `<derived>` frequency expressions. Use `<divider>` only when the
+  divider value is configurable and emits selection bits.
+- Terminal peripheral users are modeled in the optional top-level `sinks`
+  list. A sink names an input clock point and may specify a preprocessor
+  `condition`; active sinks create downstream demand for `auto` clock
   points without becoming clock points themselves. An `auto` clock point with
-  no downstream clock point or explicit consumer is treated as unconditionally
-  demanded; add consumers only when demand has a condition. Consumers can also
+  no downstream clock point or explicit sink is treated as unconditionally
+  demanded; add sinks only when demand has a condition. Sinks can also
   specify optional `<limits ref="..."/>` references when a peripheral imposes
   a frequency range on the consumed clock.
 - `settings/states`, `settings/limit-set`, and `settings/limit-values` define
@@ -63,6 +73,9 @@ jar.
   are not range-checked.
 - Mux inputs and scaler choices use nested `<bits value="..."/>` elements, not
   bits attributes.
+- Bits elements can specify optional `mask` metadata. The generator uses masks
+  to reject nested selections that OR two fields for the same target and mask.
+  Masks are required when a target can receive bits from multiple XML levels.
 - Divider and multiplier nodes must specify their input clock point.
 - Mux, divider, and multiplier inputs are checked against the declared clock
   points.
@@ -71,7 +84,8 @@ jar.
 
 ## Generated Contract
 
-Each clock point should emit, in XML order:
+Each source and clock point should emit, in XML order, with sources emitted
+before clocks:
 
 - configuration settings where applicable;
 - an `<POINT><enabled-suffix>` macro;
@@ -82,16 +96,17 @@ Each clock point should emit, in XML order:
 - grouped state-specific frequency limit definitions and one selected final
   limit block where a limit model is declared;
 - compile-time frequency range checks where clock point limits are declared.
-- compile-time frequency range checks where active consumer limits are
+- compile-time frequency range checks where active sink limits are
   declared.
 
 Generic configurations emit explicit settings using the configured
 configuration prefix and their local names, for example `CLOCK_DYNAMIC` becomes
 `STM32_CFG_CLOCK_DYNAMIC`. Manual clock points emit explicit configuration
 settings using the configured configuration prefix and enable suffix, for example
-`STM32_CFG_HSI16_ENABLE`. Auto clock points derive enablement from downstream
-use. Always and never clock points still emit their own enabled flags for
-uniformity.
+`STM32_CFG_HSI16_ENABLE`. Manual clock points default to `FALSE` unless the
+clock point explicitly specifies `default="TRUE"`. Auto clock points derive
+enablement from downstream use. Always and never clock points still emit their
+own enabled flags for uniformity.
 
 Clock definitions with enable-state bits use a clock-level `<bits enabled="..."
 disabled="..."/>` element. Those bits are combined with selection bits when the
@@ -106,57 +121,57 @@ points normally stay always-enabled.
 
 Use `enable="auto"` for optional peripheral clocks and intermediate helper
 clocks. Auto clocks are enabled when a downstream clock point or explicit
-consumer demands them. This avoids optional peripherals accidentally enabling or
+sink demands them. This avoids optional peripherals accidentally enabling or
 requiring upstream oscillators.
 
-Use one consumer per independent reason to demand a clock. This keeps generated
+Use one sink per independent reason to demand a clock. This keeps generated
 `<POINT>_ENABLED` expressions readable and diagnostics meaningful. Prefer two
-consumers over one large condition when two drivers or features can require the
+sinks over one large condition when two drivers or features can require the
 same clock.
 
 Driver-owned peripheral clocks should use existing HAL and STM32 instance
-switches in their consumer conditions. Examples:
+switches in their sink conditions. Examples:
 
 ```xml
-<consumer name="SPI1_DRIVER" input="SPI1"
+<sink name="SPI1_DRIVER" input="SPI1"
           condition="(HAL_USE_SPI == TRUE) &amp;&amp; (STM32_SPI_USE_SPI1 == TRUE)">
   <description>SPI driver demands the SPI1 clock when enabled.</description>
-</consumer>
+</sink>
 
-<consumer name="USB1_DRIVER" input="USB"
+<sink name="USB1_DRIVER" input="USB"
           condition="(HAL_USE_USB == TRUE) &amp;&amp; (STM32_USB_USE_USB1 == TRUE)">
   <description>USB driver demands the USB clock when enabled.</description>
   <limits ref="USBCLK" />
-</consumer>
+</sink>
 ```
 
-Use consumer limits for requirements belonging to a specific peripheral use,
+Use sink limits for requirements belonging to a specific peripheral use,
 such as USB requiring a known clock range. Keep structural bus or oscillator
-limits on the clock point itself. Consumer limits are checked only when the
-consumer condition is active.
+limits on the clock point itself. Sink limits are checked only when the
+sink condition is active.
 
 If several instances of one driver share a clock point, keep the driver part as
 one AND term and OR only the instance switches inside the second term:
 
 ```xml
-<consumer name="ADCDAC_ADC_DRIVER" input="ADCDAC"
+<sink name="ADCDAC_ADC_DRIVER" input="ADCDAC"
           condition="(HAL_USE_ADC == TRUE) &amp;&amp; ((STM32_ADC_USE_ADC1 == TRUE) || (STM32_ADC_USE_ADC2 == TRUE))">
   <description>ADC driver demands the ADCDAC clock when enabled.</description>
-</consumer>
+</sink>
 ```
 
-If separate drivers can demand the same clock point, use separate consumers
+If separate drivers can demand the same clock point, use separate sinks
 instead of one top-level OR expression:
 
 ```xml
-<consumer name="ADCDAC_ADC_DRIVER" input="ADCDAC"
+<sink name="ADCDAC_ADC_DRIVER" input="ADCDAC"
           condition="(HAL_USE_ADC == TRUE) &amp;&amp; ((STM32_ADC_USE_ADC1 == TRUE) || (STM32_ADC_USE_ADC2 == TRUE))">
   <description>ADC driver demands the ADCDAC clock when enabled.</description>
-</consumer>
-<consumer name="ADCDAC_DAC_DRIVER" input="ADCDAC"
+</sink>
+<sink name="ADCDAC_DAC_DRIVER" input="ADCDAC"
           condition="(HAL_USE_DAC == TRUE) &amp;&amp; ((STM32_DAC_USE_DAC1_CH1 == TRUE) || (STM32_DAC_USE_DAC1_CH2 == TRUE))">
   <description>DAC driver demands the ADCDAC clock when enabled.</description>
-</consumer>
+</sink>
 ```
 
 For clocks not owned by an existing driver setting, add a local boolean
@@ -168,20 +183,20 @@ prefix in generated code. The XML config name does not include the prefix:
   <description>Enables demand for the OCTOSPI clock.</description>
 </config>
 
-<consumer name="OCTOSPI_REQUIRED" input="OCTOSPI"
+<sink name="OCTOSPI_REQUIRED" input="OCTOSPI"
           condition="STM32_CFG_OCTOSPI_REQUIRED == TRUE">
   <description>Local option demands the OCTOSPI clock when enabled.</description>
-</consumer>
+</sink>
 ```
 
 Derived helper clocks such as intermediate muxes and dividers should usually be
-`auto` and have no direct consumer. They become enabled through downstream
+`auto` and have no direct sink. They become enabled through downstream
 dependencies. For example, an intermediate divided clock used only by USB should
 be demanded by the USB clock point, not by its own local option.
 
-Clock points with no defined consumers are treated as unconditionally demanded.
+Clock points with no defined sinks are treated as unconditionally demanded.
 This is useful for always-present generated outputs but means optional
-peripheral clocks must have consumers if their demand is conditional.
+peripheral clocks must have sinks if their demand is conditional.
 
 Use `NONE` inputs only for real selectable no-clock mux values, such as output
 pin clocks or backup-domain selectors that explicitly support a no-clock
@@ -201,7 +216,7 @@ in clock-level disabled bits:
 </clock>
 ```
 
-Expression style matters. Consumer conditions are parsed by generator helpers
+Expression style matters. Sink conditions are parsed by generator helpers
 for formatting and diagnostics, so keep them simple:
 
 - Good: `(HAL_USE_SPI == TRUE) && (STM32_SPI_USE_SPI1 == TRUE)`
@@ -211,7 +226,7 @@ for formatting and diagnostics, so keep them simple:
 When converting an existing clock point to conditional demand:
 
 - Change the clock point from `enable="always"` to `enable="auto"`.
-- Add a driver consumer or a local `<POINT>_REQUIRED` config plus consumer.
+- Add a driver sink or a local `<POINT>_REQUIRED` config plus sink.
 - Keep intermediate helper clocks `auto` and let downstream dependencies demand
   them.
 - Move disabled-state selector values from fake `NONE` inputs to clock-level

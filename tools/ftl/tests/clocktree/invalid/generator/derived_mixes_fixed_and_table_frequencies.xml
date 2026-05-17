@@ -11,14 +11,13 @@
     </configs>
   </settings>
   <clocks>
-    <clock point="BASE" enable="always" dynamic="no">
-      <description>base clock</description>
-      <source frequency="1000000U" />
+    <clock point="OSC" enable="always" dynamic="no">
+      <description>source mixing frequency mechanisms</description>
+      <derived frequency="16000000U">
+        <frequencies>
+          <default value="8000000U" />
+        </frequencies>
+      </derived>
     </clock>
   </clocks>
-  <consumers>
-    <consumer name="DRIVER" input="MISSING">
-      <description>consumer references a missing clock point</description>
-    </consumer>
-  </consumers>
 </clocktree>
