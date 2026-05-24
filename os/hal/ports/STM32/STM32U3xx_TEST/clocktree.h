@@ -67,6 +67,260 @@
   }
 /** @} */
 
+/**
+ * @name    Generated support definitions
+ * @{
+ */
+#define RCC_MSIRC0_FREE                     0
+#define RCC_MSIRC0_PLL_LSE                  1
+#define RCC_MSIRC0_PLL_HSE                  2
+#define RCC_MSIRC0_PLL_LSE_FAST             3
+#define RCC_MSIRC0_PLL_HSE_FAST             4
+#define RCC_MSIRC1_FREE                     0
+#define RCC_MSIRC1_PLL_LSE                  1
+#define RCC_MSIRC1_PLL_HSE                  2
+#define RCC_MSIRC1_PLL_LSE_FAST             3
+#define RCC_MSIRC1_PLL_HSE_FAST             4
+#define RCC_ICSCR1_MSIS_IRC0_DIV1           0
+#define RCC_ICSCR1_MSIS_IRC0_DIV2           1
+#define RCC_ICSCR1_MSIS_IRC0_DIV4           2
+#define RCC_ICSCR1_MSIS_IRC0_DIV8           3
+#define RCC_ICSCR1_MSIS_IRC1_DIV1           4
+#define RCC_ICSCR1_MSIS_IRC1_DIV2           5
+#define RCC_ICSCR1_MSIS_IRC1_DIV4           6
+#define RCC_ICSCR1_MSIS_IRC1_DIV8           7
+#define RCC_ICSCR1_MSIK_IRC0_DIV1           0
+#define RCC_ICSCR1_MSIK_IRC0_DIV2           1
+#define RCC_ICSCR1_MSIK_IRC0_DIV4           2
+#define RCC_ICSCR1_MSIK_IRC0_DIV8           3
+#define RCC_ICSCR1_MSIK_IRC1_DIV1           4
+#define RCC_ICSCR1_MSIK_IRC1_DIV2           5
+#define RCC_ICSCR1_MSIK_IRC1_DIV4           6
+#define RCC_ICSCR1_MSIK_IRC1_DIV8           7
+#define RCC_ICSCR1_MSIHSINDIV_HSE16         ((0U) << RCC_ICSCR1_MSIHSINDIV_Pos)
+#define RCC_ICSCR1_MSIHSINDIV_HSE32         ((1U) << RCC_ICSCR1_MSIHSINDIV_Pos)
+#define RCC_ICSCR1_MSIPLL1SEL_LSE           ((0U) << RCC_ICSCR1_MSIPLL1SEL_Pos)
+#define RCC_ICSCR1_MSIPLL1SEL_HSE           ((1U) << RCC_ICSCR1_MSIPLL1SEL_Pos)
+#define RCC_ICSCR1_MSIPLL0SEL_LSE           ((0U) << RCC_ICSCR1_MSIPLL0SEL_Pos)
+#define RCC_ICSCR1_MSIPLL0SEL_HSE           ((1U) << RCC_ICSCR1_MSIPLL0SEL_Pos)
+#define RCC_ICSCR1_MSIBIAS_CONTINUOUS       ((0U) << RCC_ICSCR1_MSIBIAS_Pos)
+#define RCC_ICSCR1_MSIBIAS_SAMPLING         ((1U) << RCC_ICSCR1_MSIBIAS_Pos)
+#define RCC_ICSCR1_MSIRGSEL_CSR             ((0U) << RCC_ICSCR1_MSIRGSEL_Pos)
+#define RCC_ICSCR1_MSIRGSEL_ICSCR1          ((1U) << RCC_ICSCR1_MSIRGSEL_Pos)
+#define RCC_ICSCR1_MSIKSEL_MSIRC0           ((0U) << RCC_ICSCR1_MSIKSEL_Pos)
+#define RCC_ICSCR1_MSIKSEL_MSIRC1           ((1U) << RCC_ICSCR1_MSIKSEL_Pos)
+#define RCC_ICSCR1_MSISSEL_MSIRC0           ((0U) << RCC_ICSCR1_MSISSEL_Pos)
+#define RCC_ICSCR1_MSISSEL_MSIRC1           ((1U) << RCC_ICSCR1_MSISSEL_Pos)
+#define RCC_CFGR1_STOPWUCK_MSIS             ((0U) << RCC_CFGR1_STOPWUCK_Pos)
+#define RCC_CFGR1_STOPWUCK_HSI16            ((1U) << RCC_CFGR1_STOPWUCK_Pos)
+#define RCC_CFGR1_STOPKERWUCK_MSIK          ((0U) << RCC_CFGR1_STOPKERWUCK_Pos)
+#define RCC_CFGR1_STOPKERWUCK_HSI16         ((1U) << RCC_CFGR1_STOPKERWUCK_Pos)
+#define RCC_CCIPR1_TIMICSEL_NOCLOCK         ((0U) << RCC_CCIPR1_TIMICSEL_Pos)
+#define RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIS4 ((4U) << RCC_CCIPR1_TIMICSEL_Pos)
+#define RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIK4 ((5U) << RCC_CCIPR1_TIMICSEL_Pos)
+#define RCC_CCIPR1_TIMICSEL_HSI256_MSIK1024_MSIS4 ((6U) << RCC_CCIPR1_TIMICSEL_Pos)
+#define RCC_CCIPR1_TIMICSEL_HSI256_MSIK1024_MSIK4 ((7U) << RCC_CCIPR1_TIMICSEL_Pos)
+#define RCC_ICSCR1_MSIPLL1N_FIELD(n)        ((n) << RCC_ICSCR1_MSIPLL1N_Pos)
+#define RCC_ICSCR1_MSIKDIV_FIELD(n)         ((n) << RCC_ICSCR1_MSIKDIV_Pos)
+#define RCC_ICSCR1_MSISDIV_FIELD(n)         ((n) << RCC_ICSCR1_MSISDIV_Pos)
+/** @} */
+
+/**
+ * @name    Generated mux selector constants
+ * @{
+ */
+#define RCC_CFGR1_SW_MSIS                   ((0U) << 0U)
+#define RCC_CFGR1_SW_HSI16                  ((1U) << 0U)
+#define RCC_CFGR1_SW_HSE                    ((2U) << 0U)
+
+#define RCC_CFGR1_MCO1SEL_OFF               ((0U) << 24U)
+#define RCC_CFGR1_MCO1SEL_SYSCLK            ((1U) << 24U)
+#define RCC_CFGR1_MCO1SEL_MSIS              ((2U) << 24U)
+#define RCC_CFGR1_MCO1SEL_HSI16             ((3U) << 24U)
+#define RCC_CFGR1_MCO1SEL_HSE               ((4U) << 24U)
+#define RCC_CFGR1_MCO1SEL_LSI               ((5U) << 24U)
+#define RCC_CFGR1_MCO1SEL_LSE               ((6U) << 24U)
+#define RCC_CFGR1_MCO1SEL_HSI48             ((7U) << 24U)
+#define RCC_CFGR1_MCO1SEL_MSIK              ((8U) << 24U)
+
+#define RCC_CFGR1_MCO2SEL_OFF               ((0U) << 16U)
+#define RCC_CFGR1_MCO2SEL_SYSCLK            ((1U) << 16U)
+#define RCC_CFGR1_MCO2SEL_MSIS              ((2U) << 16U)
+#define RCC_CFGR1_MCO2SEL_HSI16             ((3U) << 16U)
+#define RCC_CFGR1_MCO2SEL_HSE               ((4U) << 16U)
+#define RCC_CFGR1_MCO2SEL_LSI               ((5U) << 16U)
+#define RCC_CFGR1_MCO2SEL_LSE               ((6U) << 16U)
+#define RCC_CFGR1_MCO2SEL_HSI48             ((7U) << 16U)
+#define RCC_CFGR1_MCO2SEL_MSIK              ((8U) << 16U)
+
+#define RCC_BDCR_RTCSEL_NOCLOCK             ((0U) << 8U)
+#define RCC_BDCR_RTCSEL_LSE                 ((1U) << 8U)
+#define RCC_BDCR_RTCSEL_LSI                 ((2U) << 8U)
+#define RCC_BDCR_RTCSEL_HSEDIV              ((3U) << 8U)
+
+#define RCC_BDCR_LSCOSEL_NOCLOCK            ((0U) << 24U)
+#define RCC_BDCR_LSCOSEL_LSI                ((1U) << 24U)
+#define RCC_BDCR_LSCOSEL_LSE                ((3U) << 24U)
+
+#define RCC_CCIPR1_USART1SEL_PCLK2          ((0U) << 0U)
+#define RCC_CCIPR1_USART1SEL_HSI16          ((1U) << 0U)
+
+#define RCC_CCIPR1_USART3SEL_PCLK1          ((0U) << 2U)
+#define RCC_CCIPR1_USART3SEL_HSI16          ((1U) << 2U)
+
+#define RCC_CCIPR1_UART4SEL_PCLK1           ((0U) << 4U)
+#define RCC_CCIPR1_UART4SEL_HSI16           ((1U) << 4U)
+
+#define RCC_CCIPR1_UART5SEL_PCLK1           ((0U) << 6U)
+#define RCC_CCIPR1_UART5SEL_HSI16           ((1U) << 6U)
+
+#define RCC_CCIPR3_LPUART1SEL_PCLK3         ((0U) << 0U)
+#define RCC_CCIPR3_LPUART1SEL_HSI16         ((1U) << 0U)
+#define RCC_CCIPR3_LPUART1SEL_LSE           ((2U) << 0U)
+#define RCC_CCIPR3_LPUART1SEL_MSIK          ((3U) << 0U)
+
+#define RCC_CCIPR3_LPTIM1SEL_MSIK           ((0U) << 10U)
+#define RCC_CCIPR3_LPTIM1SEL_LSI            ((1U) << 10U)
+#define RCC_CCIPR3_LPTIM1SEL_HSI16          ((2U) << 10U)
+#define RCC_CCIPR3_LPTIM1SEL_LSE            ((3U) << 10U)
+
+#define RCC_CCIPR1_LPTIM2SEL_PCLK1          ((0U) << 18U)
+#define RCC_CCIPR1_LPTIM2SEL_LSI            ((1U) << 18U)
+#define RCC_CCIPR1_LPTIM2SEL_HSI16          ((2U) << 18U)
+#define RCC_CCIPR1_LPTIM2SEL_LSE            ((3U) << 18U)
+
+#define RCC_CCIPR3_LPTIM34SEL_MSIK          ((0U) << 8U)
+#define RCC_CCIPR3_LPTIM34SEL_LSI           ((1U) << 8U)
+#define RCC_CCIPR3_LPTIM34SEL_HSI16         ((2U) << 8U)
+#define RCC_CCIPR3_LPTIM34SEL_LSE           ((3U) << 8U)
+
+#define RCC_CCIPR1_SPI1SEL_PCLK2            ((0U) << 20U)
+#define RCC_CCIPR1_SPI1SEL_MSIK             ((1U) << 20U)
+
+#define RCC_CCIPR1_SPI2SEL_PCLK1            ((0U) << 16U)
+#define RCC_CCIPR1_SPI2SEL_MSIK             ((1U) << 16U)
+
+#define RCC_CCIPR2_SPI3SEL_PCLK1            ((0U) << 3U)
+#define RCC_CCIPR2_SPI3SEL_MSIK             ((1U) << 3U)
+
+#define RCC_CCIPR2_OCTOSPISEL_SYSCLK        ((0U) << 20U)
+#define RCC_CCIPR2_OCTOSPISEL_MSIK          ((1U) << 20U)
+
+#define RCC_CCIPR1_SYSTICKSEL_HCLKDIV8      ((0U) << 22U)
+#define RCC_CCIPR1_SYSTICKSEL_LSI           ((1U) << 22U)
+#define RCC_CCIPR1_SYSTICKSEL_LSE           ((2U) << 22U)
+
+#define RCC_CCIPR1_ICLKSEL_HSI48            ((0U) << 26U)
+#define RCC_CCIPR1_ICLKSEL_MSIK             ((1U) << 26U)
+#define RCC_CCIPR1_ICLKSEL_HSE              ((2U) << 26U)
+#define RCC_CCIPR1_ICLKSEL_SYSCLK           ((3U) << 26U)
+
+#define RCC_CCIPR1_USB1SEL_ICLK             ((0U) << 28U)
+#define RCC_CCIPR1_USB1SEL_ICLKDIV2         ((1U) << 28U)
+
+#define RCC_CCIPR1_I2C1SEL_PCLK1            ((0U) << 10U)
+#define RCC_CCIPR1_I2C1SEL_MSIK             ((1U) << 10U)
+
+#define RCC_CCIPR1_I2C2SEL_PCLK1            ((0U) << 12U)
+#define RCC_CCIPR1_I2C2SEL_MSIK             ((1U) << 12U)
+
+#define RCC_CCIPR3_I2C3SEL_PCLK3            ((0U) << 6U)
+#define RCC_CCIPR3_I2C3SEL_MSIK             ((1U) << 6U)
+
+#define RCC_CCIPR1_I3C1SEL_PCLK1            ((0U) << 8U)
+#define RCC_CCIPR1_I3C1SEL_MSIK             ((1U) << 8U)
+
+#define RCC_CCIPR1_I3C2SEL_PCLK2            ((0U) << 14U)
+#define RCC_CCIPR1_I3C2SEL_MSIK             ((1U) << 14U)
+
+#define RCC_CCIPR2_ADCDACSEL_HCLK           ((0U) << 16U)
+#define RCC_CCIPR2_ADCDACSEL_HSE            ((1U) << 16U)
+#define RCC_CCIPR2_ADCDACSEL_MSIK           ((2U) << 16U)
+
+#define RCC_CCIPR2_DAC1SHSEL_LSE            ((0U) << 19U)
+#define RCC_CCIPR2_DAC1SHSEL_LSI            ((1U) << 19U)
+#define RCC_CCIPR2_DAC1SHSEL_IGNORE         0xFFFFFFFFU
+
+#define RCC_CCIPR2_RNGSEL_HSI48             ((0U) << 11U)
+#define RCC_CCIPR2_RNGSEL_MSIK              ((1U) << 11U)
+#define RCC_CCIPR2_RNGSEL_IGNORE            0xFFFFFFFFU
+
+#define RCC_CCIPR1_FDCAN1SEL_SYSCLK         ((0U) << 24U)
+#define RCC_CCIPR1_FDCAN1SEL_MSIK           ((1U) << 24U)
+#define RCC_CCIPR1_FDCAN1SEL_IGNORE         0xFFFFFFFFU
+
+#define RCC_CCIPR2_SAI1SEL_MSIK             ((0U) << 5U)
+#define RCC_CCIPR2_SAI1SEL_AUDIOCLK         ((1U) << 5U)
+#define RCC_CCIPR2_SAI1SEL_HSE              ((2U) << 5U)
+
+#define RCC_CCIPR2_ADF1SEL_HCLK             ((0U) << 0U)
+#define RCC_CCIPR2_ADF1SEL_AUDIOCLK         ((1U) << 0U)
+#define RCC_CCIPR2_ADF1SEL_HSE              ((2U) << 0U)
+#define RCC_CCIPR2_ADF1SEL_SAI1             ((3U) << 0U)
+/** @} */
+
+/**
+ * @name    Generated scaler selector constants
+ * @{
+ */
+#define RCC_CFGR2_HPRE_DIV1                 ((0U) << 0U)
+#define RCC_CFGR2_HPRE_DIV2                 ((8U) << 0U)
+#define RCC_CFGR2_HPRE_DIV4                 ((9U) << 0U)
+#define RCC_CFGR2_HPRE_DIV8                 ((10U) << 0U)
+#define RCC_CFGR2_HPRE_DIV16                ((11U) << 0U)
+#define RCC_CFGR2_HPRE_DIV64                ((12U) << 0U)
+#define RCC_CFGR2_HPRE_DIV128               ((13U) << 0U)
+#define RCC_CFGR2_HPRE_DIV256               ((14U) << 0U)
+#define RCC_CFGR2_HPRE_DIV512               ((15U) << 0U)
+
+#define RCC_CFGR2_PPRE1_DIV1                ((0U) << 4U)
+#define RCC_CFGR2_PPRE1_DIV2                ((4U) << 4U)
+#define RCC_CFGR2_PPRE1_DIV4                ((5U) << 4U)
+#define RCC_CFGR2_PPRE1_DIV8                ((6U) << 4U)
+#define RCC_CFGR2_PPRE1_DIV16               ((7U) << 4U)
+
+#define RCC_CFGR2_PPRE2_DIV1                ((0U) << 8U)
+#define RCC_CFGR2_PPRE2_DIV2                ((4U) << 8U)
+#define RCC_CFGR2_PPRE2_DIV4                ((5U) << 8U)
+#define RCC_CFGR2_PPRE2_DIV8                ((6U) << 8U)
+#define RCC_CFGR2_PPRE2_DIV16               ((7U) << 8U)
+
+#define RCC_CFGR3_PPRE3_DIV1                ((0U) << 4U)
+#define RCC_CFGR3_PPRE3_DIV2                ((4U) << 4U)
+#define RCC_CFGR3_PPRE3_DIV4                ((5U) << 4U)
+#define RCC_CFGR3_PPRE3_DIV8                ((6U) << 4U)
+#define RCC_CFGR3_PPRE3_DIV16               ((7U) << 4U)
+
+#define RCC_CFGR1_MCO1PRE_DIV1              ((0U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV2              ((1U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV4              ((2U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV8              ((3U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV16             ((4U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV32             ((5U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV64             ((6U) << 28U)
+#define RCC_CFGR1_MCO1PRE_DIV128            ((7U) << 28U)
+
+#define RCC_CFGR1_MCO2PRE_DIV1              ((0U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV2              ((1U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV4              ((2U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV8              ((3U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV16             ((4U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV32             ((5U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV64             ((6U) << 20U)
+#define RCC_CFGR1_MCO2PRE_DIV128            ((7U) << 20U)
+
+#define RCC_CCIPR2_ADCDACPRE_ICLK           ((0U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV2       ((1U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV4       ((8U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV8       ((9U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV16      ((10U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV32      ((11U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV64      ((12U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV128     ((13U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV256     ((14U) << 12U)
+#define RCC_CCIPR2_ADCDACPRE_ICLKDIV512     ((15U) << 12U)
+/** @} */
+
 /*===========================================================================*/
 /* Driver pre-compile time settings.                                         */
 /*===========================================================================*/
@@ -108,6 +362,13 @@
  */
 #if !defined(STM32_CFG_MSIPLL1N_VALUE) || defined(__DOXYGEN__)
   #define STM32_CFG_MSIPLL1N_VALUE          0
+#endif
+
+/**
+ * @brief   Sets the external audio clock input frequency.
+ */
+#if !defined(STM32_CFG_AUDIOCLK) || defined(__DOXYGEN__)
+  #define STM32_CFG_AUDIOCLK                0U
 #endif
 
 /**
@@ -679,21 +940,6 @@
   #error "invalid STM32_CFG_PWR_VOSR value specified"
 #endif
 
-#if !defined(RCC_MSIRC0_FREE) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC0_FREE not defined"
-#endif
-#if !defined(RCC_MSIRC0_PLL_LSE) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC0_PLL_LSE not defined"
-#endif
-#if !defined(RCC_MSIRC0_PLL_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC0_PLL_HSE not defined"
-#endif
-#if !defined(RCC_MSIRC0_PLL_LSE_FAST) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC0_PLL_LSE_FAST not defined"
-#endif
-#if !defined(RCC_MSIRC0_PLL_HSE_FAST) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC0_PLL_HSE_FAST not defined"
-#endif
 #if !((STM32_CFG_MSIRC0_MODE == RCC_MSIRC0_FREE) ||                         \
      (STM32_CFG_MSIRC0_MODE == RCC_MSIRC0_PLL_LSE) ||                       \
      (STM32_CFG_MSIRC0_MODE == RCC_MSIRC0_PLL_HSE) ||                       \
@@ -702,21 +948,6 @@
   #error "invalid STM32_CFG_MSIRC0_MODE value specified"
 #endif
 
-#if !defined(RCC_MSIRC1_FREE) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC1_FREE not defined"
-#endif
-#if !defined(RCC_MSIRC1_PLL_LSE) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC1_PLL_LSE not defined"
-#endif
-#if !defined(RCC_MSIRC1_PLL_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC1_PLL_HSE not defined"
-#endif
-#if !defined(RCC_MSIRC1_PLL_LSE_FAST) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC1_PLL_LSE_FAST not defined"
-#endif
-#if !defined(RCC_MSIRC1_PLL_HSE_FAST) && !defined(__DOXYGEN__)
-  #error "RCC_MSIRC1_PLL_HSE_FAST not defined"
-#endif
 #if !((STM32_CFG_MSIRC1_MODE == RCC_MSIRC1_FREE) ||                         \
      (STM32_CFG_MSIRC1_MODE == RCC_MSIRC1_PLL_LSE) ||                       \
      (STM32_CFG_MSIRC1_MODE == RCC_MSIRC1_PLL_HSE) ||                       \
@@ -731,30 +962,6 @@
   #error "invalid STM32_CFG_MSIPLL1N_VALUE value specified"
 #endif
 
-#if !defined(RCC_ICSCR1_MSIS_IRC0_DIV1) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC0_DIV1 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC0_DIV2) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC0_DIV2 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC0_DIV4) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC0_DIV4 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC0_DIV8) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC0_DIV8 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC1_DIV1) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC1_DIV1 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC1_DIV2) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC1_DIV2 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC1_DIV4) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC1_DIV4 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIS_IRC1_DIV8) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIS_IRC1_DIV8 not defined"
-#endif
 #if !((STM32_CFG_MSIS_SRCDIV == RCC_ICSCR1_MSIS_IRC0_DIV1) ||               \
      (STM32_CFG_MSIS_SRCDIV == RCC_ICSCR1_MSIS_IRC0_DIV2) ||                \
      (STM32_CFG_MSIS_SRCDIV == RCC_ICSCR1_MSIS_IRC0_DIV4) ||                \
@@ -767,30 +974,6 @@
   #error "invalid STM32_CFG_MSIS_SRCDIV value specified"
 #endif
 
-#if !defined(RCC_ICSCR1_MSIK_IRC0_DIV1) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC0_DIV1 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC0_DIV2) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC0_DIV2 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC0_DIV4) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC0_DIV4 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC0_DIV8) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC0_DIV8 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC1_DIV1) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC1_DIV1 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC1_DIV2) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC1_DIV2 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC1_DIV4) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC1_DIV4 not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIK_IRC1_DIV8) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIK_IRC1_DIV8 not defined"
-#endif
 #if !((STM32_CFG_MSIK_SRCDIV == RCC_ICSCR1_MSIK_IRC0_DIV1) ||               \
      (STM32_CFG_MSIK_SRCDIV == RCC_ICSCR1_MSIK_IRC0_DIV2) ||                \
      (STM32_CFG_MSIK_SRCDIV == RCC_ICSCR1_MSIK_IRC0_DIV4) ||                \
@@ -803,55 +986,22 @@
   #error "invalid STM32_CFG_MSIK_SRCDIV value specified"
 #endif
 
-#if !defined(RCC_CFGR1_STOPWUCK_MSIS) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_STOPWUCK_MSIS not defined"
-#endif
-#if !defined(RCC_CFGR1_STOPWUCK_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_STOPWUCK_HSI16 not defined"
-#endif
 #if !((STM32_CFG_STOPWUCK == RCC_CFGR1_STOPWUCK_MSIS) ||                    \
      (STM32_CFG_STOPWUCK == RCC_CFGR1_STOPWUCK_HSI16)) && !defined(__DOXYGEN__)
   #error "invalid STM32_CFG_STOPWUCK value specified"
 #endif
 
-#if !defined(RCC_CFGR1_STOPKERWUCK_MSIK) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_STOPKERWUCK_MSIK not defined"
-#endif
-#if !defined(RCC_CFGR1_STOPKERWUCK_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_STOPKERWUCK_HSI16 not defined"
-#endif
 #if !((STM32_CFG_STOPKERWUCK == RCC_CFGR1_STOPKERWUCK_MSIK) ||              \
      (STM32_CFG_STOPKERWUCK == RCC_CFGR1_STOPKERWUCK_HSI16)) &&             \
     !defined(__DOXYGEN__)
   #error "invalid STM32_CFG_STOPKERWUCK value specified"
 #endif
 
-#if !defined(RCC_ICSCR1_MSIBIAS_CONTINUOUS) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIBIAS_CONTINUOUS not defined"
-#endif
-#if !defined(RCC_ICSCR1_MSIBIAS_SAMPLING) && !defined(__DOXYGEN__)
-  #error "RCC_ICSCR1_MSIBIAS_SAMPLING not defined"
-#endif
 #if !((STM32_CFG_MSIBIAS == RCC_ICSCR1_MSIBIAS_CONTINUOUS) ||               \
      (STM32_CFG_MSIBIAS == RCC_ICSCR1_MSIBIAS_SAMPLING)) && !defined(__DOXYGEN__)
   #error "invalid STM32_CFG_MSIBIAS value specified"
 #endif
 
-#if !defined(RCC_CCIPR1_TIMICSEL_NOCLOCK) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_TIMICSEL_NOCLOCK not defined"
-#endif
-#if !defined(RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIS4) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIS4 not defined"
-#endif
-#if !defined(RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIK4) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIK4 not defined"
-#endif
-#if !defined(RCC_CCIPR1_TIMICSEL_HSI256_MSIK1024_MSIS4) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_TIMICSEL_HSI256_MSIK1024_MSIS4 not defined"
-#endif
-#if !defined(RCC_CCIPR1_TIMICSEL_HSI256_MSIK1024_MSIK4) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_TIMICSEL_HSI256_MSIK1024_MSIK4 not defined"
-#endif
 #if !((STM32_CFG_TIMICSEL == RCC_CCIPR1_TIMICSEL_NOCLOCK) ||                \
      (STM32_CFG_TIMICSEL == RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIS4) ||   \
      (STM32_CFG_TIMICSEL == RCC_CCIPR1_TIMICSEL_HSI256_MSIS1024_MSIK4) ||   \
@@ -1461,7 +1611,7 @@
 /**
  * @brief   AUDIOCLK nominal source frequency.
  */
-#define STM32_AUDIOCLK_SOURCE_FREQ          STM32_AUDIOCLK
+#define STM32_AUDIOCLK_SOURCE_FREQ          STM32_CFG_AUDIOCLK
 
 /**
  * @brief   AUDIOCLK clock register bits.

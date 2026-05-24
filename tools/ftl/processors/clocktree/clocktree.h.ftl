@@ -46,6 +46,12 @@
 [@clocktree.EmitClockPointConstants /]
 /** @} */
 
+[@clocktree.EmitDefinitions /]
+
+[@clocktree.EmitMuxSelectorConstants /]
+
+[@clocktree.EmitScalerSelectorConstants /]
+
 /*===========================================================================*/
 /* Driver pre-compile time settings.                                         */
 /*===========================================================================*/
