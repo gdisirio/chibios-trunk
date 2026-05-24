@@ -42,7 +42,7 @@
  */
 #define STM32_NO_INIT                       FALSE
 #define STM32_CFG_CLOCK_DYNAMIC             TRUE
-#define STM32_CFG_PWR_VOS                   STM32_VOS_RANGE1
+#define STM32_CFG_PWR_VOS                   PWR_CR1_VOS_RANGE1
 #define STM32_CFG_PWR_BOOST                 TRUE
 #define STM32_PWR_CR2                       (PWR_CR2_PLS_LEV0)
 #define STM32_PWR_CR3                       (PWR_CR3_EIWF)
@@ -66,8 +66,8 @@
 #define STM32_CFG_HSE_ENABLE                TRUE
 #define STM32_CFG_LSI_ENABLE                FALSE
 #define STM32_CFG_LSE_ENABLE                TRUE
-#define STM32_CFG_SYSCLK_SEL                STM32_SW_PLLRCLK
-#define STM32_CFG_PLLIN_SEL                 STM32_PLLSRC_HSE
+#define STM32_CFG_SYSCLK_SEL                RCC_CFGR_SW_PLL
+#define STM32_CFG_PLLIN_SEL                 RCC_PLLCFGR_PLLSRC_HSE
 #define STM32_CFG_PLLREF_VALUE              6
 #define STM32_CFG_PLLVCO_VALUE              85
 #define STM32_CFG_PLLP_VALUE                7
@@ -76,32 +76,32 @@
 #define STM32_CFG_HCLK_VALUE                1
 #define STM32_CFG_PCLK1_VALUE               2
 #define STM32_CFG_PCLK2_VALUE               1
-#define STM32_CFG_MCODIV_SEL                STM32_MCOSEL_NOCLOCK
+#define STM32_CFG_MCODIV_SEL                RCC_CFGR_MCOSEL_NOCLOCK
 #define STM32_CFG_MCO_VALUE                 1
-#define STM32_CFG_LSCO_SEL                  STM32_LSCOSEL_NOCLOCK
+#define STM32_CFG_LSCO_SEL                  RCC_BDCR_LSCOSEL_NOCLOCK
 
 /*
  * Peripherals clock sources.
  */
-#define STM32_CFG_USART1_SEL                STM32_USART1SEL_SYSCLK
-#define STM32_CFG_USART2_SEL                STM32_USART2SEL_SYSCLK
-#define STM32_CFG_USART3_SEL                STM32_USART3SEL_SYSCLK
-#define STM32_CFG_UART4_SEL                 STM32_UART4SEL_SYSCLK
-#define STM32_CFG_UART5_SEL                 STM32_UART5SEL_SYSCLK
-#define STM32_CFG_LPUART1_SEL               STM32_LPUART1SEL_PCLK1
-#define STM32_CFG_I2C1_SEL                  STM32_I2C1SEL_PCLK1
-#define STM32_CFG_I2C2_SEL                  STM32_I2C2SEL_PCLK1
-#define STM32_CFG_I2C3_SEL                  STM32_I2C3SEL_PCLK1
-#define STM32_CFG_I2C4_SEL                  STM32_I2C4SEL_PCLK1
-#define STM32_CFG_LPTIM1_SEL                STM32_LPTIM1SEL_PCLK1
-#define STM32_CFG_SAI1_SEL                  STM32_SAI1SEL_SYSCLK
-#define STM32_CFG_I2S23_SEL                 STM32_I2S23SEL_SYSCLK
-#define STM32_CFG_FDCAN_SEL                 STM32_FDCANSEL_HSE
-#define STM32_CFG_CLK48_SEL                 STM32_CLK48SEL_HSI48
-#define STM32_CFG_ADC12_SEL                 STM32_ADC12SEL_PLLPCLK
-#define STM32_CFG_ADC345_SEL                STM32_ADC345SEL_PLLPCLK
-#define STM32_CFG_QSPI_SEL                  STM32_QSPISEL_SYSCLK
-#define STM32_CFG_RTC_SEL                   STM32_RTCSEL_LSE
+#define STM32_CFG_USART1_SEL                RCC_CCIPR_USART1SEL_SYSCLK
+#define STM32_CFG_USART2_SEL                RCC_CCIPR_USART2SEL_SYSCLK
+#define STM32_CFG_USART3_SEL                RCC_CCIPR_USART3SEL_SYSCLK
+#define STM32_CFG_UART4_SEL                 RCC_CCIPR_UART4SEL_SYSCLK
+#define STM32_CFG_UART5_SEL                 RCC_CCIPR_UART5SEL_SYSCLK
+#define STM32_CFG_LPUART1_SEL               RCC_CCIPR_LPUART1SEL_PCLK1
+#define STM32_CFG_I2C1_SEL                  RCC_CCIPR_I2C1SEL_PCLK1
+#define STM32_CFG_I2C2_SEL                  RCC_CCIPR_I2C2SEL_PCLK1
+#define STM32_CFG_I2C3_SEL                  RCC_CCIPR_I2C3SEL_PCLK1
+#define STM32_CFG_I2C4_SEL                  RCC_CCIPR2_I2C4SEL_PCLK1
+#define STM32_CFG_LPTIM1_SEL                RCC_CCIPR_LPTIM1SEL_PCLK1
+#define STM32_CFG_SAI1_SEL                  RCC_CCIPR_SAI1SEL_SYSCLK
+#define STM32_CFG_I2S23_SEL                 RCC_CCIPR_I2S23SEL_SYSCLK
+#define STM32_CFG_FDCAN_SEL                 RCC_CCIPR_FDCANSEL_HSE
+#define STM32_CFG_CLK48_SEL                 RCC_CCIPR_CLK48SEL_HSI48
+#define STM32_CFG_ADC12_SEL                 RCC_CCIPR_ADC12SEL_PLLPCLK
+#define STM32_CFG_ADC345_SEL                RCC_CCIPR_ADC345SEL_PLLPCLK
+#define STM32_CFG_QSPI_SEL                  RCC_CCIPR2_QSPISEL_SYSCLK
+#define STM32_CFG_RTC_SEL                   RCC_BDCR_RTCSEL_LSE
 
 /*
  * IRQ system settings.
