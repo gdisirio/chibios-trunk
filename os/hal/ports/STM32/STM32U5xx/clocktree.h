@@ -1450,6 +1450,102 @@
 #define STM32_VOS1_ADCCLK_MAX               55000000
 #define STM32_VOS1_USBCLK_MIN               47880000
 #define STM32_VOS1_USBCLK_MAX               48120000
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_0WS_MAX            32000000
+#else
+#define STM32_VOS1_FLASH_0WS_MAX            10000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_1WS_MAX            64000000
+#else
+#define STM32_VOS1_FLASH_1WS_MAX            20000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_2WS_MAX            96000000
+#else
+#define STM32_VOS1_FLASH_2WS_MAX            30000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_3WS_MAX            128000000
+#else
+#define STM32_VOS1_FLASH_3WS_MAX            40000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_4WS_MAX            160000000
+#else
+#define STM32_VOS1_FLASH_4WS_MAX            50000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_5WS_MAX            0
+#else
+#define STM32_VOS1_FLASH_5WS_MAX            60000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_6WS_MAX            0
+#else
+#define STM32_VOS1_FLASH_6WS_MAX            70000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_7WS_MAX            0
+#else
+#define STM32_VOS1_FLASH_7WS_MAX            80000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_8WS_MAX            0
+#else
+#define STM32_VOS1_FLASH_8WS_MAX            90000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_9WS_MAX            0
+#else
+#define STM32_VOS1_FLASH_9WS_MAX            100000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_10WS_MAX           0
+#else
+#define STM32_VOS1_FLASH_10WS_MAX           110000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_11WS_MAX           0
+#else
+#define STM32_VOS1_FLASH_11WS_MAX           120000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_12WS_MAX           0
+#else
+#define STM32_VOS1_FLASH_12WS_MAX           130000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_13WS_MAX           0
+#else
+#define STM32_VOS1_FLASH_13WS_MAX           140000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_14WS_MAX           0
+#else
+#define STM32_VOS1_FLASH_14WS_MAX           150000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS1_FLASH_15WS_MAX           0
+#else
+#define STM32_VOS1_FLASH_15WS_MAX           160000000
+#endif
 /** @} */
 
 /**
@@ -1490,6 +1586,102 @@
 #define STM32_VOS2_ADCCLK_MAX               55000000
 #define STM32_VOS2_USBCLK_MIN               47880000
 #define STM32_VOS2_USBCLK_MAX               48120000
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_0WS_MAX            30000000
+#else
+#define STM32_VOS2_FLASH_0WS_MAX            10000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_1WS_MAX            60000000
+#else
+#define STM32_VOS2_FLASH_1WS_MAX            20000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_2WS_MAX            90000000
+#else
+#define STM32_VOS2_FLASH_2WS_MAX            30000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_3WS_MAX            110000000
+#else
+#define STM32_VOS2_FLASH_3WS_MAX            40000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_4WS_MAX            0
+#else
+#define STM32_VOS2_FLASH_4WS_MAX            50000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_5WS_MAX            0
+#else
+#define STM32_VOS2_FLASH_5WS_MAX            60000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_6WS_MAX            0
+#else
+#define STM32_VOS2_FLASH_6WS_MAX            70000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_7WS_MAX            0
+#else
+#define STM32_VOS2_FLASH_7WS_MAX            80000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_8WS_MAX            0
+#else
+#define STM32_VOS2_FLASH_8WS_MAX            90000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_9WS_MAX            0
+#else
+#define STM32_VOS2_FLASH_9WS_MAX            100000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_10WS_MAX           0
+#else
+#define STM32_VOS2_FLASH_10WS_MAX           110000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_11WS_MAX           0
+#else
+#define STM32_VOS2_FLASH_11WS_MAX           110000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_12WS_MAX           0
+#else
+#define STM32_VOS2_FLASH_12WS_MAX           110000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_13WS_MAX           0
+#else
+#define STM32_VOS2_FLASH_13WS_MAX           110000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_14WS_MAX           0
+#else
+#define STM32_VOS2_FLASH_14WS_MAX           110000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS2_FLASH_15WS_MAX           0
+#else
+#define STM32_VOS2_FLASH_15WS_MAX           110000000
+#endif
 /** @} */
 
 /**
@@ -1530,6 +1722,102 @@
 #define STM32_VOS3_ADCCLK_MAX               55000000
 #define STM32_VOS3_USBCLK_MIN               47880000
 #define STM32_VOS3_USBCLK_MAX               48120000
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_0WS_MAX            24000000
+#else
+#define STM32_VOS3_FLASH_0WS_MAX            10000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_1WS_MAX            48000000
+#else
+#define STM32_VOS3_FLASH_1WS_MAX            20000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_2WS_MAX            55000000
+#else
+#define STM32_VOS3_FLASH_2WS_MAX            30000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_3WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_3WS_MAX            40000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_4WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_4WS_MAX            50000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_5WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_5WS_MAX            55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_6WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_6WS_MAX            55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_7WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_7WS_MAX            55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_8WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_8WS_MAX            55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_9WS_MAX            0
+#else
+#define STM32_VOS3_FLASH_9WS_MAX            55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_10WS_MAX           0
+#else
+#define STM32_VOS3_FLASH_10WS_MAX           55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_11WS_MAX           0
+#else
+#define STM32_VOS3_FLASH_11WS_MAX           55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_12WS_MAX           0
+#else
+#define STM32_VOS3_FLASH_12WS_MAX           55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_13WS_MAX           0
+#else
+#define STM32_VOS3_FLASH_13WS_MAX           55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_14WS_MAX           0
+#else
+#define STM32_VOS3_FLASH_14WS_MAX           55000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS3_FLASH_15WS_MAX           0
+#else
+#define STM32_VOS3_FLASH_15WS_MAX           55000000
+#endif
 /** @} */
 
 /**
@@ -1570,6 +1858,102 @@
 #define STM32_VOS4_ADCCLK_MAX               25000000
 #define STM32_VOS4_USBCLK_MIN               47880000
 #define STM32_VOS4_USBCLK_MAX               48120000
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_0WS_MAX            12000000
+#else
+#define STM32_VOS4_FLASH_0WS_MAX            8000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_1WS_MAX            25000000
+#else
+#define STM32_VOS4_FLASH_1WS_MAX            16000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_2WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_2WS_MAX            25000000
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_3WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_3WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_4WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_4WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_5WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_5WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_6WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_6WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_7WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_7WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_8WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_8WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_9WS_MAX            0
+#else
+#define STM32_VOS4_FLASH_9WS_MAX            0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_10WS_MAX           0
+#else
+#define STM32_VOS4_FLASH_10WS_MAX           0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_11WS_MAX           0
+#else
+#define STM32_VOS4_FLASH_11WS_MAX           0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_12WS_MAX           0
+#else
+#define STM32_VOS4_FLASH_12WS_MAX           0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_13WS_MAX           0
+#else
+#define STM32_VOS4_FLASH_13WS_MAX           0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_14WS_MAX           0
+#else
+#define STM32_VOS4_FLASH_14WS_MAX           0
+#endif
+#if ((STM32_FLASH_ACR & FLASH_ACR_LPM) == 0) || \
+    defined(__DOXYGEN__)
+#define STM32_VOS4_FLASH_15WS_MAX           0
+#else
+#define STM32_VOS4_FLASH_15WS_MAX           0
+#endif
 /** @} */
 
 /*
@@ -1599,6 +1983,22 @@
 #define STM32_ADCCLK_MAX                    STM32_VOS1_ADCCLK_MAX
 #define STM32_USBCLK_MIN                    STM32_VOS1_USBCLK_MIN
 #define STM32_USBCLK_MAX                    STM32_VOS1_USBCLK_MAX
+#define STM32_FLASH_0WS_MAX                 STM32_VOS1_FLASH_0WS_MAX
+#define STM32_FLASH_1WS_MAX                 STM32_VOS1_FLASH_1WS_MAX
+#define STM32_FLASH_2WS_MAX                 STM32_VOS1_FLASH_2WS_MAX
+#define STM32_FLASH_3WS_MAX                 STM32_VOS1_FLASH_3WS_MAX
+#define STM32_FLASH_4WS_MAX                 STM32_VOS1_FLASH_4WS_MAX
+#define STM32_FLASH_5WS_MAX                 STM32_VOS1_FLASH_5WS_MAX
+#define STM32_FLASH_6WS_MAX                 STM32_VOS1_FLASH_6WS_MAX
+#define STM32_FLASH_7WS_MAX                 STM32_VOS1_FLASH_7WS_MAX
+#define STM32_FLASH_8WS_MAX                 STM32_VOS1_FLASH_8WS_MAX
+#define STM32_FLASH_9WS_MAX                 STM32_VOS1_FLASH_9WS_MAX
+#define STM32_FLASH_10WS_MAX                STM32_VOS1_FLASH_10WS_MAX
+#define STM32_FLASH_11WS_MAX                STM32_VOS1_FLASH_11WS_MAX
+#define STM32_FLASH_12WS_MAX                STM32_VOS1_FLASH_12WS_MAX
+#define STM32_FLASH_13WS_MAX                STM32_VOS1_FLASH_13WS_MAX
+#define STM32_FLASH_14WS_MAX                STM32_VOS1_FLASH_14WS_MAX
+#define STM32_FLASH_15WS_MAX                STM32_VOS1_FLASH_15WS_MAX
 #elif (STM32_CFG_PWR_VOSR == PWR_VOSR_VOS_RANGE2)
 #define STM32_HSECLK_MIN                    STM32_VOS2_HSECLK_MIN
 #define STM32_HSECLK_MAX                    STM32_VOS2_HSECLK_MAX
@@ -1622,6 +2022,22 @@
 #define STM32_ADCCLK_MAX                    STM32_VOS2_ADCCLK_MAX
 #define STM32_USBCLK_MIN                    STM32_VOS2_USBCLK_MIN
 #define STM32_USBCLK_MAX                    STM32_VOS2_USBCLK_MAX
+#define STM32_FLASH_0WS_MAX                 STM32_VOS2_FLASH_0WS_MAX
+#define STM32_FLASH_1WS_MAX                 STM32_VOS2_FLASH_1WS_MAX
+#define STM32_FLASH_2WS_MAX                 STM32_VOS2_FLASH_2WS_MAX
+#define STM32_FLASH_3WS_MAX                 STM32_VOS2_FLASH_3WS_MAX
+#define STM32_FLASH_4WS_MAX                 STM32_VOS2_FLASH_4WS_MAX
+#define STM32_FLASH_5WS_MAX                 STM32_VOS2_FLASH_5WS_MAX
+#define STM32_FLASH_6WS_MAX                 STM32_VOS2_FLASH_6WS_MAX
+#define STM32_FLASH_7WS_MAX                 STM32_VOS2_FLASH_7WS_MAX
+#define STM32_FLASH_8WS_MAX                 STM32_VOS2_FLASH_8WS_MAX
+#define STM32_FLASH_9WS_MAX                 STM32_VOS2_FLASH_9WS_MAX
+#define STM32_FLASH_10WS_MAX                STM32_VOS2_FLASH_10WS_MAX
+#define STM32_FLASH_11WS_MAX                STM32_VOS2_FLASH_11WS_MAX
+#define STM32_FLASH_12WS_MAX                STM32_VOS2_FLASH_12WS_MAX
+#define STM32_FLASH_13WS_MAX                STM32_VOS2_FLASH_13WS_MAX
+#define STM32_FLASH_14WS_MAX                STM32_VOS2_FLASH_14WS_MAX
+#define STM32_FLASH_15WS_MAX                STM32_VOS2_FLASH_15WS_MAX
 #elif (STM32_CFG_PWR_VOSR == PWR_VOSR_VOS_RANGE3)
 #define STM32_HSECLK_MIN                    STM32_VOS3_HSECLK_MIN
 #define STM32_HSECLK_MAX                    STM32_VOS3_HSECLK_MAX
@@ -1645,6 +2061,22 @@
 #define STM32_ADCCLK_MAX                    STM32_VOS3_ADCCLK_MAX
 #define STM32_USBCLK_MIN                    STM32_VOS3_USBCLK_MIN
 #define STM32_USBCLK_MAX                    STM32_VOS3_USBCLK_MAX
+#define STM32_FLASH_0WS_MAX                 STM32_VOS3_FLASH_0WS_MAX
+#define STM32_FLASH_1WS_MAX                 STM32_VOS3_FLASH_1WS_MAX
+#define STM32_FLASH_2WS_MAX                 STM32_VOS3_FLASH_2WS_MAX
+#define STM32_FLASH_3WS_MAX                 STM32_VOS3_FLASH_3WS_MAX
+#define STM32_FLASH_4WS_MAX                 STM32_VOS3_FLASH_4WS_MAX
+#define STM32_FLASH_5WS_MAX                 STM32_VOS3_FLASH_5WS_MAX
+#define STM32_FLASH_6WS_MAX                 STM32_VOS3_FLASH_6WS_MAX
+#define STM32_FLASH_7WS_MAX                 STM32_VOS3_FLASH_7WS_MAX
+#define STM32_FLASH_8WS_MAX                 STM32_VOS3_FLASH_8WS_MAX
+#define STM32_FLASH_9WS_MAX                 STM32_VOS3_FLASH_9WS_MAX
+#define STM32_FLASH_10WS_MAX                STM32_VOS3_FLASH_10WS_MAX
+#define STM32_FLASH_11WS_MAX                STM32_VOS3_FLASH_11WS_MAX
+#define STM32_FLASH_12WS_MAX                STM32_VOS3_FLASH_12WS_MAX
+#define STM32_FLASH_13WS_MAX                STM32_VOS3_FLASH_13WS_MAX
+#define STM32_FLASH_14WS_MAX                STM32_VOS3_FLASH_14WS_MAX
+#define STM32_FLASH_15WS_MAX                STM32_VOS3_FLASH_15WS_MAX
 #elif (STM32_CFG_PWR_VOSR == PWR_VOSR_VOS_RANGE4)
 #define STM32_HSECLK_MIN                    STM32_VOS4_HSECLK_MIN
 #define STM32_HSECLK_MAX                    STM32_VOS4_HSECLK_MAX
@@ -1668,6 +2100,22 @@
 #define STM32_ADCCLK_MAX                    STM32_VOS4_ADCCLK_MAX
 #define STM32_USBCLK_MIN                    STM32_VOS4_USBCLK_MIN
 #define STM32_USBCLK_MAX                    STM32_VOS4_USBCLK_MAX
+#define STM32_FLASH_0WS_MAX                 STM32_VOS4_FLASH_0WS_MAX
+#define STM32_FLASH_1WS_MAX                 STM32_VOS4_FLASH_1WS_MAX
+#define STM32_FLASH_2WS_MAX                 STM32_VOS4_FLASH_2WS_MAX
+#define STM32_FLASH_3WS_MAX                 STM32_VOS4_FLASH_3WS_MAX
+#define STM32_FLASH_4WS_MAX                 STM32_VOS4_FLASH_4WS_MAX
+#define STM32_FLASH_5WS_MAX                 STM32_VOS4_FLASH_5WS_MAX
+#define STM32_FLASH_6WS_MAX                 STM32_VOS4_FLASH_6WS_MAX
+#define STM32_FLASH_7WS_MAX                 STM32_VOS4_FLASH_7WS_MAX
+#define STM32_FLASH_8WS_MAX                 STM32_VOS4_FLASH_8WS_MAX
+#define STM32_FLASH_9WS_MAX                 STM32_VOS4_FLASH_9WS_MAX
+#define STM32_FLASH_10WS_MAX                STM32_VOS4_FLASH_10WS_MAX
+#define STM32_FLASH_11WS_MAX                STM32_VOS4_FLASH_11WS_MAX
+#define STM32_FLASH_12WS_MAX                STM32_VOS4_FLASH_12WS_MAX
+#define STM32_FLASH_13WS_MAX                STM32_VOS4_FLASH_13WS_MAX
+#define STM32_FLASH_14WS_MAX                STM32_VOS4_FLASH_14WS_MAX
+#define STM32_FLASH_15WS_MAX                STM32_VOS4_FLASH_15WS_MAX
 #else
   #error "unable to select clock frequency limits"
 #endif
@@ -2756,7 +3204,7 @@
 #define STM32_AUDIOCLK_BITS                 0U
 
 /**
- * @brief   External audio clock clock point.
+ * @brief   External audio clock point.
  */
 #define STM32_AUDIOCLK_FREQ                 STM32_AUDIOCLK_SOURCE_FREQ
 
@@ -2772,213 +3220,138 @@
   #error "HSI16 not enabled, required by TIMICSEL_HSI16_SOURCE"
 #endif
 
-#if !defined(RCC_PLL1CFGR_PLL1SRC_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_PLL1CFGR_PLL1SRC_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_PLL1IN_ENABLED == TRUE) &&  \
       (STM32_CFG_PLL1IN_SEL == RCC_PLL1CFGR_PLL1SRC_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by PLL1IN"
 #endif
 
-#if !defined(RCC_PLL2CFGR_PLL2SRC_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_PLL2CFGR_PLL2SRC_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_PLL2IN_ENABLED == TRUE) &&  \
       (STM32_CFG_PLL2IN_SEL == RCC_PLL2CFGR_PLL2SRC_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by PLL2IN"
 #endif
 
-#if !defined(RCC_PLL3CFGR_PLL3SRC_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_PLL3CFGR_PLL3SRC_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_PLL3IN_ENABLED == TRUE) &&  \
       (STM32_CFG_PLL3IN_SEL == RCC_PLL3CFGR_PLL3SRC_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by PLL3IN"
 #endif
 
-#if !defined(RCC_CFGR1_SW_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_SW_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_SYSCLK_ENABLED == TRUE) &&  \
       (STM32_CFG_SYSCLK_SEL == RCC_CFGR1_SW_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by SYSCLK"
 #endif
 
-#if !defined(RCC_CFGR1_MCOSEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_MCOSEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_MCODIV_ENABLED == TRUE) &&  \
       (STM32_CFG_MCODIV_SEL == RCC_CFGR1_MCOSEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by MCODIV"
 #endif
 
-#if !defined(RCC_CCIPR1_USART1SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_USART1SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_USART1_ENABLED == TRUE) &&  \
       (STM32_CFG_USART1_SEL == RCC_CCIPR1_USART1SEL_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by USART1"
 #endif
 
-#if !defined(RCC_CCIPR1_USART2SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_USART2SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_USART2_ENABLED == TRUE) &&  \
       (STM32_CFG_USART2_SEL == RCC_CCIPR1_USART2SEL_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by USART2"
 #endif
 
-#if !defined(RCC_CCIPR1_USART3SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_USART3SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_USART3_ENABLED == TRUE) &&  \
       (STM32_CFG_USART3_SEL == RCC_CCIPR1_USART3SEL_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by USART3"
 #endif
 
-#if !defined(RCC_CCIPR1_UART4SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_UART4SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_UART4_ENABLED == TRUE) &&   \
       (STM32_CFG_UART4_SEL == RCC_CCIPR1_UART4SEL_HSI16))) &&               \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by UART4"
 #endif
 
-#if !defined(RCC_CCIPR1_UART5SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_UART5SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_UART5_ENABLED == TRUE) &&   \
       (STM32_CFG_UART5_SEL == RCC_CCIPR1_UART5SEL_HSI16))) &&               \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by UART5"
 #endif
 
-#if !defined(RCC_CCIPR3_LPUART1SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_LPUART1SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_LPUART1_ENABLED == TRUE) && \
       (STM32_CFG_LPUART1_SEL == RCC_CCIPR3_LPUART1SEL_HSI16))) &&           \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by LPUART1"
 #endif
 
-#if !defined(RCC_CCIPR1_I2C1SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_I2C1SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_I2C1_ENABLED == TRUE) &&    \
       (STM32_CFG_I2C1_SEL == RCC_CCIPR1_I2C1SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by I2C1"
 #endif
 
-#if !defined(RCC_CCIPR1_I2C2SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_I2C2SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_I2C2_ENABLED == TRUE) &&    \
       (STM32_CFG_I2C2_SEL == RCC_CCIPR1_I2C2SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by I2C2"
 #endif
 
-#if !defined(RCC_CCIPR1_I2C4SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_I2C4SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_I2C4_ENABLED == TRUE) &&    \
       (STM32_CFG_I2C4_SEL == RCC_CCIPR1_I2C4SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by I2C4"
 #endif
 
-#if !defined(RCC_CCIPR3_I2C3SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_I2C3SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_I2C3_ENABLED == TRUE) &&    \
       (STM32_CFG_I2C3_SEL == RCC_CCIPR3_I2C3SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by I2C3"
 #endif
 
-#if !defined(RCC_CCIPR1_SPI1SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_SPI1SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_SPI1_ENABLED == TRUE) &&    \
       (STM32_CFG_SPI1_SEL == RCC_CCIPR1_SPI1SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by SPI1"
 #endif
 
-#if !defined(RCC_CCIPR1_SPI2SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_SPI2SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_SPI2_ENABLED == TRUE) &&    \
       (STM32_CFG_SPI2_SEL == RCC_CCIPR1_SPI2SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by SPI2"
 #endif
 
-#if !defined(RCC_CCIPR3_SPI3SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_SPI3SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_SPI3_ENABLED == TRUE) &&    \
       (STM32_CFG_SPI3_SEL == RCC_CCIPR3_SPI3SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by SPI3"
 #endif
 
-#if !defined(RCC_CCIPR2_RNGSEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR2_RNGSEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_RNG_ENABLED == TRUE) &&     \
       (STM32_CFG_RNG_SEL == RCC_CCIPR2_RNGSEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by RNG"
 #endif
 
-#if !defined(RCC_CCIPR2_SAI1SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR2_SAI1SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_SAI1_ENABLED == TRUE) &&    \
       (STM32_CFG_SAI1_SEL == RCC_CCIPR2_SAI1SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by SAI1"
 #endif
 
-#if !defined(RCC_CCIPR2_SAI2SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR2_SAI2SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_SAI2_ENABLED == TRUE) &&    \
       (STM32_CFG_SAI2_SEL == RCC_CCIPR2_SAI2SEL_HSI16))) && !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by SAI2"
 #endif
 
-#if !defined(RCC_CCIPR3_ADCDACSEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_ADCDACSEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_ADCDAC_ENABLED == TRUE) &&  \
       (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by ADCDAC"
 #endif
 
-#if !defined(RCC_CCIPR3_LPTIM1SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_LPTIM1SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_LPTIM1_ENABLED == TRUE) &&  \
       (STM32_CFG_LPTIM1_SEL == RCC_CCIPR3_LPTIM1SEL_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by LPTIM1"
 #endif
 
-#if !defined(RCC_CCIPR1_LPTIM2SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_LPTIM2SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_LPTIM2_ENABLED == TRUE) &&  \
       (STM32_CFG_LPTIM2_SEL == RCC_CCIPR1_LPTIM2SEL_HSI16))) &&             \
     !defined(__DOXYGEN__)
   #error "HSI16 not enabled, required by LPTIM2"
 #endif
 
-#if !defined(RCC_CCIPR3_LPTIM34SEL_HSI16) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_LPTIM34SEL_HSI16 not defined"
-#endif
 #if !((STM32_HSI16_ENABLED == TRUE) || !((STM32_LPTIM34_ENABLED == TRUE) && \
       (STM32_CFG_LPTIM34_SEL == RCC_CCIPR3_LPTIM34SEL_HSI16))) &&           \
     !defined(__DOXYGEN__)
@@ -3015,17 +3388,11 @@
   #error "invalid STM32_CFG_HSI48_ENABLE value specified"
 #endif
 
-#if !defined(RCC_CFGR1_MCOSEL_HSI48) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_MCOSEL_HSI48 not defined"
-#endif
 #if !((STM32_HSI48_ENABLED == TRUE) || !((STM32_MCODIV_ENABLED == TRUE) &&  \
       (STM32_CFG_MCODIV_SEL == RCC_CFGR1_MCOSEL_HSI48))) && !defined(__DOXYGEN__)
   #error "HSI48 not enabled, required by MCODIV"
 #endif
 
-#if !defined(RCC_CCIPR1_ICLKSEL_HSI48) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_ICLKSEL_HSI48 not defined"
-#endif
 #if !((STM32_HSI48_ENABLED == TRUE) || !((STM32_ICLK_ENABLED == TRUE) &&    \
       (STM32_CFG_ICLK_SEL == RCC_CCIPR1_ICLKSEL_HSI48))) && !defined(__DOXYGEN__)
   #error "HSI48 not enabled, required by ICLK"
@@ -3039,9 +3406,6 @@
   #error "HSI48 not enabled, required by HSI48DIV2"
 #endif
 
-#if !defined(RCC_CCIPR2_RNGSEL_HSI48) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR2_RNGSEL_HSI48 not defined"
-#endif
 #if !((STM32_HSI48_ENABLED == TRUE) || !((STM32_RNG_ENABLED == TRUE) &&     \
       (STM32_CFG_RNG_SEL == RCC_CCIPR2_RNGSEL_HSI48))) && !defined(__DOXYGEN__)
   #error "HSI48 not enabled, required by RNG"
@@ -3107,36 +3471,24 @@
   #error "invalid STM32_CFG_HSE_ENABLE value specified"
 #endif
 
-#if !defined(RCC_PLL1CFGR_PLL1SRC_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_PLL1CFGR_PLL1SRC_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_PLL1IN_ENABLED == TRUE) &&    \
       (STM32_CFG_PLL1IN_SEL == RCC_PLL1CFGR_PLL1SRC_HSE))) &&               \
     !defined(__DOXYGEN__)
   #error "HSE not enabled, required by PLL1IN"
 #endif
 
-#if !defined(RCC_PLL2CFGR_PLL2SRC_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_PLL2CFGR_PLL2SRC_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_PLL2IN_ENABLED == TRUE) &&    \
       (STM32_CFG_PLL2IN_SEL == RCC_PLL2CFGR_PLL2SRC_HSE))) &&               \
     !defined(__DOXYGEN__)
   #error "HSE not enabled, required by PLL2IN"
 #endif
 
-#if !defined(RCC_PLL3CFGR_PLL3SRC_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_PLL3CFGR_PLL3SRC_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_PLL3IN_ENABLED == TRUE) &&    \
       (STM32_CFG_PLL3IN_SEL == RCC_PLL3CFGR_PLL3SRC_HSE))) &&               \
     !defined(__DOXYGEN__)
   #error "HSE not enabled, required by PLL3IN"
 #endif
 
-#if !defined(RCC_CFGR1_SW_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_SW_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_SYSCLK_ENABLED == TRUE) &&    \
       (STM32_CFG_SYSCLK_SEL == RCC_CFGR1_SW_HSE))) && !defined(__DOXYGEN__)
   #error "HSE not enabled, required by SYSCLK"
@@ -3150,25 +3502,16 @@
   #error "HSE not enabled, required by HSEDIV"
 #endif
 
-#if !defined(RCC_CFGR1_MCOSEL_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_MCOSEL_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_MCODIV_ENABLED == TRUE) &&    \
       (STM32_CFG_MCODIV_SEL == RCC_CFGR1_MCOSEL_HSE))) && !defined(__DOXYGEN__)
   #error "HSE not enabled, required by MCODIV"
 #endif
 
-#if !defined(RCC_CCIPR1_FDCANSEL_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_FDCANSEL_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_FDCAN1_ENABLED == TRUE) &&    \
       (STM32_CFG_FDCAN1_SEL == RCC_CCIPR1_FDCANSEL_HSE))) && !defined(__DOXYGEN__)
   #error "HSE not enabled, required by FDCAN1"
 #endif
 
-#if !defined(RCC_CCIPR3_ADCDACSEL_HSE) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_ADCDACSEL_HSE not defined"
-#endif
 #if !((STM32_HSE_ENABLED == TRUE) || !((STM32_ADCDAC_ENABLED == TRUE) &&    \
       (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_HSE))) &&               \
     !defined(__DOXYGEN__)
@@ -3215,9 +3558,6 @@
   #error "invalid STM32_CFG_LSE_ENABLE value specified"
 #endif
 
-#if !defined(RCC_CFGR1_MCOSEL_LSE) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_MCOSEL_LSE not defined"
-#endif
 #if !((STM32_LSE_ENABLED == TRUE) || !((STM32_MCODIV_ENABLED == TRUE) &&    \
       (STM32_CFG_MCODIV_SEL == RCC_CFGR1_MCOSEL_LSE))) && !defined(__DOXYGEN__)
   #error "LSE not enabled, required by MCODIV"
@@ -3231,9 +3571,6 @@
   #error "LSE not enabled, required by LSESYS"
 #endif
 
-#if !defined(RCC_BDCR_RTCSEL_LSE) && !defined(__DOXYGEN__)
-  #error "RCC_BDCR_RTCSEL_LSE not defined"
-#endif
 #if !((STM32_LSE_ENABLED == TRUE) || !((STM32_RTC_ENABLED == TRUE) &&       \
       (STM32_CFG_RTC_SEL == RCC_BDCR_RTCSEL_LSE))) && !defined(__DOXYGEN__)
   #error "LSE not enabled, required by RTC"
@@ -3280,17 +3617,11 @@
   #error "invalid STM32_CFG_LSI_ENABLE value specified"
 #endif
 
-#if !defined(RCC_CFGR1_MCOSEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_MCOSEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_MCODIV_ENABLED == TRUE) &&    \
       (STM32_CFG_MCODIV_SEL == RCC_CFGR1_MCOSEL_LSI))) && !defined(__DOXYGEN__)
   #error "LSI not enabled, required by MCODIV"
 #endif
 
-#if !defined(RCC_BDCR_RTCSEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_BDCR_RTCSEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_RTC_ENABLED == TRUE) &&       \
       (STM32_CFG_RTC_SEL == RCC_BDCR_RTCSEL_LSI))) && !defined(__DOXYGEN__)
   #error "LSI not enabled, required by RTC"
@@ -3301,44 +3632,29 @@
   #error "LSI not enabled, required by LSCO"
 #endif
 
-#if !defined(RCC_CCIPR1_SYSTICKSEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_SYSTICKSEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_SYSTICK_ENABLED == TRUE) &&   \
       (STM32_CFG_SYSTICK_SEL == RCC_CCIPR1_SYSTICKSEL_LSI))) &&             \
     !defined(__DOXYGEN__)
   #error "LSI not enabled, required by SYSTICK"
 #endif
 
-#if !defined(RCC_CCIPR3_DAC1SEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_DAC1SEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_DAC1SH_ENABLED == TRUE) &&    \
       (STM32_CFG_DAC1SH_SEL == RCC_CCIPR3_DAC1SEL_LSI))) && !defined(__DOXYGEN__)
   #error "LSI not enabled, required by DAC1SH"
 #endif
 
-#if !defined(RCC_CCIPR3_LPTIM1SEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_LPTIM1SEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_LPTIM1_ENABLED == TRUE) &&    \
       (STM32_CFG_LPTIM1_SEL == RCC_CCIPR3_LPTIM1SEL_LSI))) &&               \
     !defined(__DOXYGEN__)
   #error "LSI not enabled, required by LPTIM1"
 #endif
 
-#if !defined(RCC_CCIPR1_LPTIM2SEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR1_LPTIM2SEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_LPTIM2_ENABLED == TRUE) &&    \
       (STM32_CFG_LPTIM2_SEL == RCC_CCIPR1_LPTIM2SEL_LSI))) &&               \
     !defined(__DOXYGEN__)
   #error "LSI not enabled, required by LPTIM2"
 #endif
 
-#if !defined(RCC_CCIPR3_LPTIM34SEL_LSI) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_LPTIM34SEL_LSI not defined"
-#endif
 #if !((STM32_LSI_ENABLED == TRUE) || !((STM32_LPTIM34_ENABLED == TRUE) &&   \
       (STM32_CFG_LPTIM34_SEL == RCC_CCIPR3_LPTIM34SEL_LSI))) &&             \
     !defined(__DOXYGEN__)
@@ -3749,7 +4065,7 @@
 #endif
 
 /**
- * @brief   PLL1 input clock clock point.
+ * @brief   PLL1 input clock point.
  */
 #if ((STM32_PLL1IN_ENABLED == TRUE) && \
      (STM32_CFG_PLL1IN_SEL == RCC_PLL1CFGR_PLL1SRC_NOCLOCK)) || \
@@ -3786,7 +4102,7 @@
 #endif
 
 /**
- * @brief   PLL1 reference clock clock point.
+ * @brief   PLL1 reference clock point.
  */
 #if (STM32_PLL1REF_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL1REF_FREQ                (STM32_PLL1IN_FREQ /            \
@@ -3823,7 +4139,7 @@
 #endif
 
 /**
- * @brief   PLL1 VCO clock clock point.
+ * @brief   PLL1 VCO clock point.
  */
 #if (STM32_PLL1VCO_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL1VCO_FREQ                (STM32_PLL1REF_FREQ *           \
@@ -3860,7 +4176,7 @@
 #endif
 
 /**
- * @brief   PLL1 P output clock clock point.
+ * @brief   PLL1 P output clock point.
  */
 #if (STM32_PLL1P_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL1P_FREQ                  (STM32_PLL1VCO_FREQ /           \
@@ -3897,7 +4213,7 @@
 #endif
 
 /**
- * @brief   PLL1 Q output clock clock point.
+ * @brief   PLL1 Q output clock point.
  */
 #if (STM32_PLL1Q_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL1Q_FREQ                  (STM32_PLL1VCO_FREQ /           \
@@ -3965,7 +4281,7 @@
 #endif
 
 /**
- * @brief   PLL1 R output clock clock point.
+ * @brief   PLL1 R output clock point.
  */
 #if (STM32_PLL1R_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL1R_FREQ                  (STM32_PLL1VCO_FREQ /           \
@@ -4021,7 +4337,7 @@
 #endif
 
 /**
- * @brief   PLL2 input clock clock point.
+ * @brief   PLL2 input clock point.
  */
 #if ((STM32_PLL2IN_ENABLED == TRUE) && \
      (STM32_CFG_PLL2IN_SEL == RCC_PLL2CFGR_PLL2SRC_NOCLOCK)) || \
@@ -4058,7 +4374,7 @@
 #endif
 
 /**
- * @brief   PLL2 reference clock clock point.
+ * @brief   PLL2 reference clock point.
  */
 #if (STM32_PLL2REF_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL2REF_FREQ                (STM32_PLL2IN_FREQ /            \
@@ -4095,7 +4411,7 @@
 #endif
 
 /**
- * @brief   PLL2 VCO clock clock point.
+ * @brief   PLL2 VCO clock point.
  */
 #if (STM32_PLL2VCO_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL2VCO_FREQ                (STM32_PLL2REF_FREQ *           \
@@ -4132,7 +4448,7 @@
 #endif
 
 /**
- * @brief   PLL2 P output clock clock point.
+ * @brief   PLL2 P output clock point.
  */
 #if (STM32_PLL2P_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL2P_FREQ                  (STM32_PLL2VCO_FREQ /           \
@@ -4169,7 +4485,7 @@
 #endif
 
 /**
- * @brief   PLL2 Q output clock clock point.
+ * @brief   PLL2 Q output clock point.
  */
 #if (STM32_PLL2Q_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL2Q_FREQ                  (STM32_PLL2VCO_FREQ /           \
@@ -4206,7 +4522,7 @@
 #endif
 
 /**
- * @brief   PLL2 R output clock clock point.
+ * @brief   PLL2 R output clock point.
  */
 #if (STM32_PLL2R_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL2R_FREQ                  (STM32_PLL2VCO_FREQ /           \
@@ -4262,7 +4578,7 @@
 #endif
 
 /**
- * @brief   PLL3 input clock clock point.
+ * @brief   PLL3 input clock point.
  */
 #if ((STM32_PLL3IN_ENABLED == TRUE) && \
      (STM32_CFG_PLL3IN_SEL == RCC_PLL3CFGR_PLL3SRC_NOCLOCK)) || \
@@ -4299,7 +4615,7 @@
 #endif
 
 /**
- * @brief   PLL3 reference clock clock point.
+ * @brief   PLL3 reference clock point.
  */
 #if (STM32_PLL3REF_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL3REF_FREQ                (STM32_PLL3IN_FREQ /            \
@@ -4336,7 +4652,7 @@
 #endif
 
 /**
- * @brief   PLL3 VCO clock clock point.
+ * @brief   PLL3 VCO clock point.
  */
 #if (STM32_PLL3VCO_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL3VCO_FREQ                (STM32_PLL3REF_FREQ *           \
@@ -4373,7 +4689,7 @@
 #endif
 
 /**
- * @brief   PLL3 P output clock clock point.
+ * @brief   PLL3 P output clock point.
  */
 #if (STM32_PLL3P_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL3P_FREQ                  (STM32_PLL3VCO_FREQ /           \
@@ -4410,7 +4726,7 @@
 #endif
 
 /**
- * @brief   PLL3 Q output clock clock point.
+ * @brief   PLL3 Q output clock point.
  */
 #if (STM32_PLL3Q_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL3Q_FREQ                  (STM32_PLL3VCO_FREQ /           \
@@ -4447,7 +4763,7 @@
 #endif
 
 /**
- * @brief   PLL3 R output clock clock point.
+ * @brief   PLL3 R output clock point.
  */
 #if (STM32_PLL3R_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_PLL3R_FREQ                  (STM32_PLL3VCO_FREQ /           \
@@ -4484,7 +4800,7 @@
 #endif
 
 /**
- * @brief   System clock clock point.
+ * @brief   System clock point.
  */
 #if ((STM32_SYSCLK_ENABLED == TRUE) && \
      (STM32_CFG_SYSCLK_SEL == RCC_CFGR1_SW_MSIS)) || \
@@ -4503,9 +4819,6 @@
   #define STM32_SYSCLK_FREQ                 0U
 #endif
 
-#if !defined(RCC_CFGR1_SW_MSIS) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_SW_MSIS not defined"
-#endif
 #if !(!((STM32_SYSCLK_ENABLED == TRUE) &&                                   \
       (STM32_CFG_SYSCLK_SEL == RCC_CFGR1_SW_MSIS)) ||                       \
      (STM32_MSIS_FREQ <= STM32_SYSCLK_MAX)) && !defined(__DOXYGEN__)
@@ -4524,9 +4837,6 @@
   #error "STM32_SYSCLK_FREQ above maximum frequency"
 #endif
 
-#if !defined(RCC_CFGR1_SW_PLL1P) && !defined(__DOXYGEN__)
-  #error "RCC_CFGR1_SW_PLL1P not defined"
-#endif
 #if !(!((STM32_SYSCLK_ENABLED == TRUE) &&                                   \
       (STM32_CFG_SYSCLK_SEL == RCC_CFGR1_SW_PLL1P)) ||                      \
      (STM32_PLL1P_FREQ <= STM32_SYSCLK_MAX)) && !defined(__DOXYGEN__)
@@ -4561,7 +4871,7 @@
 #endif
 
 /**
- * @brief   AHB clock clock point.
+ * @brief   AHB clock point.
  */
 #define STM32_HCLK_FREQ                     (STM32_SYSCLK_FREQ /            \
                                              STM32_CFG_HCLK_VALUE)
@@ -4591,7 +4901,7 @@
 #endif
 
 /**
- * @brief   APB1 clock clock point.
+ * @brief   APB1 clock point.
  */
 #define STM32_PCLK1_FREQ                    (STM32_HCLK_FREQ /              \
                                              STM32_CFG_PCLK1_VALUE)
@@ -4609,7 +4919,7 @@
 #define STM32_PCLK1TIM_BITS                 0U
 
 /**
- * @brief   APB1 timer clock clock point.
+ * @brief   APB1 timer clock point.
  */
 #define STM32_PCLK1TIM_FREQ                 ((STM32_CFG_PCLK1_VALUE == 1) ? STM32_PCLK1_FREQ : \
                                              (STM32_PCLK1_FREQ * 2U))
@@ -4634,7 +4944,7 @@
 #endif
 
 /**
- * @brief   APB2 clock clock point.
+ * @brief   APB2 clock point.
  */
 #define STM32_PCLK2_FREQ                    (STM32_HCLK_FREQ /              \
                                              STM32_CFG_PCLK2_VALUE)
@@ -4652,7 +4962,7 @@
 #define STM32_PCLK2TIM_BITS                 0U
 
 /**
- * @brief   APB2 timer clock clock point.
+ * @brief   APB2 timer clock point.
  */
 #define STM32_PCLK2TIM_FREQ                 ((STM32_CFG_PCLK2_VALUE == 1) ? STM32_PCLK2_FREQ : \
                                              (STM32_PCLK2_FREQ * 2U))
@@ -4677,7 +4987,7 @@
 #endif
 
 /**
- * @brief   APB3 clock clock point.
+ * @brief   APB3 clock point.
  */
 #define STM32_PCLK3_FREQ                    (STM32_HCLK_FREQ /              \
                                              STM32_CFG_PCLK3_VALUE)
@@ -4695,7 +5005,7 @@
 #define STM32_HSEDIV_BITS                   0U
 
 /**
- * @brief   HSE divided-by-32 RTC clock clock point.
+ * @brief   HSE divided-by-32 RTC clock point.
  */
 #if (STM32_HSEDIV_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_HSEDIV_FREQ                 (STM32_HSE_FREQ / 32U)
@@ -4807,7 +5117,7 @@
 #endif
 
 /**
- * @brief   LSE system clock clock point.
+ * @brief   LSE system clock point.
  */
 #if (STM32_LSESYS_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_LSESYS_FREQ                 STM32_LSE_FREQ
@@ -4833,7 +5143,7 @@
 #endif
 
 /**
- * @brief   RTC and TAMP clock clock point.
+ * @brief   RTC and TAMP clock point.
  */
 #if ((STM32_RTC_ENABLED == TRUE) && \
      (STM32_CFG_RTC_SEL == RCC_BDCR_RTCSEL_NOCLOCK)) || \
@@ -4918,7 +5228,7 @@
 #endif
 
 /**
- * @brief   USART1 clock clock point.
+ * @brief   USART1 clock point.
  */
 #if ((STM32_USART1_ENABLED == TRUE) && \
      (STM32_CFG_USART1_SEL == RCC_CCIPR1_USART1SEL_PCLK2)) || \
@@ -4971,7 +5281,7 @@
 #endif
 
 /**
- * @brief   USART2 clock clock point.
+ * @brief   USART2 clock point.
  */
 #if ((STM32_USART2_ENABLED == TRUE) && \
      (STM32_CFG_USART2_SEL == RCC_CCIPR1_USART2SEL_PCLK1)) || \
@@ -5024,7 +5334,7 @@
 #endif
 
 /**
- * @brief   USART3 clock clock point.
+ * @brief   USART3 clock point.
  */
 #if ((STM32_USART3_ENABLED == TRUE) && \
      (STM32_CFG_USART3_SEL == RCC_CCIPR1_USART3SEL_PCLK1)) || \
@@ -5077,7 +5387,7 @@
 #endif
 
 /**
- * @brief   UART4 clock clock point.
+ * @brief   UART4 clock point.
  */
 #if ((STM32_UART4_ENABLED == TRUE) && \
      (STM32_CFG_UART4_SEL == RCC_CCIPR1_UART4SEL_PCLK1)) || \
@@ -5130,7 +5440,7 @@
 #endif
 
 /**
- * @brief   UART5 clock clock point.
+ * @brief   UART5 clock point.
  */
 #if ((STM32_UART5_ENABLED == TRUE) && \
      (STM32_CFG_UART5_SEL == RCC_CCIPR1_UART5SEL_PCLK1)) || \
@@ -5190,7 +5500,7 @@
 #endif
 
 /**
- * @brief   LPUART1 clock clock point.
+ * @brief   LPUART1 clock point.
  */
 #if ((STM32_LPUART1_ENABLED == TRUE) && \
      (STM32_CFG_LPUART1_SEL == RCC_CCIPR3_LPUART1SEL_PCLK3)) || \
@@ -5246,7 +5556,7 @@
 #endif
 
 /**
- * @brief   I2C1 clock clock point.
+ * @brief   I2C1 clock point.
  */
 #if ((STM32_I2C1_ENABLED == TRUE) && \
      (STM32_CFG_I2C1_SEL == RCC_CCIPR1_I2C1SEL_PCLK1)) || \
@@ -5299,7 +5609,7 @@
 #endif
 
 /**
- * @brief   I2C2 clock clock point.
+ * @brief   I2C2 clock point.
  */
 #if ((STM32_I2C2_ENABLED == TRUE) && \
      (STM32_CFG_I2C2_SEL == RCC_CCIPR1_I2C2SEL_PCLK1)) || \
@@ -5352,7 +5662,7 @@
 #endif
 
 /**
- * @brief   I2C4 clock clock point.
+ * @brief   I2C4 clock point.
  */
 #if ((STM32_I2C4_ENABLED == TRUE) && \
      (STM32_CFG_I2C4_SEL == RCC_CCIPR1_I2C4SEL_PCLK1)) || \
@@ -5405,7 +5715,7 @@
 #endif
 
 /**
- * @brief   I2C3 clock clock point.
+ * @brief   I2C3 clock point.
  */
 #if ((STM32_I2C3_ENABLED == TRUE) && \
      (STM32_CFG_I2C3_SEL == RCC_CCIPR3_I2C3SEL_PCLK3)) || \
@@ -5458,7 +5768,7 @@
 #endif
 
 /**
- * @brief   SPI1 clock clock point.
+ * @brief   SPI1 clock point.
  */
 #if ((STM32_SPI1_ENABLED == TRUE) && \
      (STM32_CFG_SPI1_SEL == RCC_CCIPR1_SPI1SEL_PCLK2)) || \
@@ -5511,7 +5821,7 @@
 #endif
 
 /**
- * @brief   SPI2 clock clock point.
+ * @brief   SPI2 clock point.
  */
 #if ((STM32_SPI2_ENABLED == TRUE) && \
      (STM32_CFG_SPI2_SEL == RCC_CCIPR1_SPI2SEL_PCLK1)) || \
@@ -5564,7 +5874,7 @@
 #endif
 
 /**
- * @brief   SPI3 clock clock point.
+ * @brief   SPI3 clock point.
  */
 #if ((STM32_SPI3_ENABLED == TRUE) && \
      (STM32_CFG_SPI3_SEL == RCC_CCIPR3_SPI3SEL_PCLK3)) || \
@@ -5614,7 +5924,7 @@
 #endif
 
 /**
- * @brief   FDCAN1 clock clock point.
+ * @brief   FDCAN1 clock point.
  */
 #if ((STM32_FDCAN1_ENABLED == TRUE) && \
      (STM32_CFG_FDCAN1_SEL == RCC_CCIPR1_FDCANSEL_HSE)) || \
@@ -5638,7 +5948,7 @@
 #define STM32_HCLKDIV8_BITS                 0U
 
 /**
- * @brief   HCLK divided by 8 clock clock point.
+ * @brief   HCLK divided by 8 clock point.
  */
 #if (STM32_HCLKDIV8_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_HCLKDIV8_FREQ               (STM32_HCLK_FREQ / 8U)
@@ -5678,7 +5988,7 @@
 #endif
 
 /**
- * @brief   SysTick clock clock point.
+ * @brief   SysTick clock point.
  */
 #if ((STM32_SYSTICK_ENABLED == TRUE) && \
      (STM32_CFG_SYSTICK_SEL == RCC_CCIPR1_SYSTICKSEL_HCLKDIV8)) || \
@@ -5702,7 +6012,7 @@
 #define STM32_TIM16IC_BITS                  0U
 
 /**
- * @brief   TIM16 internal capture clock clock point.
+ * @brief   TIM16 internal capture clock point.
  */
 #if (STM32_TIM16IC_ENABLED == FALSE) && !defined(__DOXYGEN__)
   #define STM32_TIM16IC_FREQ                0U
@@ -5722,7 +6032,7 @@
 #define STM32_TIM17IC_BITS                  0U
 
 /**
- * @brief   TIM17 internal capture clock clock point.
+ * @brief   TIM17 internal capture clock point.
  */
 #if (STM32_TIM17IC_ENABLED == FALSE) && !defined(__DOXYGEN__)
   #define STM32_TIM17IC_FREQ                0U
@@ -5745,7 +6055,7 @@
 #define STM32_LPTIM2IC_BITS                 0U
 
 /**
- * @brief   LPTIM2 internal capture clock clock point.
+ * @brief   LPTIM2 internal capture clock point.
  */
 #if (STM32_LPTIM2IC_ENABLED == FALSE) && !defined(__DOXYGEN__)
   #define STM32_LPTIM2IC_FREQ               0U
@@ -5794,7 +6104,7 @@
 #endif
 
 /**
- * @brief   ICLK 48 MHz clock clock point.
+ * @brief   ICLK 48 MHz clock point.
  */
 #if ((STM32_ICLK_ENABLED == TRUE) && \
      (STM32_CFG_ICLK_SEL == RCC_CCIPR1_ICLKSEL_HSI48)) || \
@@ -5821,7 +6131,7 @@
 #define STM32_USB_BITS                      0U
 
 /**
- * @brief   USB clock clock point.
+ * @brief   USB clock point.
  */
 #if (STM32_USB_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_USB_FREQ                    STM32_ICLK_FREQ
@@ -5851,7 +6161,7 @@
 #endif
 
 /**
- * @brief   SDMMC clock clock point.
+ * @brief   SDMMC clock point.
  */
 #if ((STM32_SDMMC_ENABLED == TRUE) && \
      (STM32_CFG_SDMMC_SEL == RCC_CCIPR2_SDMMCSEL_ICLK)) || \
@@ -5872,7 +6182,7 @@
 #define STM32_SDMMC1_BITS                   0U
 
 /**
- * @brief   SDMMC1 clock clock point.
+ * @brief   SDMMC1 clock point.
  */
 #if (STM32_SDMMC1_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_SDMMC1_FREQ                 STM32_SDMMC_FREQ
@@ -5888,7 +6198,7 @@
 #define STM32_SDMMC2_BITS                   0U
 
 /**
- * @brief   SDMMC2 clock clock point.
+ * @brief   SDMMC2 clock point.
  */
 #if (STM32_SDMMC2_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_SDMMC2_FREQ                 STM32_SDMMC_FREQ
@@ -5934,7 +6244,7 @@
 #endif
 
 /**
- * @brief   OCTOSPI clock clock point.
+ * @brief   OCTOSPI clock point.
  */
 #if ((STM32_OCTOSPI_ENABLED == TRUE) && \
      (STM32_CFG_OCTOSPI_SEL == RCC_CCIPR2_OCTOSPISEL_SYSCLK)) || \
@@ -5961,7 +6271,7 @@
 #define STM32_HSI48DIV2_BITS                0U
 
 /**
- * @brief   HSI48 divided by 2 clock clock point.
+ * @brief   HSI48 divided by 2 clock point.
  */
 #if (STM32_HSI48DIV2_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_HSI48DIV2_FREQ              (STM32_HSI48_FREQ / 2U)
@@ -6000,7 +6310,7 @@
 #endif
 
 /**
- * @brief   RNG clock clock point.
+ * @brief   RNG clock point.
  */
 #if ((STM32_RNG_ENABLED == TRUE) && \
      (STM32_CFG_RNG_SEL == RCC_CCIPR2_RNGSEL_HSI48)) || \
@@ -6059,7 +6369,7 @@
 #endif
 
 /**
- * @brief   SAI1 clock clock point.
+ * @brief   SAI1 clock point.
  */
 #if ((STM32_SAI1_ENABLED == TRUE) && \
      (STM32_CFG_SAI1_SEL == RCC_CCIPR2_SAI1SEL_PLL2P)) || \
@@ -6124,7 +6434,7 @@
 #endif
 
 /**
- * @brief   SAI2 clock clock point.
+ * @brief   SAI2 clock point.
  */
 #if ((STM32_SAI2_ENABLED == TRUE) && \
      (STM32_CFG_SAI2_SEL == RCC_CCIPR2_SAI2SEL_PLL2P)) || \
@@ -6189,7 +6499,7 @@
 #endif
 
 /**
- * @brief   MDF1 clock clock point.
+ * @brief   MDF1 clock point.
  */
 #if ((STM32_MDF1_ENABLED == TRUE) && \
      (STM32_CFG_MDF1_SEL == RCC_CCIPR2_MDF1SEL_HCLK)) || \
@@ -6254,7 +6564,7 @@
 #endif
 
 /**
- * @brief   ADF1 clock clock point.
+ * @brief   ADF1 clock point.
  */
 #if ((STM32_ADF1_ENABLED == TRUE) && \
      (STM32_CFG_ADF1_SEL == RCC_CCIPR3_ADF1SEL_HCLK)) || \
@@ -6325,7 +6635,7 @@
 #endif
 
 /**
- * @brief   ADC and DAC clock clock point.
+ * @brief   ADC and DAC clock point.
  */
 #if ((STM32_ADCDAC_ENABLED == TRUE) && \
      (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_HCLK)) || \
@@ -6350,27 +6660,18 @@
   #define STM32_ADCDAC_FREQ                 0U
 #endif
 
-#if !defined(RCC_CCIPR3_ADCDACSEL_HCLK) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_ADCDACSEL_HCLK not defined"
-#endif
 #if !(!((STM32_ADCDAC_ENABLED == TRUE) &&                                   \
       (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_HCLK)) ||               \
      (STM32_HCLK_FREQ <= STM32_ADCCLK_MAX)) && !defined(__DOXYGEN__)
   #error "STM32_ADCDAC_FREQ above maximum frequency"
 #endif
 
-#if !defined(RCC_CCIPR3_ADCDACSEL_SYSCLK) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_ADCDACSEL_SYSCLK not defined"
-#endif
 #if !(!((STM32_ADCDAC_ENABLED == TRUE) &&                                   \
       (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_SYSCLK)) ||             \
      (STM32_SYSCLK_FREQ <= STM32_ADCCLK_MAX)) && !defined(__DOXYGEN__)
   #error "STM32_ADCDAC_FREQ above maximum frequency"
 #endif
 
-#if !defined(RCC_CCIPR3_ADCDACSEL_PLL2R) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_ADCDACSEL_PLL2R not defined"
-#endif
 #if !(!((STM32_ADCDAC_ENABLED == TRUE) &&                                   \
       (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_PLL2R)) ||              \
      (STM32_PLL2R_FREQ <= STM32_ADCCLK_MAX)) && !defined(__DOXYGEN__)
@@ -6389,9 +6690,6 @@
   #error "STM32_ADCDAC_FREQ above maximum frequency"
 #endif
 
-#if !defined(RCC_CCIPR3_ADCDACSEL_MSIK) && !defined(__DOXYGEN__)
-  #error "RCC_CCIPR3_ADCDACSEL_MSIK not defined"
-#endif
 #if !(!((STM32_ADCDAC_ENABLED == TRUE) &&                                   \
       (STM32_CFG_ADCDAC_SEL == RCC_CCIPR3_ADCDACSEL_MSIK)) ||               \
      (STM32_MSIK_FREQ <= STM32_ADCCLK_MAX)) && !defined(__DOXYGEN__)
@@ -6423,7 +6721,7 @@
 #endif
 
 /**
- * @brief   DAC1 sample and hold clock clock point.
+ * @brief   DAC1 sample and hold clock point.
  */
 #if ((STM32_DAC1SH_ENABLED == TRUE) && \
      (STM32_CFG_DAC1SH_SEL == RCC_CCIPR3_DAC1SEL_LSE)) || \
@@ -6470,7 +6768,7 @@
 #endif
 
 /**
- * @brief   LPTIM1 clock clock point.
+ * @brief   LPTIM1 clock point.
  */
 #if ((STM32_LPTIM1_ENABLED == TRUE) && \
      (STM32_CFG_LPTIM1_SEL == RCC_CCIPR3_LPTIM1SEL_MSIK)) || \
@@ -6523,7 +6821,7 @@
 #endif
 
 /**
- * @brief   LPTIM2 clock clock point.
+ * @brief   LPTIM2 clock point.
  */
 #if ((STM32_LPTIM2_ENABLED == TRUE) && \
      (STM32_CFG_LPTIM2_SEL == RCC_CCIPR1_LPTIM2SEL_PCLK1)) || \
@@ -6577,7 +6875,7 @@
 #endif
 
 /**
- * @brief   LPTIM3 and LPTIM4 clock clock point.
+ * @brief   LPTIM3 and LPTIM4 clock point.
  */
 #if ((STM32_LPTIM34_ENABLED == TRUE) && \
      (STM32_CFG_LPTIM34_SEL == RCC_CCIPR3_LPTIM34SEL_MSIK)) || \
@@ -6604,7 +6902,7 @@
 #define STM32_IWDG_BITS                     0U
 
 /**
- * @brief   IWDG clock clock point.
+ * @brief   IWDG clock point.
  */
 #if (STM32_IWDG_ENABLED == TRUE) || defined(__DOXYGEN__)
   #define STM32_IWDG_FREQ                   STM32_LSI_FREQ
